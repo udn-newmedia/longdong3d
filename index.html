@@ -33,36 +33,34 @@
         var engine = new BABYLON.Engine(canvas, true);
 
         BABYLON.SceneLoader.Load("assets/", "longdong_level5.babylon", engine, function (scene) {
-
             // scene.activeCamera.attachControl(canvas);
 
             //Adding a light
+            // var light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
             // var light = new BABYLON.PointLight("Omni", new BABYLON.Vector3(20, 20, 100), scene);
 
             //Adding an Arc Rotate Camera
-            var camera = new BABYLON.ArcRotateCamera("Camera", 0, 0.8, 100, new BABYLON.Vector3.Zero(), scene);
+            var camera = new BABYLON.ArcRotateCamera("Camera1", 0, 0.5, 10, new BABYLON.Vector3.Zero(), scene);
             camera.attachControl(canvas, false);
             camera.checkCollisions = true;
 
             var cube1 = scene.getMeshByName("Cube1");
-            var camera1 = new BABYLON.ArcRotateCamera("Camera1", 0, 0, 0.5, new BABYLON.Vector3.Zero(), scene);
-            camera1.setTarget(cube1);
-
             var cube2 = scene.getMeshByName("Cube2");
-            var camera2 = new BABYLON.ArcRotateCamera("Camera2", 0, 0, 0.5, new BABYLON.Vector3.Zero(), scene);
-            camera2.setTarget(cube2);
+            cube1.isVisible = false;
+            cube2.isVisible = false;
 
             var switchCam = true;
 
             window.addEventListener("click", function(){
                 if(switchCam){
-                    scene.activeCamera = camera1;
+                    camera.setPosition(cube1.absolutePosition);
+                    camera.setTarget(cube2);
                 } else {
-                    scene.activeCamera = camera2;
+                    camera.setPosition(cube2.absolutePosition);
+                    camera.setTarget(cube1);
                 }
 
                 switchCam = !switchCam;
-
             });
 
             //render

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <title>Babylon.js sample code</title>
+    <!-- Babylon.js -->
+    <script src="http://www.babylonjs.com/hand.minified-1.2.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babylonjs/2.5.0/babylon.js"></script>
+    <style>
+        html,
+        body {
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #renderCanvas {
+            width: 100%;
+            height: 100%;
+            touch-action: none;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="renderCanvas"></canvas>
+    <script>
+        var canvas = document.getElementById("renderCanvas");
+        var engine = new BABYLON.Engine(canvas, true);
+
+        BABYLON.SceneLoader.Load("assets/", "longdong_level5.babylon", engine, function (scene) {
+
+            // scene.activeCamera.attachControl(canvas);
+
+            //Adding a light
+            // var light = new BABYLON.PointLight("Omni", new BABYLON.Vector3(20, 20, 100), scene);
+
+            //Adding an Arc Rotate Camera
+            var camera = new BABYLON.ArcRotateCamera("Camera", 0, 0.8, 100, new BABYLON.Vector3.Zero(), scene);
+            camera.attachControl(canvas, false);
+            camera.checkCollisions = true;
+
+            var cube1 = scene.getMeshByName("Cube1");
+            var camera1 = new BABYLON.ArcRotateCamera("Camera1", 0, 0, 0.5, new BABYLON.Vector3.Zero(), scene);
+            camera1.setTarget(cube1);
+
+            var cube2 = scene.getMeshByName("Cube2");
+            var camera2 = new BABYLON.ArcRotateCamera("Camera2", 0, 0, 0.5, new BABYLON.Vector3.Zero(), scene);
+            camera2.setTarget(cube2);
+
+            var switchCam = true;
+
+            window.addEventListener("click", function(){
+                if(switchCam){
+                    scene.activeCamera = camera1;
+                } else {
+                    scene.activeCamera = camera2;
+                }
+
+                switchCam = !switchCam;
+
+            });
+
+            //render
+            engine.runRenderLoop(function () {
+                scene.render();
+            });
+        });
+
+
+        // Resize
+        window.addEventListener("resize", function () {
+            engine.resize();
+        });
+    </script>
+</body>
+
+</html>

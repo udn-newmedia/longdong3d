@@ -103,21 +103,17 @@
 
                 var keys1 = [{
                     frame: 0,
-                    // value: new BABYLON.Vector3(0, 5, -10)
                     value: cube1.position
                 },{
                     frame: 100,
-                    // value: new BABYLON.Vector3(0, 5, -20)
                     value: cube2.position
                 }];
 
                 var keys2 = [{
                     frame: 0,
-                    // value: new BABYLON.Vector3(0, 5, -10)
                     value: cube2.position
                 }, {
                     frame: 100,
-                    // value: new BABYLON.Vector3(0, 5, -20)
                     value: cube1.position
                 }];
 
@@ -135,8 +131,8 @@
 
                         camera.animations.push(positionAnimation);
                         scene.beginAnimation(camera, 0, 100, false, 1);
-
                         scene.onBeforeRenderObservable.add(forceRebuild);
+                        scene.onBeforeRenderObservable.add(resetTarget(plane1));
 
                     } else {
                         // camera.setPosition(cube2.absolutePosition);
@@ -153,10 +149,15 @@
 
                         scene.beginAnimation(camera, 0, 100, false, 1);
                         scene.onBeforeRenderObservable.add(forceRebuild);
+                        scene.onBeforeRenderObservable.add(resetTarget(cube1));
                     }
 
                     switchCam = !switchCam;
                 });
+
+            var resetTarget = function (mesh) {
+                camera.setTarget(mesh);
+            };
 
             var forceRebuild = function () {
                 camera.rebuildAnglesAndRadius();

@@ -36,44 +36,143 @@
             // scene.activeCamera.attachControl(canvas);
 
             //Adding a light
-            // var light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
-            // var light = new BABYLON.PointLight("Omni", new BABYLON.Vector3(20, 20, 100), scene);
+                // var light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
+                // var light = new BABYLON.PointLight("Omni", new BABYLON.Vector3(20, 20, 100), scene);
 
             //Adding an Arc Rotate Camera
-            var camera = new BABYLON.ArcRotateCamera("Camera1", 0, 0.5, 10, new BABYLON.Vector3.Zero(), scene);
-            camera.attachControl(canvas, false);
-            camera.checkCollisions = true;
+                var camera = new BABYLON.ArcRotateCamera("Camera1", 0, 0.5, 10, new BABYLON.Vector3.Zero(), scene);
+                camera.attachControl(canvas, false);
+                camera.checkCollisions = true;
 
-            var cube1 = scene.getMeshByName("Cube1");
-            var cube2 = scene.getMeshByName("Cube2");
-            cube1.isVisible = false;
-            cube2.isVisible = false;
+            // set waypoints
+                var cube1 = scene.getMeshByName("Cube1");
+                var cube2 = scene.getMeshByName("Cube2");
+                var plane = scene.getMeshByName("Plane");
+                var cube = scene.getMeshByName("Cube");
+                cube1.isVisible = false;
+                cube2.isVisible = false;
+                plane.isVisible = false;
 
-            var switchCam = true;
+            // make plane in billboardMode
+                var plane1 = BABYLON.Mesh.CreatePlane('plane1', 1, scene);
+                // plane1.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
+                plane1.material = new BABYLON.StandardMaterial("plane1", scene);
+                plane1.position = plane.absolutePosition;
 
-            window.addEventListener("click", function(){
-                if(switchCam){
-                    camera.setPosition(cube1.absolutePosition);
-                    camera.setTarget(cube2);
-                } else {
-                    camera.setPosition(cube2.absolutePosition);
-                    camera.setTarget(cube1);
-                }
+            //2d-text on the plane
+                //BJS dynamic texture is using an html canvas to draw the text
+                var plane1_texture = new BABYLON.DynamicTexture("dynamic texture", 512, scene, true);
+                plane1.material.diffuseTexture = plane1_texture;
+                plane1.material.specularColor = new BABYLON.Color3(0, 0, 0);
+                plane1.material.emissiveColor = new BABYLON.Color3(1, 1, 1);
+                plane1.material.backFaceCulling = true; //True to not render material on back face
 
-                switchCam = !switchCam;
-            });
+                //styles of texts
+                var clearColor = "#555555";
+                var font = "bold 70px Segoe UI";
+                var invertY = true;
+                var text = "test";
+                var color = "white"
+                var x = 10;
+                var y = 70 + 10;
+
+                plane1_texture.getContext().clearRect(0, 140, 512, 512);
+                plane1_texture.drawText(text, x, y, font, color, clearColor);
+                // plane1_texture.drawText(text, x, y, font, color);
+                // plane1_texture.hasAlpha = true;//必須要clearColor沒被定義
+
+            // // change camera's position when clicking
+            //     var switchCam = true;
+            //     window.addEventListener("click", function(){
+            //         if(switchCam){
+            //             // camera.setPosition(cube1.absolutePosition);
+            //             camera.setPosition(cube1.position);
+            //             camera.setTarget(plane);
+            //         } else {
+            //             // camera.setPosition(cube2.absolutePosition);
+            //             camera.setPosition(cube2.position);
+            //             camera.setTarget(cube1);
+            //         }
+
+            //         switchCam = !switchCam;
+            //     });
+
+            // Changing camera's position by animation when clicking
+                var switchCam = true;
+                var positionAnimation = new BABYLON.Animation("camPos", "position", 30, BABYLON.Animation.ANIMATIONTYPE_VECTOR3, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
+
+                var keys1 = [{
+                    frame: 0,
+                    // value: new BABYLON.Vector3(0, 5, -10)
+                    value: cube1.position
+                },{
+                    frame: 100,
+                    // value: new BABYLON.Vector3(0, 5, -20)
+                    value: cube2.position
+                }];
+
+                var keys2 = [{
+                    frame: 0,
+                    // value: new BABYLON.Vector3(0, 5, -10)
+                    value: cube2.position
+                }, {
+                    frame: 100,
+                    // value: new BABYLON.Vector3(0, 5, -20)
+                    value: cube1.position
+                }];
+
+                window.addEventListener("click", function () {
+                    if (switchCam) {
+                        // camera.setPosition(cube1.absolutePosition);
+                        // camera.setTarget(plane);
+                        
+                        positionAnimation.setKeys(keys1);
+
+                        //easing function
+                            var ease = new BABYLON.CubicEase();
+                            ease.setEasingMode(BABYLON.EasingFunction.EASINGMODE_EASEINOUT);
+                            positionAnimation.setEasingFunction(ease);
+
+                        camera.animations.push(positionAnimation);
+                        scene.beginAnimation(camera, 0, 100, false, 1);
+
+                        scene.onBeforeRenderObservable.add(forceRebuild);
+
+                    } else {
+                        // camera.setPosition(cube2.absolutePosition);
+                        // camera.setTarget(cube1);
+
+                        positionAnimation.setKeys(keys2);
+                        
+                        //easing function
+                            var ease = new BABYLON.QuinticEase();                            
+                            ease.setEasingMode(BABYLON.EasingFunction.EASINGMODE_EASEINOUT);
+                            positionAnimation.setEasingFunction(ease);
+                        
+                        camera.animations.push(positionAnimation);
+
+                        scene.beginAnimation(camera, 0, 100, false, 1);
+                        scene.onBeforeRenderObservable.add(forceRebuild);
+                    }
+
+                    switchCam = !switchCam;
+                });
+
+            var forceRebuild = function () {
+                camera.rebuildAnglesAndRadius();
+            };
 
             //render
-            engine.runRenderLoop(function () {
-                scene.render();
-            });
+                engine.runRenderLoop(function () {
+                    scene.render();
+                });
         });
 
 
         // Resize
-        window.addEventListener("resize", function () {
-            engine.resize();
-        });
+            window.addEventListener("resize", function () {
+                engine.resize();
+            });
     </script>
 </body>
 

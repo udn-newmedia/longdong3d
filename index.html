@@ -86,55 +86,47 @@
                 // plane1_texture.drawText(text, x, y, font, color);
                 // plane1_texture.hasAlpha = true;//必須要clearColor沒被定義
 
-            // // change camera's position when clicking
-            //     var switchCam = true;
-            //     window.addEventListener("click", function(){
-            //         if(switchCam){
-            //             // camera.setPosition(cube1.absolutePosition);
-            //             camera.setPosition(cube1.position);
-            //             camera.setTarget(plane);
-            //         } else {
-            //             // camera.setPosition(cube2.absolutePosition);
-            //             camera.setPosition(cube2.position);
-            //             camera.setTarget(cube1);
-            //         }
-            //         switchCam = !switchCam;
-            //     });
+            // change camera's position when clicking
+                // var switchCam = true;
+                // window.addEventListener("click", function(){
+                //     if(switchCam){
+                //         // camera.setPosition(cube1.absolutePosition);
+                //         camera.setPosition(cube1.position);
+                //         camera.setTarget(plane);
+                //     } else {
+                //         // camera.setPosition(cube2.absolutePosition);
+                //         camera.setPosition(cube2.position);
+                //         camera.setTarget(cube1);
+                //     }
+                //     switchCam = !switchCam;
+                // });
 
             // Changing camera's position by animation when clicking
                 var switchCam = true;
 
-                var positionAnimation = new BABYLON.Animation("camPos", "position", 30, BABYLON.Animation.ANIMATIONTYPE_VECTOR3, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
-
-                var keys1 = [{
-                    frame: 0,
-                    value: cube1.position
-                },{
-                    frame: 100,
-                    value: cube2.position
-                }];
-
-                var keys2 = [{
-                    frame: 0,
-                    value: cube2.position
-                }, {
-                    frame: 100,
-                    value: cube1.position
-                }];
-
                 window.addEventListener("click", function () {
 
-                    // console.log(switchCam);
-
                     var target = (switchCam)?cube1:plane1;
-                    var keys = (switchCam)?keys1:keys2;
 
-                    smoothSetTarget(target, moveCamera(keys));
+
+                    //先target, 再移動 `[OK]`
+                        // smoothSetTarget(target,moveCamera(cube1,cube2));                    
+
+                    //先target, 再zoom in `[OK]`
+                        // smoothSetTarget(target, zoomInCamera);
+
+                    //先移動, 再target
+                        moveCamera(cube1,cube2,smoothSetTarget(target));
+
+                    //先移動, 再zoom in
+
+                    //先target, 再移動, 再zoom in
+                    // smoothSetTarget(target, moveCamera(cube1,cube2,zoomInCamera));
+
+                    //旋轉
 
                     switchCam = !switchCam;
-                    scene.onBeforeRenderObservable.add(forceRebuild);
                 });
-
 
             //Since using arcrotatecamera, the alpha, beta, radius must be
             //rebuild after the camera moving
@@ -144,6 +136,7 @@
 
             //Smoothing camera targeting by adding rotate animation
                 var smoothSetTarget = function(obj, onEndcallback) {
+                    
                     var provTargetX = camera.getTarget().x;
                     var provTargetY = camera.getTarget().y;
                     var provTargetZ = camera.getTarget().z;
@@ -158,12 +151,43 @@
                     ease.setEasingMode(BABYLON.EasingFunction.EASINGMODE_EASEINOUT);
 
                     camera.setTarget(new BABYLON.Vector3(provTargetX, provTargetY, provTargetZ));
+
+                    // Empty the animation array
+                    camera.animations.splice(0, camera.animations.length);
+
                     var anim = BABYLON.Animation.CreateAndStartAnimation("CamTaranim", camera, "target", 60, 100, camera.target,
-                        new BABYLON.Vector3(targetX, targetY, targetZ), 2, onEndcallback);	
+                        new BABYLON.Vector3(targetX, targetY, targetZ), 2, ease, onEndcallback);	
+
                 };
             
             //Moving camera to specific positions
-                var moveCamera = function(key){
+                var moveCamera = function(obj1,obj2,callback){
+
+                    if(scene.onBeforeRenderObservable.hasObservers()){
+                        scene.onBeforeRenderObservable.removeCallback(forceRebuild);
+                    }
+
+                    console.log(scene.onBeforeRenderObservable);
+
+                    var positionAnimation = new BABYLON.Animation("camPos", "position", 30, BABYLON.Animation.ANIMATIONTYPE_VECTOR3, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
+
+                    var keys1 = [{
+                        frame: 0,
+                        value: obj1.position
+                    }, {
+                        frame: 100,
+                        value: obj2.position
+                    }];
+
+                    var keys2 = [{
+                        frame: 0,
+                        value: obj2.position
+                    }, {
+                        frame: 100,
+                        value: obj1.position
+                    }];
+
+                    var key = (switchCam) ? keys1 : keys2;
 
                     positionAnimation.setKeys(key);
                     //easing function
@@ -175,7 +199,34 @@
                     camera.animations.splice(0, camera.animations.length);
 
                     camera.animations.push(positionAnimation);
-                    scene.beginAnimation(camera, 0, 100, false, 1);
+                    scene.beginAnimation(camera, 0, 100, false, 1, callback);
+                    scene.onBeforeRenderObservable.add(forceRebuild);
+                    
+                }
+
+            //Animate Camera To Target
+
+            //Zoom in
+                var zoomInCamera = function(callback){
+
+                    var zoominAnimation = new BABYLON.Animation("zoomIn", "radius", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
+                    var curRadius = camera.radius;
+
+                    var keys1 = [{
+                        frame: 0,
+                        value: curRadius
+                    }, {
+                        frame: 100,
+                        value: curRadius - 5
+                    }];
+
+                    zoominAnimation.setKeys(keys1);
+
+                    // Empty the animation array
+                    camera.animations.splice(0, camera.animations.length);
+
+                    camera.animations.push(zoominAnimation);
+                    scene.beginAnimation(camera, 0, 100, false, 1, callback);
                 }
 
             //render loop
@@ -183,8 +234,6 @@
                     scene.render();
                 });
         });
-
-
 
         // Resize
             window.addEventListener("resize", function () {

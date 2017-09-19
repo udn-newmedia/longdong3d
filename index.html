@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://udn-newmedia.github.io/udn-newmedia-css/css/style.css">
     <link rel="stylesheet" href="lib/css/nivo-slider.css">
     <link rel="stylesheet" href="lib/css/default.css">
-    <link href="./src/style.css" rel="stylesheet">
+    <link href="src/style.css" rel="stylesheet">
 
     <!-- Babylon.js -->
     <script src="http://www.babylonjs.com/hand.minified-1.2.js"></script>
@@ -19,8 +19,13 @@
     <script src="https://udn.com/upf/newmedia/js/jquery-3.2.1.min.js"></script>
     <script src="https://udn.com/upf/newmedia/js/bootstrap.min.js"></script>
     <script src="https://udn.com/upf/newmedia/js/lazysizes.min.js"></script>
+    <!-- <script src="https://udn-newmedia.github.io/udn-newmedia-css/js/index.js"></script> -->
 
+    <script defer src="src/videoctrl.js"></script>
+
+    <!-- nivoSlider -->
     <script defer src="lib/js/jquery.nivo.slider.js"></script>
+    <script defer src="src/nivo-slider.js"></script>    
 
 </head>
 
@@ -34,10 +39,10 @@
         </div>
     </div>
 
-    <!-- <div id="g-graphic"></div> -->
+    <div id="g-graphic"></div>
 
     <div class="article">
-        <section>
+        <section id="section1">
             <h1>龍洞攀岩3D</h1>
             <div id="share-block-top" class="share-block container">
                 <div class="fb-like-block">
@@ -53,10 +58,6 @@
                 <p>2002年2月微雨的冷天，才剛到台灣兩天的Matt Robertson ，不會半句中文，卻迫不及待的從新竹獨自北上基隆，客運、火車、計程車轉換，花了7小時才抵達龍洞。</p>                
                 <p><br/></p>
                 <p>他一摸到岩壁就覺得這地方跟亞洲多數光滑的石灰岩場不一樣。《台灣龍洞攀岩》作者Matt Robertson 是美國的攀岩好手，他回憶第一次到龍洞攀爬的情形，「當時接近傍晚，天色昏暗，又下雨、颳風，沒有人知道我在那裏，爬上去很冒險，但這趟試爬，我覺得龍洞是個我一直在找尋的地方。」</p>
-                <!-- <div class="quote-contain">
-                    <div class="quote-text">許多孩子告訴我們，他們從來沒有踏進過大學一步。訪問大學生，能拓展他們的認知，也會有一個前進的目標。</div>
-                    <div class="quote-ref">─ 更生少年關懷協會主任 陳彥君</div>
-                </div> -->
 
             </div>
             <div class="img-contain container">
@@ -64,7 +65,6 @@
                     <source srcset="./assets/images/img_2_m.jpg" media="(max-width:1199px)">
                     <img class="lazyload" data-src="./assets/images/img_2.jpg">
                 </picture>
-                <!-- <div class="img-say">思考與讀者的切身性、關聯性何在，讓他們願意花力氣閱讀文章？</div> -->
             </div>
             <div class="content container">
                 <p>龍洞的岩壁品質良好且磨擦力十足，Matt放下包包試爬，他在龍洞第一條試爬路線，直到今天依舊是造訪龍洞地質必爬的熱身選項。</p>
@@ -76,7 +76,6 @@
                     <source srcset="./assets/images/img_1_m.jpg" media="(max-width:1199px)">
                     <img class="lazyload" data-src="./assets/images/img_1.jpg">
                 </picture>
-                <!-- <div class="img-say">思考與讀者的切身性、關聯性何在，讓他們願意花力氣閱讀文章？</div> -->
             </div>
             <div class="content container">
                 <p>當他爬到視野遼闊的高處，「我看到有確保點在岩壁上，相信這是台灣人的攀岩場。」第一次相遇後，他每週回到龍洞攀岩，隨著時間累積，一步一腳印的探索這個岩場。Matt發現這個岩場極為特別，但是這裡的人並不理解它的真實面貌。</p>
@@ -106,12 +105,12 @@
                 <p><br/></p>
                 <p>「龍洞空間多又大、地形多變，同時擁有傳統攀登與運動攀登的路線，還在海邊，台灣人真的很幸運。」15年攀岩經驗的澳洲人Stephen Parr說。龍洞3500多年前沉積，形成四陵砂岩，穩定的岩質，遠眺太平洋的濱海攀岩環境，近年大受國內外攀岩者喜愛，逐步躍升為世界知名的濱海岩場。</p>                
             </div>
-            <div class="img-contain">
+            <div class="img-contain hidden-xs hidden-sm">
                 <div class="slider-wrapper theme-default">
                     <div id="slider" class="nivoSlider">
-                        <img class="lazyload fullscreen" src="./assets/images/img_4.jpg" data-thumb="./assets/images/img_4.jpg" alt="">
-                        <img class="lazyload fullscreen" src="./assets/images/img_5.jpg" data-thumb="./assets/images/img_5.jpg" alt="">
-                        <img class="lazyload fullscreen" src="./assets/images/img_6.jpg" data-thumb="./assets/images/img_6.jpg" alt="">
+                        <img class="lazyload fullscreen" src="./assets/images/img_4.jpg" alt="">
+                        <img class="lazyload fullscreen" src="./assets/images/img_5.jpg" alt="">
+                        <img class="lazyload fullscreen" src="./assets/images/img_6.jpg" alt="">
                     </div>
                 </div>
             </div>
@@ -146,7 +145,7 @@
                 <p>攀岩者眼前的那面牆，就是一道道待解的謎，每個人解謎需要的時間不同，答案也不盡相同。有些路線簡單一下就破關，有些路線複雜難解，往往耗上數月至數年的時間，才挑戰成功。</p>
             </div>
         </section>
-        <section>
+        <section id="section2">
             <div class="content container">
                 <div class="narrow-in-pc">
                     <h2>陳震宇<br/>黃金谷 黃金勇氣</h2>

@@ -35,7 +35,7 @@ Supports Thumbs: true
 	display:inline-block;
 	width:22px;
 	height:22px;
-	background:url(bullets.png) no-repeat;
+	/* background:url(bullets.png) no-repeat; */
 	text-indent:-9999px;
 	border:0;
 	margin: 0 2px;

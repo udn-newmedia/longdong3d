@@ -1,9 +1,141 @@
 var mob=(detectmob())?true:false;
+var modelLoaded = [false,false,false];
+var scenes = [];
+var activeScene = 0;
+var ticking = false;
+var sectionPageOffset = [];
+var movies = [];
 
-if(mob){
-    // MOBloadScene();
-}else{
-    // PCloadScene();
+//jquery
+// $(document).ready(function(){
+// });
+
+//以行動裝置與否區分讀取的是模型或影片
+    if(mob){
+        // MOBloadScene();
+        // window.addEventListener('scroll', MOBonScroll);
+    }else{
+
+        var canvasNode = document.createElement("CANVAS");
+        var canvas = document.getElementById("g-graphic").appendChild(canvasNode);
+        var engine = new BABYLON.Engine(canvas, true);
+
+        PCloadScene1();
+
+        window.addEventListener('scroll', function(){
+            if(!ticking){
+                requestAnimationFrame(onScroll);
+                ticking = true;
+            }
+        });
+        
+        engine.runRenderLoop(function(){
+            RenderManager()
+        });
+
+        engineStopRenderOnVideoPlaying();
+
+    }
+
+function onScroll(){
+
+    setSectionOffset();
+    
+    SceneManager();
+
+    ticking = false;
+}
+
+function RenderManager(){
+    if (scenes[activeScene]) {
+        scenes[activeScene].renderLoop();
+    }
+}
+
+function SceneManager() {
+
+    modelLoader();
+    setCanvasOpacityWithSection();
+}
+
+//只要有video在播，就停止render
+function engineStopRenderOnVideoPlaying(){
+
+    var movie1 = document.getElementsByTagName('video')[0];
+    var movieIndex = movies.push(movie1) - 1;
+
+    movies[0].addEventListener("play",function(){
+        engine.stopRenderLoop();
+    });
+
+    movies[0].addEventListener("pause",function(){
+        engine.runRenderLoop(function(){
+            RenderManager();
+        });
+    });
+}
+
+function modelLoader() {
+
+    var section = whichSection();
+
+    // console.log(section);
+
+    if (section === 'section1') {
+        activeScene = 0;
+
+        if (!modelLoaded[1]) {
+            //load model2
+            PCimportScene2(engine);        
+        }
+
+    } else if (section === "section2") {
+        activeScene = 1;
+    }
+
+}
+
+//設置換模型的分界點    
+function setSectionOffset() {
+
+    var section1 = document.getElementById("section1");
+    var section2 = document.getElementById("section2");
+    // var section3;
+
+    sectionPageOffset[0] = section1.getBoundingClientRect().top + window.pageYOffset;
+    sectionPageOffset[1] = section2.getBoundingClientRect().top + window.pageYOffset;
+    // sectionPageOffset[2] = section3.getBoundingClientRect().top + window.pageYOffset;
+}
+
+function whichSection() {
+
+    if (window.pageYOffset >= 0 && window.pageYOffset < sectionPageOffset[1]) {
+        return 'section1';
+    } else if (window.pageYOffset >= sectionPageOffset[1]) {
+        return 'section2';
+    } else {
+        return;
+    }
+}
+
+function setCanvasOpacityWithSection() {
+
+    var canvas_style = window.getComputedStyle(canvas),
+        canvas_opacity = canvas_style.getPropertyValue('opacity');
+
+    if (window.pageYOffset >= sectionPageOffset[1] * 0.9 && window.pageYOffset < sectionPageOffset[1]) {
+
+        canvas.style.opacity = 1 - ((window.pageYOffset - sectionPageOffset[1] * 0.9) / (sectionPageOffset[1] - sectionPageOffset[1] * 0.9));
+
+    } else if (window.pageYOffset >= sectionPageOffset[1] && window.pageYOffset < sectionPageOffset[1] * 1.1) {
+
+        canvas.style.opacity = (window.pageYOffset - sectionPageOffset[1]) / (sectionPageOffset[1] * 1.1 - sectionPageOffset[1]);
+
+    } else if (window.pageYOffset >= sectionPageOffset[1] * 1.1){
+
+        canvas.style.opacity = 1;
+
+    }
 
 }
 
@@ -21,23 +153,26 @@ function MOBloadScene(){
     video.play();
 }
 
-function PCloadScene(){
-    //PC version
-    var canvasNode = document.createElement("CANVAS");
-    var canvas = document.getElementById("g-graphic").appendChild(canvasNode);
-    var engine = new BABYLON.Engine(canvas, true);
-    
-    BABYLON.SceneLoader.Load("assets/0911-2/", "north-3D-new-09-2-1.babylon", engine, function (scene) {
+function PCloadScene1(){
+
+    // console.log('load1');
+
+    BABYLON.SceneLoader.ShowLoadingScreen = false;
+
+    // BABYLON.SceneLoader.Load("assets/0911-2/", "north-3D-new-09-2-1.babylon", engine, function (scene) {
+    BABYLON.SceneLoader.Load("assets/09-finall/", "north-3D-new-09-final.babylon", engine, function (scene) {
         //Adding an Arc Rotate Camera
             var camera = new BABYLON.ArcRotateCamera("Camera1", -0.3, 0.9, 8, new BABYLON.Vector3.Zero(), scene);
             // camera.attachControl(canvas, false);
             camera.checkCollisions = true;
     
-        //render loop
-            engine.runRenderLoop(function () {
-                scene.render();
-            });
+            var sceneIndex = scenes.push(scene) - 1;
+            scenes[sceneIndex].renderLoop = function () {
+                this.render();
+            }
     });
+
+    modelLoaded[0] = !modelLoaded[0];
 
     // Resize
     window.addEventListener("resize", function () {
@@ -46,12 +181,33 @@ function PCloadScene(){
 
 }
 
-//nivoSlider
-$(window).on('load', function () {
-    $('#slider').nivoSlider();
-}); 
+function PCimportScene2(){
+    // This creates a basic Babylon Scene object (non-mesh)
+    var scene = new BABYLON.Scene(engine);
 
-/*functions from newmedia.css*/
+    var camera = new BABYLON.ArcRotateCamera("Camera1", Math.PI*1.1, Math.PI/2, 10, new BABYLON.Vector3.Zero(), scene);
+    // camera.attachControl(canvas, false);
+    camera.checkCollisions = true;
+
+    var light = new BABYLON.HemisphericLight("hemi", new BABYLON.Vector3(0, 1, 0), scene);
+
+    // console.log('import2');
+
+    // The first parameter can be used to specify which mesh to import. Here we import all meshes
+    BABYLON.SceneLoader.ImportMesh("", "assets/golden-stone/", "golden-stone.babylon", scene, function (newMeshes) {
+        // newMeshes[0].position = BABYLON.Vector3.Zero();
+        newMeshes[0].position = new BABYLON.Vector3(0.5,2,-3);
+    });
+
+    modelLoaded[1] = !modelLoaded[1];
+
+    var sceneIndex = scenes.push(scene) - 1;
+    scenes[sceneIndex].renderLoop = function () {
+        this.render();
+    }
+
+    return scene;
+}
 
 function detectmob() {
     if (
@@ -69,164 +225,6 @@ function detectmob() {
     }
 }
 
-//video controller
-$(document).ready(function () {
-    var scroll_now;
-    var progress = [];
-    var movie_progress = [null];
-    let w = $(window).width();
-    let h = $(window).height();
-    let total_height = $("body").height() - h;
-    const headTop = w >= 768 ? "6px" : "4px";
-    var title = $("title").text();
-
-    function moviePlay(id) {
-        $("#movie-" + id).get(0).play();
-        if (progress[id - 1] == null) {
-            progress[id - 1] = setInterval(function () {
-                var curTime = $("#movie-" + id).get(0).currentTime;
-                var temp = curTime / $("#movie-" + id).get(0).duration * 100;
-                if (temp > 0.6) {
-                    $('.video-play[data-target="' + id + '"]').css("opacity", 0);
-                }
-                if (Math.floor(curTime / 5) > movie_progress) {
-                    movie_progress = Math.floor(curTime / 5);
-                }
-
-                $("#progress-bar-" + id).css("width", temp + "%");
-            }, 600);
-        }
-    }
-
-    function moviePause(id) {
-        $("#movie-" + id).get(0).pause();
-        $('.video-play[data-target="' + id + '"]').css("opacity", 1);
-        if (progress[id - 1]) {
-            clearInterval(progress[id - 1]);
-            progress[id - 1] = null;
-        }
-    }
-
-    function movieReplay(id) {
-        $("#movie-" + id).get(0).currentTime = 0;
-        $("#movie-" + id).get(0).play();
-        $(".progress-bar").css("width", 0);
-        clearInterval(progress[id - 1]);
-        progress[id - 1] = setInterval(function () {
-            var temp = $("#movie-" + id).get(0).currentTime / $("#movie-" + id).get(0).duration * 100;
-            $("#progress-bar-" + id).css("width", temp + "%");
-        }, 600);
-    }
-
-    function movieVolume(id) {
-        if ($("#movie-" + id).get(0).muted == true) {
-            $("#movie-" + id).get(0).muted = false;
-            $('.volume[data-target="' + id + '"]')
-                .removeClass("fa-volume-off")
-                .addClass("fa-volume-up");
-            $('.volume-text[data-target="' + id + '"]').text("點按關聲音");
-        } else {
-            $("#movie-" + id).get(0).muted = true;
-            $('.volume[data-target="' + id + '"]')
-                .removeClass("fa-volume-up")
-                .addClass("fa-volume-off");
-            $('.volume-text[data-target="' + id + '"]').text("點按開聲音");
-        }
-    }
-
-    //for video operation
-    $('video').on('waiting', function () {
-        var tar = $(this).data('target')
-        $('.video-play[data-target="' + tar + '"]').css('opacity', 0)
-        $('.fa-spinner[data-target="' + tar + '"]').css('opacity', 1)
-        // console.log('wait' + $(this).data('target'))
-    })
-
-    $('video').on('canplay', function () {
-        var tar = $(this).data('target')
-        $('.fa-spinner[data-target="' + tar + '"]').css('opacity', 0)
-        // console.log('canplay' + $(this).data('target'))
-    })
-
-    $('video').click(function () {
-        var tar = $(this).data('target')
-        if ($(this).get(0).paused == true) {
-            moviePlay(tar);
-            if ($(this).get(0).muted == true) {
-                $(this).get(0).muted = false;
-                $('.volume[data-target="' + tar + '"]').removeClass('fa-volume-off').addClass('fa-volume-up')
-                $('.volume-text[data-target="' + tar + '"]').text('點按關聲音');
-            }
-        }
-        else {
-            $(this).get(0).pause();
-            moviePause(tar);
-        }
-        // ga("send", {
-        //     "hitType": "event",
-        //     "eventCategory": "movie click",
-        //     "eventAction": "click",
-        //     "eventLabel": "[" + platform + "] [" + title + "] [movie " + tar + " click]"
-        // });
-    });
-
-    $('.replay').click(function () {
-        var tar = $(this).data('target')
-        movieReplay(tar)
-        // ga("send", {
-        //     "hitType": "event",
-        //     "eventCategory": "movie replay",
-        //     "eventAction": "click",
-        //     "eventLabel": "[" + platform + "] [" + title + "] [movie " + tar + " replay]"
-        // });
-    })
-
-    $('.volume').click(function () {
-        var tar = $(this).data('target');
-        movieVolume(tar);
-        // ga("send", {
-        //     "hitType": "event",
-        //     "eventCategory": "movie volume",
-        //     "eventAction": "click",
-        //     "eventLabel": "[" + platform + "] [" + title + "] [movie " + tar + " volume]"
-        // });
-    });
-
-    $('.volume-text').click(function () {
-        var tar = $(this).data('target');
-        movieVolume(tar);
-        // ga("send", {
-        //     "hitType": "event",
-        //     "eventCategory": "movie volume text",
-        //     "eventAction": "click",
-        //     "eventLabel": "[" + platform + "] [" + title + "] [movie " + tar + " volume text]"
-        // });
-    });
-
-    //行動版預設靜音
-    if (w <= 768) {
-        $('video').prop('muted', 'true');
-    }
-
-    $(window).on('scroll', function () {
-        scroll_now = $(window).scrollTop();
-        let movie1 = scroll_now - $("#movie-1").offset().top + h;
-
-        if (movie1 > h / 3 && movie1 < h + 200) {
-            if ($("#movie-1").get(0).paused == true) {
-                moviePlay(1);
-            }
-        } else {
-            if ($("#movie-1").get(0).paused == false) {
-                moviePause(1);
-            }
-        }
-
-
-    });
-
-
-});
 
 
 

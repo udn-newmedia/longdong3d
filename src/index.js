@@ -3,12 +3,14 @@ var modelLoaded = [false,false,false];
 var scenes = [];
 var activeScene = 0;
 var ticking = false;
-var sectionPageOffset = [];
+var changeModelPointsOffset = [];
+var stopRotatingPointOffset;
 var movies = [];
+var scroll_now = 0;
 
 //jquery
-// $(document).ready(function(){
-// });
+    // $(document).ready(function(){
+    // });
 
 //以行動裝置與否區分讀取的是模型或影片
     if(mob){
@@ -77,11 +79,11 @@ function engineStopRenderOnVideoPlaying(){
 
 function modelLoader() {
 
-    var section = whichSection();
+    var model = whichModel();
 
     // console.log(section);
 
-    if (section === 'section1') {
+    if (model === 'model1') {
         activeScene = 0;
 
         if (!modelLoaded[1]) {
@@ -89,30 +91,34 @@ function modelLoader() {
             PCimportScene2(engine);        
         }
 
-    } else if (section === "section2") {
+    } else if (model === "model2") {
         activeScene = 1;
     }
 
 }
 
-//設置換模型的分界點    
 function setSectionOffset() {
 
-    var section1 = document.getElementById("section1");
-    var section2 = document.getElementById("section2");
-    // var section3;
+    scroll_now = window.pageYOffset;
+    var model1 = document.getElementById("model1");
+    var model2 = document.getElementById("model2");
+    // var model3;
 
-    sectionPageOffset[0] = section1.getBoundingClientRect().top + window.pageYOffset;
-    sectionPageOffset[1] = section2.getBoundingClientRect().top + window.pageYOffset;
-    // sectionPageOffset[2] = section3.getBoundingClientRect().top + window.pageYOffset;
+    var stopRotatingPoint = document.getElementsByTagName("section")[1];
+
+    changeModelPointsOffset[0] = model1.getBoundingClientRect().top + window.pageYOffset;
+    changeModelPointsOffset[1] = model2.getBoundingClientRect().top + window.pageYOffset;
+    // changeModelPointsOffset[2] = model3.getBoundingClientRect().top + window.pageYOffset;
+
+    stopRotatingPointOffset = stopRotatingPoint.getBoundingClientRect().top + window.pageYOffset;
 }
 
-function whichSection() {
+function whichModel() {
 
-    if (window.pageYOffset >= 0 && window.pageYOffset < sectionPageOffset[1]) {
-        return 'section1';
-    } else if (window.pageYOffset >= sectionPageOffset[1]) {
-        return 'section2';
+    if (window.pageYOffset >= 0 && window.pageYOffset < changeModelPointsOffset[1]) {
+        return 'model1';
+    } else if (window.pageYOffset >= changeModelPointsOffset[1]) {
+        return 'model2';
     } else {
         return;
     }
@@ -123,15 +129,15 @@ function setCanvasOpacityWithSection() {
     var canvas_style = window.getComputedStyle(canvas),
         canvas_opacity = canvas_style.getPropertyValue('opacity');
 
-    if (window.pageYOffset >= sectionPageOffset[1] * 0.9 && window.pageYOffset < sectionPageOffset[1]) {
+    if (window.pageYOffset >= changeModelPointsOffset[1] * 0.9 && window.pageYOffset < changeModelPointsOffset[1]) {
 
-        canvas.style.opacity = 1 - ((window.pageYOffset - sectionPageOffset[1] * 0.9) / (sectionPageOffset[1] - sectionPageOffset[1] * 0.9));
+        canvas.style.opacity = 1 - ((window.pageYOffset - changeModelPointsOffset[1] * 0.9) / (changeModelPointsOffset[1] - changeModelPointsOffset[1] * 0.9));
 
-    } else if (window.pageYOffset >= sectionPageOffset[1] && window.pageYOffset < sectionPageOffset[1] * 1.1) {
+    } else if (window.pageYOffset >= changeModelPointsOffset[1] && window.pageYOffset < changeModelPointsOffset[1] * 1.1) {
 
-        canvas.style.opacity = (window.pageYOffset - sectionPageOffset[1]) / (sectionPageOffset[1] * 1.1 - sectionPageOffset[1]);
+        canvas.style.opacity = (window.pageYOffset - changeModelPointsOffset[1]) / (changeModelPointsOffset[1] * 1.1 - changeModelPointsOffset[1]);
 
-    } else if (window.pageYOffset >= sectionPageOffset[1] * 1.1){
+    } else if (window.pageYOffset >= changeModelPointsOffset[1] * 1.1){
 
         canvas.style.opacity = 1;
 
@@ -161,15 +167,53 @@ function PCloadScene1(){
 
     // BABYLON.SceneLoader.Load("assets/0911-2/", "north-3D-new-09-2-1.babylon", engine, function (scene) {
     BABYLON.SceneLoader.Load("assets/09-finall/", "north-3D-new-09-final.babylon", engine, function (scene) {
+
         //Adding an Arc Rotate Camera
-            var camera = new BABYLON.ArcRotateCamera("Camera1", -0.3, 0.9, 8, new BABYLON.Vector3.Zero(), scene);
-            // camera.attachControl(canvas, false);
-            camera.checkCollisions = true;
-    
-            var sceneIndex = scenes.push(scene) - 1;
-            scenes[sceneIndex].renderLoop = function () {
-                this.render();
+        var camera = new BABYLON.ArcRotateCamera("Camera1", -0.3, 0.9, 7, new BABYLON.Vector3.Zero(), scene);
+        // camera.attachControl(canvas, false);
+        camera.checkCollisions = true;
+        camera.upperAlphaLimit = 1.5;
+        camera.lowerAlphaLimit = -1.5;
+
+        var reachedUpperLimit = false;
+        var reachedStopRotatingPoint = false;
+
+        scene.registerBeforeRender(function(){
+
+            if(scroll_now>0){
+                reachedStopRotatingPoint = (scroll_now <= stopRotatingPointOffset)?false:true;
             }
+
+            if(!reachedStopRotatingPoint){
+
+                if(!reachedUpperLimit){
+    
+                    if (scene.activeCamera.alpha !== camera.upperAlphaLimit){
+                        scene.activeCamera.alpha += .01;
+                    } else{
+                        reachedUpperLimit = !reachedUpperLimit;
+                    }
+    
+                }else{
+    
+                    if (scene.activeCamera.alpha !== camera.lowerAlphaLimit) {
+                        scene.activeCamera.alpha -= .01;
+                    } else {
+                        reachedUpperLimit = !reachedUpperLimit;
+                    }
+    
+                }
+            } else {
+                //加動畫
+                scene.activeCamera.alpha = -0.3;
+            }
+        })
+
+        var sceneIndex = scenes.push(scene) - 1;
+        scenes[sceneIndex].renderLoop = function () {
+            this.render();
+        }
+
     });
 
     modelLoaded[0] = !modelLoaded[0];

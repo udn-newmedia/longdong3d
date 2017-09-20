@@ -30,26 +30,39 @@ var scroll_now = 0;
                 ticking = true;
             }
         });
+
+        // Resize
+        window.addEventListener("resize", function () {
+            engine.resize();
+        });
+
+        engineStopRenderOnVideoPlaying();
         
         engine.runRenderLoop(function(){
             RenderManager()
         });
-
-        engineStopRenderOnVideoPlaying();
 
     }
 
 function onScroll(){
 
     setSectionOffset();
-    
+
     SceneManager();
 
     ticking = false;
 }
 
 function RenderManager(){
-    if (scenes[activeScene]) {
+
+    //決定要不要重繪
+    if (scroll_now >= 0 && scroll_now < stopRotatingPointOffset){
+        scenes[activeScene].reRender = true;
+    } else if (scroll_now >= stopRotatingPointOffset){
+        scenes[activeScene].reRender = false;        
+    }
+
+    if (scenes[activeScene] && scenes[activeScene].reRender) {
         scenes[activeScene].renderLoop();
     }
 }
@@ -169,26 +182,33 @@ function PCloadScene1(){
     BABYLON.SceneLoader.Load("assets/09-finall/", "north-3D-new-09-final.babylon", engine, function (scene) {
 
         //Adding an Arc Rotate Camera
-        var camera = new BABYLON.ArcRotateCamera("Camera1", -0.3, 0.9, 7, new BABYLON.Vector3.Zero(), scene);
+        var camAlpha = -0.3;
+        var camBeta = 0.9;
+        var camRadius = 7;
+
+        var camera = new BABYLON.ArcRotateCamera("Camera1", camAlpha, camBeta, camRadius, new BABYLON.Vector3.Zero(), scene);
         // camera.attachControl(canvas, false);
         camera.checkCollisions = true;
         camera.upperAlphaLimit = 1.5;
         camera.lowerAlphaLimit = -1.5;
 
         var reachedUpperLimit = false;
-        var reachedStopRotatingPoint = false;
+
+        // 若要加停止前的補間動畫
+            // var reachedStopRotatingPoint = false;
 
         scene.registerBeforeRender(function(){
 
-            if(scroll_now>0){
-                reachedStopRotatingPoint = (scroll_now <= stopRotatingPointOffset)?false:true;
-            }
+            // 若要加停止前的補間動畫
+                // if(scroll_now>0){
+                //     reachedStopRotatingPoint = (scroll_now <= stopRotatingPointOffset)?false:true;
+                // }
 
-            if(!reachedStopRotatingPoint){
+            if (scenes[sceneIndex].reRender){
 
                 if(!reachedUpperLimit){
     
-                    if (scene.activeCamera.alpha !== camera.upperAlphaLimit){
+                    if (scene.activeCamera.alpha < camera.upperAlphaLimit){
                         scene.activeCamera.alpha += .01;
                     } else{
                         reachedUpperLimit = !reachedUpperLimit;
@@ -196,32 +216,25 @@ function PCloadScene1(){
     
                 }else{
     
-                    if (scene.activeCamera.alpha !== camera.lowerAlphaLimit) {
+                    if (scene.activeCamera.alpha > camera.lowerAlphaLimit) {
                         scene.activeCamera.alpha -= .01;
                     } else {
                         reachedUpperLimit = !reachedUpperLimit;
                     }
     
                 }
-            } else {
-                //加動畫
-                scene.activeCamera.alpha = -0.3;
             }
         })
 
         var sceneIndex = scenes.push(scene) - 1;
+        scenes[sceneIndex].reRender = true; 
         scenes[sceneIndex].renderLoop = function () {
-            this.render();
+                this.render();
         }
 
     });
 
     modelLoaded[0] = !modelLoaded[0];
-
-    // Resize
-    window.addEventListener("resize", function () {
-        engine.resize();
-    });
 
 }
 

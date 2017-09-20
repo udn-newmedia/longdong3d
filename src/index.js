@@ -7,6 +7,7 @@ var changeModelPointsOffset = [];
 var stopRotatingPointOffset;
 var movies = [];
 var scroll_now = 0;
+var changeViewWaypointsOffset = [];
 
 //jquery
     // $(document).ready(function(){
@@ -55,15 +56,16 @@ function onScroll(){
 
 function RenderManager(){
 
-    //決定要不要重繪
+    //決定何時要重繪
     if (scroll_now >= 0 && scroll_now < stopRotatingPointOffset){
         scenes[activeScene].reRender = true;
     } else if (scroll_now >= stopRotatingPointOffset && scroll_now < changeModelPointsOffset[1]*0.9){
         scenes[activeScene].reRender = false;        
+    } else if (scroll_now >= changeModelPointsOffset[0] && scroll_now < changeModelPointsOffset[1] * 0.9){
+        scenes[activeScene].reRender = true;        
     } else if (scroll_now >= changeModelPointsOffset[1]*0.9){
         scenes[activeScene].reRender = true;                
     }
-
 
     if (scenes[activeScene] && scenes[activeScene].reRender) {
         scenes[activeScene].renderLoop();
@@ -104,11 +106,20 @@ function modelLoader() {
 
         if (!modelLoaded[1]) {
             //load model2
-            PCimportScene2(engine);        
+            PCimportScene2();        
         }
 
     } else if (model === "model2") {
         activeScene = 1;
+
+        if (!modelLoaded[2]) {
+            //load model2
+            PCimportScene3();
+        }
+
+
+    } else if (model === 'model3') {
+        activeScene = 2;
     }
 
 }
@@ -116,25 +127,33 @@ function modelLoader() {
 function setSectionOffset() {
 
     scroll_now = window.pageYOffset;
-    var model1 = document.getElementById("model1");
-    var model2 = document.getElementById("model2");
-    // var model3;
 
-    var stopRotatingPoint = document.getElementsByTagName("section")[1];
+    //model 
+        var model1 = document.getElementById("model1");
+        var model2 = document.getElementById("model2");
+        var model3 = document.getElementById('model3');
 
-    changeModelPointsOffset[0] = model1.getBoundingClientRect().top + window.pageYOffset;
-    changeModelPointsOffset[1] = model2.getBoundingClientRect().top + window.pageYOffset;
-    // changeModelPointsOffset[2] = model3.getBoundingClientRect().top + window.pageYOffset;
+        changeModelPointsOffset[0] = model1.getBoundingClientRect().top + window.pageYOffset;
+        changeModelPointsOffset[1] = model2.getBoundingClientRect().top + window.pageYOffset;
+        changeModelPointsOffset[2] = model3.getBoundingClientRect().top + window.pageYOffset;
 
-    stopRotatingPointOffset = stopRotatingPoint.getBoundingClientRect().top + window.pageYOffset;
+    //waypoints
+        var changeViewWaypoint1 = document.getElementsByTagName("section")[3];
+        changeViewWaypointsOffset[0] = changeViewWaypoint1.getBoundingClientRect().top + window.pageYOffset;
+
+    //other points
+        var stopRotatingPoint = document.getElementsByTagName("section")[1];
+        stopRotatingPointOffset = stopRotatingPoint.getBoundingClientRect().top + window.pageYOffset;
 }
 
 function whichModel() {
 
     if (window.pageYOffset >= 0 && window.pageYOffset < changeModelPointsOffset[1]) {
         return 'model1';
-    } else if (window.pageYOffset >= changeModelPointsOffset[1]) {
+    } else if (window.pageYOffset >= changeModelPointsOffset[1] && window.pageYOffset < changeModelPointsOffset[2]) {
         return 'model2';
+    } else if (window.pageYOffset >= changeModelPointsOffset[2]) {
+        return 'model3';
     } else {
         return;
     }
@@ -145,6 +164,9 @@ function setCanvasOpacityWithSection() {
     var canvas_style = window.getComputedStyle(canvas),
         canvas_opacity = canvas_style.getPropertyValue('opacity');
 
+    // for(var i=1;i<=2;i++){
+    // }
+    
     if (window.pageYOffset >= changeModelPointsOffset[1] * 0.9 && window.pageYOffset < changeModelPointsOffset[1]) {
 
         canvas.style.opacity = 1 - ((window.pageYOffset - changeModelPointsOffset[1] * 0.9) / (changeModelPointsOffset[1] - changeModelPointsOffset[1] * 0.9));
@@ -158,6 +180,22 @@ function setCanvasOpacityWithSection() {
         canvas.style.opacity = 1;
 
     }
+
+
+    if (window.pageYOffset >= changeModelPointsOffset[2] * 0.9 && window.pageYOffset < changeModelPointsOffset[2]) {
+
+        canvas.style.opacity = 1 - ((window.pageYOffset - changeModelPointsOffset[2] * 0.9) / (changeModelPointsOffset[2] - changeModelPointsOffset[2] * 0.9));
+
+    } else if (window.pageYOffset >= changeModelPointsOffset[2] && window.pageYOffset < changeModelPointsOffset[2] * 1.1) {
+
+        canvas.style.opacity = (window.pageYOffset - changeModelPointsOffset[2]) / (changeModelPointsOffset[2] * 1.1 - changeModelPointsOffset[2]);
+
+    } else if (window.pageYOffset >= changeModelPointsOffset[2] * 1.1) {
+
+        canvas.style.opacity = 1;
+
+    }
+
 
 }
 
@@ -245,11 +283,11 @@ function PCimportScene2(){
     // This creates a basic Babylon Scene object (non-mesh)
     var scene = new BABYLON.Scene(engine);
 
-    var camera = new BABYLON.ArcRotateCamera("Camera1", Math.PI*1.1, Math.PI/2, 10, new BABYLON.Vector3.Zero(), scene);
+    var camera = new BABYLON.ArcRotateCamera("Camera2", Math.PI*1.1, Math.PI/2, 10, new BABYLON.Vector3.Zero(), scene);
     // camera.attachControl(canvas, false);
     camera.checkCollisions = true;
 
-    var light = new BABYLON.HemisphericLight("hemi", new BABYLON.Vector3(0, 1, 0), scene);
+    var light = new BABYLON.HemisphericLight("hemi2", new BABYLON.Vector3(0, 1, 0), scene);
 
     // console.log('import2');
 
@@ -282,6 +320,56 @@ function PCimportScene2(){
 
     return scene;
 }
+
+function PCimportScene3() {
+    // This creates a basic Babylon Scene object (non-mesh)
+    var scene = new BABYLON.Scene(engine);
+
+    var camera = new BABYLON.ArcRotateCamera("Camera3", -Math.PI / 2, Math.PI / 2, 5, new BABYLON.Vector3.Zero(), scene);
+    camera.attachControl(canvas, false);
+    camera.checkCollisions = true;
+
+    var light = new BABYLON.HemisphericLight("hemi3", new BABYLON.Vector3(0, 1, 0), scene);
+
+    // console.log('import3');
+
+    // The first parameter can be used to specify which mesh to import. Here we import all meshes
+    BABYLON.SceneLoader.ImportMesh("", "assets/backdoor/", "backdoor.babylon", scene, function (newMeshes) {
+        // newMeshes[0].position = BABYLON.Vector3.Zero();
+        newMeshes[0].position = new BABYLON.Vector3(10, 1, 15);
+        // newMeshes[1].isVisible = false;
+
+        var wall = scene.getMeshByName("1");
+        var ground = scene.getMeshByName("2");
+        // wall.position = new BABYLON.Vector3(2, 1, 30);
+        ground.isVisible = false;
+
+        var materialStone = new BABYLON.StandardMaterial("texture2", scene);
+        materialStone.diffuseTexture = new BABYLON.Texture("assets/backdoor/backdoor.jpg", scene);
+
+        // materialStone.diffuseTexture.vOffset = -0.05; //vertical offset 0f 10%
+        // materialStone.diffuseTexture.uOffset = 0.05;
+
+        // materialStone.diffuseTexture.vAng = Math.PI;
+        // materialStone.diffuseTexture.wAng = Math.PI / 2;
+
+            // materialStone.bumpTexture = new BABYLON.Texture("assets/NormalMap.jpg",scene);
+
+        wall.material = materialStone;
+
+    });
+
+    modelLoaded[2] = !modelLoaded[2];
+
+    var sceneIndex = scenes.push(scene) - 1;
+    scenes[sceneIndex].reRender = true;
+    scenes[sceneIndex].renderLoop = function () {
+        this.render();
+    }
+
+    return scene;
+}
+
 
 function detectmob() {
     if (

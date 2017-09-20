@@ -58,9 +58,12 @@ function RenderManager(){
     //決定要不要重繪
     if (scroll_now >= 0 && scroll_now < stopRotatingPointOffset){
         scenes[activeScene].reRender = true;
-    } else if (scroll_now >= stopRotatingPointOffset){
+    } else if (scroll_now >= stopRotatingPointOffset && scroll_now < changeModelPointsOffset[1]*0.9){
         scenes[activeScene].reRender = false;        
+    } else if (scroll_now >= changeModelPointsOffset[1]*0.9){
+        scenes[activeScene].reRender = true;                
     }
+
 
     if (scenes[activeScene] && scenes[activeScene].reRender) {
         scenes[activeScene].renderLoop();
@@ -254,11 +257,25 @@ function PCimportScene2(){
     BABYLON.SceneLoader.ImportMesh("", "assets/golden-stone/", "golden-stone.babylon", scene, function (newMeshes) {
         // newMeshes[0].position = BABYLON.Vector3.Zero();
         newMeshes[0].position = new BABYLON.Vector3(0.5,2,-3);
+
+        var materialStone = new BABYLON.StandardMaterial("texture1", scene);
+        materialStone.diffuseTexture = new BABYLON.Texture("assets/golden-stone/golden-stone.jpg", scene);
+        materialStone.diffuseTexture.vOffset = -0.05; //vertical offset 0f 10%
+        // materialStone.diffuseTexture.uOffset = 0.05;
+
+        materialStone.diffuseTexture.vAng = Math.PI;
+        materialStone.diffuseTexture.wAng = Math.PI / 2;
+
+        // materialStone.bumpTexture = new BABYLON.Texture("assets/NormalMap.jpg",scene);
+
+        newMeshes[0].material = materialStone;
+
     });
 
     modelLoaded[1] = !modelLoaded[1];
 
     var sceneIndex = scenes.push(scene) - 1;
+    scenes[sceneIndex].reRender = true;
     scenes[sceneIndex].renderLoop = function () {
         this.render();
     }

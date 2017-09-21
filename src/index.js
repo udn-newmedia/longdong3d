@@ -399,9 +399,49 @@ function PCloadScene1(){
         // var target1 = BABYLON.Mesh.CreateSphere("sphere1", 0.01, 0.01, scene);
         // waypoint1.position = new BABYLON.Vector3(4, 3.78345073141672, -1.0032810597619022);
         // target1.position = new BABYLON.Vector3(4.294345366846326, 3.820366305622412, -1.7780033698026012);
-
+        
         waypoint1.isVisible = false;
         target1.isVisible = false;
+
+
+        //billboard
+        var plane1 = scene.getMeshByName("plane1");
+        var billboard1 = BABYLON.Mesh.CreatePlane('board1', 1, scene);
+        billboard1.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
+        billboard1.material = new BABYLON.StandardMaterial("plane1", scene);
+        billboard1.position = plane1.position;
+
+        plane1.isVisible = false;
+
+        var board1Canvas = document.createElement("CANVAS");
+        var board1 = document.getElementById("g-graphic").appendChild(board1Canvas);
+        var ctx = board1.getContext("2d");
+        ctx.clearRect(0, 0, 100, 100);
+        ctx.fillStyle = "green";
+        ctx.fillRect(0, 0, 100, 100);
+
+        var plane1_texture = new BABYLON.DynamicTexture("dynamic texture", board1, scene, true);
+
+        //BJS dynamic texture is using an html canvas to draw the text
+        // var plane1_texture = new BABYLON.DynamicTexture("dynamic texture", 512, scene, true);
+
+        billboard1.material.diffuseTexture = plane1_texture;
+        billboard1.material.specularColor = new BABYLON.Color3(0, 0, 0);
+        billboard1.material.emissiveColor = new BABYLON.Color3(1, 1, 1);
+        billboard1.material.backFaceCulling = false; //True to not render material on back face
+
+        //styles of texts
+        var clearColor = "#555555";
+        var font = "bold 70px Segoe UI";
+        var invertY = true;
+        var text = "test";
+        var color = "white"
+        var x = 10;
+        var y = 70 + 10;
+
+        // plane1_texture.getContext().clearRect(0, 140, 512, 512);
+        plane1_texture.getContext().clearRect(0,0,board1.width,board1.height);
+        plane1_texture.drawText(text, x, y, font, color, clearColor);
 
         var wp1index = waypoints.push(waypoint1)-1;
         waypoints[wp1index].hasChanged = false;
@@ -459,7 +499,7 @@ function PCimportScene2(){
     var scene = new BABYLON.Scene(engine);
 
     var camera = new BABYLON.ArcRotateCamera("Camera2", 0.2, Math.PI/2, 20, new BABYLON.Vector3.Zero(), scene);
-    // camera.attachControl(canvas, false);
+    camera.attachControl(canvas, false);
     camera.checkCollisions = true;
 
     var light = new BABYLON.HemisphericLight("hemi2", new BABYLON.Vector3(0, 1, 0), scene);
@@ -503,7 +543,7 @@ function PCimportScene3(){
     var scene = new BABYLON.Scene(engine);
 
     var camera = new BABYLON.ArcRotateCamera("Camera3", -Math.PI / 2, Math.PI / 2, 5, new BABYLON.Vector3.Zero(), scene);
-    // camera.attachControl(canvas, false);
+    camera.attachControl(canvas, false);
     camera.checkCollisions = true;
 
     var light = new BABYLON.HemisphericLight("hemi3", new BABYLON.Vector3(0, 1, 0), scene);

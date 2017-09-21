@@ -404,14 +404,9 @@ function PCloadScene1(){
         target1.isVisible = false;
 
 
-        //billboard
-        var plane1 = scene.getMeshByName("plane1");
-        var billboard1 = BABYLON.Mesh.CreatePlane('board1', 1, scene);
-        billboard1.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
-        billboard1.material = new BABYLON.StandardMaterial("plane1", scene);
-        billboard1.position = plane1.position;
 
-        plane1.isVisible = false;
+
+        //billboard
 
         var board1Canvas = document.createElement("CANVAS");
         var board1 = document.getElementById("g-graphic").appendChild(board1Canvas);
@@ -420,14 +415,20 @@ function PCloadScene1(){
         ctx.fillStyle = "green";
         ctx.fillRect(0, 0, 100, 100);
 
-        var plane1_texture = new BABYLON.DynamicTexture("dynamic texture", board1, scene, true);
+        var plane1 = scene.getMeshByName("plane1");
+        var billboard1 = BABYLON.Mesh.CreatePlane('board1', 1, scene);
+        billboard1.position = plane1.position;
+        billboard1.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
+        billboard1.material = new BABYLON.StandardMaterial("plane1", scene);
 
-        //BJS dynamic texture is using an html canvas to draw the text
+        plane1.isVisible = false;
+
+        var plane1_texture = new BABYLON.DynamicTexture("dynamic texture", board1, scene, true);
         // var plane1_texture = new BABYLON.DynamicTexture("dynamic texture", 512, scene, true);
 
         billboard1.material.diffuseTexture = plane1_texture;
         billboard1.material.specularColor = new BABYLON.Color3(0, 0, 0);
-        billboard1.material.emissiveColor = new BABYLON.Color3(1, 1, 1);
+        // billboard1.material.emissiveColor = new BABYLON.Color3(1, 1, 1);
         billboard1.material.backFaceCulling = false; //True to not render material on back face
 
         //styles of texts
@@ -439,9 +440,23 @@ function PCloadScene1(){
         var x = 10;
         var y = 70 + 10;
 
-        // plane1_texture.getContext().clearRect(0, 140, 512, 512);
-        plane1_texture.getContext().clearRect(0,0,board1.width,board1.height);
-        plane1_texture.drawText(text, x, y, font, color, clearColor);
+        var context = plane1_texture._context;
+        var size = plane1_texture.getSize();
+
+        if(clearColor){
+            context.fillStyle = clearColor;
+            context.fillRect(0,0,size.width,size.height);
+        }
+
+        context.font = font;
+        context.fillStyle = color;
+
+        // // plane1_texture.getContext().clearRect(0, 140, 512, 512);
+        // plane1_texture.getContext().clearRect(0,0,board1.width,board1.height);
+        // plane1_texture.drawText(text, x, y, font, color, clearColor);
+
+
+
 
         var wp1index = waypoints.push(waypoint1)-1;
         waypoints[wp1index].hasChanged = false;
@@ -515,13 +530,18 @@ function PCimportScene2(){
 
         var materialStone = new BABYLON.StandardMaterial("texture1", scene);
         materialStone.diffuseTexture = new BABYLON.Texture("assets/golden-stone/golden-stone.jpg", scene);
-        materialStone.diffuseTexture.vOffset = -0.05; //vertical offset 0f 10%
-        // materialStone.diffuseTexture.uOffset = 0.05;
+        materialStone.diffuseTexture.hasAlpha = true;
+        materialStone.diffuseTexture.vOffset = 0.05; //vertical offset 0f 10%
+        materialStone.diffuseTexture.uOffset = 0.05;
 
         materialStone.diffuseTexture.vAng = Math.PI;
         materialStone.diffuseTexture.wAng = Math.PI / 2;
 
+        materialStone.diffuseTexture.vScale = 0.8;
+        materialStone.diffuseTexture.uScale = 0.8;        
+
         // materialStone.bumpTexture = new BABYLON.Texture("assets/NormalMap.jpg",scene);
+
 
         newMeshes[0].material = materialStone;
 

@@ -503,7 +503,7 @@ function PCimportScene3(){
     var scene = new BABYLON.Scene(engine);
 
     var camera = new BABYLON.ArcRotateCamera("Camera3", -Math.PI / 2, Math.PI / 2, 5, new BABYLON.Vector3.Zero(), scene);
-    camera.attachControl(canvas, false);
+    // camera.attachControl(canvas, false);
     camera.checkCollisions = true;
 
     var light = new BABYLON.HemisphericLight("hemi3", new BABYLON.Vector3(0, 1, 0), scene);
@@ -522,7 +522,7 @@ function PCimportScene3(){
         ground.isVisible = false;
 
         var materialStone = new BABYLON.StandardMaterial("texture2", scene);
-        materialStone.diffuseTexture = new BABYLON.Texture("assets/backdoor/backdoor.jpg", scene);
+        materialStone.diffuseTexture = new BABYLON.Texture("assets/backdoor/backdoor.png", scene);
 
         // materialStone.diffuseTexture.vOffset = -0.05; //vertical offset 0f 10%
         // materialStone.diffuseTexture.uOffset = 0.05;

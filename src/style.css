@@ -39,6 +39,10 @@ section {
     padding-bottom: 2rem;
 }
 
+section.blankHalfPage {
+    height: 50vh;
+}
+
 section:first-child {
     height: 100vh;
     display: flex;

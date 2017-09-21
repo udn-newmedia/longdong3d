@@ -529,7 +529,7 @@ function PCimportScene2(){
         newMeshes[0].position = new BABYLON.Vector3(0, 0, 7);
 
         var materialStone = new BABYLON.StandardMaterial("texture1", scene);
-        materialStone.diffuseTexture = new BABYLON.Texture("assets/golden-stone/golden-stone.jpg", scene);
+        materialStone.diffuseTexture = new BABYLON.Texture("assets/golden-stone/golden-stone.png", scene);
         materialStone.diffuseTexture.hasAlpha = true;
         materialStone.diffuseTexture.vOffset = 0.05; //vertical offset 0f 10%
         materialStone.diffuseTexture.uOffset = 0.05;
@@ -541,7 +541,6 @@ function PCimportScene2(){
         materialStone.diffuseTexture.uScale = 0.8;        
 
         // materialStone.bumpTexture = new BABYLON.Texture("assets/NormalMap.jpg",scene);
-
 
         newMeshes[0].material = materialStone;
 

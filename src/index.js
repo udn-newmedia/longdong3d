@@ -65,18 +65,19 @@ function RenderManager(){
         scenes[activeScene].reRender = true;
     } else if (scroll_now >= stopRotatingPointOffset && scroll_now < changeModelPointsOffset[1]*0.9){
 
-        if (scroll_now >= changeViewWaypointsOffset[0] * 0.9){
+        if (scroll_now >= changeViewWaypointsOffset[0] * 0.9 && scroll_now < changeViewWaypointsOffset[0]*1.1){
             scenes[activeScene].reRender = true;        
         }else{
             scenes[activeScene].reRender = false;                    
         }
     } else if (scroll_now >= changeModelPointsOffset[0] && scroll_now < changeModelPointsOffset[1] * 0.9){
-        scenes[activeScene].reRender = true;        
+        scenes[activeScene].reRender = false;        
     } else if (scroll_now >= changeModelPointsOffset[1]*0.9){
         scenes[activeScene].reRender = true;                
     }
 
     if (scenes[activeScene] && scenes[activeScene].reRender) {
+        // console.log('render');
         scenes[activeScene].renderLoop();
     }
 }
@@ -85,9 +86,20 @@ function SceneManager() {
 
     modelLoader();
     setCanvasOpacityWithSection();
+    viewChanger();
 
-    if (scroll_now >= changeViewWaypointsOffset[0] && scroll_now < changeViewWaypointsOffset[0]+window.innerHeight){
-        changeView();
+}
+
+function viewChanger(){
+    //轉換視角
+    if (scroll_now < stopRotatingPointOffset){
+        displayBillboards(false);
+    }
+
+    if (scroll_now >= changeViewWaypointsOffset[0] && scroll_now < changeViewWaypointsOffset[0] * 1.1) {
+        changeView(function () {
+            displayBillboards(true);
+        });
     }
 }
 
@@ -212,15 +224,23 @@ function setCanvasOpacityWithSection() {
 
 }
 
-function changeView(){
+function displayBillboards(display){
+
+    var scene = scenes[activeScene];
+    
+    scene.billboards.forEach(function (board) {
+        board.isVisible = display;
+    });
+}
+
+function changeView(callback){
 
     if (waypoints[0].hasChanged){
         return;
     }else{
         waypoints[0].hasChanged = true;
 
-        
-        console.log('changeView');
+        // console.log('changeView');
         disableScroll()
         
         var waypoint = waypoints[0];
@@ -228,12 +248,12 @@ function changeView(){
         
         smoothSetTarget(target, moveCameraWithGhostCam(waypoint,function(){
             scenes[activeScene].reRender = false;  
-            enableScroll();                  
+            enableScroll();      
+            callback();            
             })
         );
 
     }
-
 
 }
 
@@ -404,67 +424,119 @@ function PCloadScene1(){
         target1.isVisible = false;
 
 
+        // billboards
+        var boardTexture = new BABYLON.DynamicTexture("dynamic texture", 512, scene, true);
 
-
-        //billboard
-
-        var board1Canvas = document.createElement("CANVAS");
-        var board1 = document.getElementById("g-graphic").appendChild(board1Canvas);
-        var ctx = board1.getContext("2d");
-        ctx.clearRect(0, 0, 100, 100);
-        ctx.fillStyle = "green";
-        ctx.fillRect(0, 0, 100, 100);
+        var dynamicMaterial = new BABYLON.StandardMaterial('mat', scene);
+        dynamicMaterial.diffuseTexture = boardTexture;
+        dynamicMaterial.specularColor = new BABYLON.Color3(0,0,0);
+        dynamicMaterial.backFaceCulling = true;
 
         var plane1 = scene.getMeshByName("plane1");
+        plane1.isVisible = false;
         var billboard1 = BABYLON.Mesh.CreatePlane('board1', 1, scene);
         billboard1.position = plane1.position;
+        billboard1.material = dynamicMaterial;
         billboard1.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
-        billboard1.material = new BABYLON.StandardMaterial("plane1", scene);
 
-        plane1.isVisible = false;
+        // var clearColor = "#555555";
+        var font = "bold 40px Microsoft JhengHei";
+        var color = "yellow"
+        var update = true;
 
-        var plane1_texture = new BABYLON.DynamicTexture("dynamic texture", board1, scene, true);
-        // var plane1_texture = new BABYLON.DynamicTexture("dynamic texture", 512, scene, true);
-
-        billboard1.material.diffuseTexture = plane1_texture;
-        billboard1.material.specularColor = new BABYLON.Color3(0, 0, 0);
-        // billboard1.material.emissiveColor = new BABYLON.Color3(1, 1, 1);
-        billboard1.material.backFaceCulling = false; //True to not render material on back face
-
-        //styles of texts
-        var clearColor = "#555555";
-        var font = "bold 70px Segoe UI";
-        var invertY = true;
-        var text = "test";
-        var color = "white"
+        var text1 = "沉積灰岩後變質";
         var x = 10;
-        var y = 70 + 10;
+        var y1 = 10+70;
+        
+        var text2 = "形成堅硬的四稜砂岩";
+        var y2 = 10+70+70;
 
-        var context = plane1_texture._context;
-        var size = plane1_texture.getSize();
+        var context = boardTexture._context;
+        var size = boardTexture.getSize();
 
-        if(clearColor){
-            context.fillStyle = clearColor;
-            context.fillRect(0,0,size.width,size.height);
-        }
+        // if(clearColor){
+        //     context.fillStyle = clearColor;
+        //     context.fillRect(0,0,size.width,size.height);
+        // }
 
+        
+        // if(x===null){
+            //     var textSize = boardTexture._context.measureText(text1);
+            //     x = (size.width - textSize.width) / 2;
+            // }
+            
         context.font = font;
         context.fillStyle = color;
+        context.fillText(text1, x, y1);
+        context.fillText(text2, x, y2);
+        
+        //draw line
+        context.beginPath();
+        context.moveTo(150, 200);
+        context.lineTo(150, 500);
+        context.lineWidth = 10;
+        context.strokeStyle = '#ff0000';
+        context.stroke();
+        
+        boardTexture.hasAlpha = true;//必須要clearColor沒被定義
+        boardTexture.update(update);
 
-        // // plane1_texture.getContext().clearRect(0, 140, 512, 512);
-        // plane1_texture.getContext().clearRect(0,0,board1.width,board1.height);
-        // plane1_texture.drawText(text, x, y, font, color, clearColor);
+        billboard1.isVisible = false;
+
+        // billboards
+        var boardTexture2 = new BABYLON.DynamicTexture("dynamic texture", 512, scene, true);
+
+        var dynamicMaterial2 = new BABYLON.StandardMaterial('mat', scene);
+        dynamicMaterial2.diffuseTexture = boardTexture2;
+        dynamicMaterial2.specularColor = new BABYLON.Color3(0, 0, 0);
+        dynamicMaterial2.backFaceCulling = true;
+
+        var plane2 = scene.getMeshByName("plane2");
+        plane2.isVisible = false;
+        var billboard2 = BABYLON.Mesh.CreatePlane('board2', 1, scene);
+        billboard2.position = plane2.position;
+        billboard2.material = dynamicMaterial2;
+        billboard2.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
+
+        // var clearColor = "#555555";
+        // var font = "bold 40px Microsoft JhengHei";
+        // var color = "yellow"
+        // var update = true;
+
+        var text3 = "造山運動形成";
+        // var x = 10;
+        // var y1 = 10 + 70;
+
+        var text4 = "地層傾斜、結理及斷層";
+        // var y2 = 10 + 70 + 70;
+
+        var context2 = boardTexture2._context;
+        var size2 = boardTexture2.getSize();
+
+        // if(clearColor){
+        //     context.fillStyle = clearColor;
+        //     context.fillRect(0,0,size.width,size.height);
+        // }
+
+        context2.font = font;
+        context2.fillStyle = color;
+        context2.fillText(text3, x, y1);
+        context2.fillText(text4, x, y2);
+
+        boardTexture2.hasAlpha = true;//必須要clearColor沒被定義
+        boardTexture2.update(update);
+
+        billboard2.isVisible = false;
 
 
-
-
+        // 設定waypoints和targets
         var wp1index = waypoints.push(waypoint1)-1;
         waypoints[wp1index].hasChanged = false;
         waypoints[wp1index].target = target1;
 
-        var stopRotating = false;
         
         //  封面的旋轉
+        var stopRotating = false;
         var reachedUpperLimit = false;
 
         scene.registerBeforeRender(function(){
@@ -499,6 +571,9 @@ function PCloadScene1(){
         scenes[sceneIndex].reRender = true; 
         scenes[sceneIndex].camera = camera;
         scenes[sceneIndex].gcamera = gcamera;
+        scenes[sceneIndex].billboards = [];
+        scenes[sceneIndex].billboards.push(billboard1);
+        scenes[sceneIndex].billboards.push(billboard2);        
         scenes[sceneIndex].renderLoop = function () {
                 this.render();
         }

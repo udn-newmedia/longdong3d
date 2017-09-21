@@ -8,6 +8,9 @@ var stopRotatingPointOffset;
 var movies = [];
 var scroll_now = 0;
 var changeViewWaypointsOffset = [];
+var waypoints = [];
+
+var canvas;
 
 //jquery
     // $(document).ready(function(){
@@ -56,11 +59,17 @@ function onScroll(){
 
 function RenderManager(){
 
-    //決定何時要重繪
+    //決定何時要重繪(第一層是換模型判斷點、第二層是換視角判斷點)
     if (scroll_now >= 0 && scroll_now < stopRotatingPointOffset){
+
         scenes[activeScene].reRender = true;
     } else if (scroll_now >= stopRotatingPointOffset && scroll_now < changeModelPointsOffset[1]*0.9){
-        scenes[activeScene].reRender = false;        
+
+        if (scroll_now >= changeViewWaypointsOffset[0] * 0.9){
+            scenes[activeScene].reRender = true;        
+        }else{
+            scenes[activeScene].reRender = false;                    
+        }
     } else if (scroll_now >= changeModelPointsOffset[0] && scroll_now < changeModelPointsOffset[1] * 0.9){
         scenes[activeScene].reRender = true;        
     } else if (scroll_now >= changeModelPointsOffset[1]*0.9){
@@ -76,6 +85,10 @@ function SceneManager() {
 
     modelLoader();
     setCanvasOpacityWithSection();
+
+    if (scroll_now >= changeViewWaypointsOffset[0] && scroll_now < changeViewWaypointsOffset[0]+window.innerHeight){
+        changeView();
+    }
 }
 
 //只要有video在播，就停止render
@@ -138,7 +151,7 @@ function setSectionOffset() {
         changeModelPointsOffset[2] = model3.getBoundingClientRect().top + window.pageYOffset;
 
     //waypoints
-        var changeViewWaypoint1 = document.getElementsByTagName("section")[3];
+        var changeViewWaypoint1 = document.getElementsByTagName("section")[2];
         changeViewWaypointsOffset[0] = changeViewWaypoint1.getBoundingClientRect().top + window.pageYOffset;
 
     //other points
@@ -199,6 +212,147 @@ function setCanvasOpacityWithSection() {
 
 }
 
+function changeView(){
+
+    if (waypoints[0].hasChanged){
+        return;
+    }else{
+        waypoints[0].hasChanged = true;
+
+        
+        console.log('changeView');
+        disableScroll()
+        
+        var waypoint = waypoints[0];
+        var target = waypoint.target;
+        
+        smoothSetTarget(target, moveCameraWithGhostCam(waypoint,function(){
+            scenes[activeScene].reRender = false;  
+            enableScroll();                  
+            })
+        );
+
+    }
+
+
+}
+
+var smoothSetTarget = function (obj, onEndcallback) {
+
+    var camera = scenes[0].camera;
+
+    var provTargetX = camera.getTarget().x;
+    var provTargetY = camera.getTarget().y;
+    var provTargetZ = camera.getTarget().z;
+
+    camera.setTarget(obj.position);
+    targetX = camera.target.x;
+    targetY = camera.target.y;
+    targetZ = camera.target.z;
+
+    //easing function
+    // var ease = new BABYLON.CubicEase();
+    // ease.setEasingMode(BABYLON.EasingFunction.EASINGMODE_EASEINOUT);
+
+    var ease = new BABYLON.SineEase();
+    ease.setEasingMode(BABYLON.EasingFunction.EASINGMODE_EASEINOUT);
+
+    camera.setTarget(new BABYLON.Vector3(provTargetX, provTargetY, provTargetZ));
+
+    // Empty the animation array
+    camera.animations.splice(0, camera.animations.length);
+
+    var anim = BABYLON.Animation.CreateAndStartAnimation("CamTaranim", camera, "target", 30, 120, camera.target,
+        new BABYLON.Vector3(targetX, targetY, targetZ), 2, ease, onEndcallback);
+
+};
+
+var moveCameraWithGhostCam = function (obj, callback) {
+
+    var scene = scenes[activeScene];
+    var camera = scenes[activeScene].camera;
+    var gcamera = scenes[activeScene].gcamera;
+
+    gcamera.setPosition(obj.position);
+
+    var radiusAnimation = new BABYLON.Animation("camRadius", "radius", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
+    var alphaAnimation = new BABYLON.Animation("camAlpha", "alpha", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
+    var betaAnimation = new BABYLON.Animation("camBeta", "beta", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
+
+    var keys1 = [{
+        frame: 0,
+        value: camera.radius
+    }, {
+        frame: 100,
+        value: gcamera.radius
+    }];
+
+    var keys2 = [{
+        frame: 0,
+        value: camera.alpha
+    }, {
+        frame: 100,
+        value: gcamera.alpha
+    }];
+
+    var keys3 = [{
+        frame: 0,
+        value: camera.beta
+    }, {
+        frame: 100,
+        value: gcamera.beta
+    }];
+
+    radiusAnimation.setKeys(keys1);
+    alphaAnimation.setKeys(keys2);
+    betaAnimation.setKeys(keys3);
+
+    camera.animations.push(radiusAnimation);
+    camera.animations.push(alphaAnimation);
+    camera.animations.push(betaAnimation);
+
+    scene.beginAnimation(camera, 0, 100, false, 2, callback);
+
+}
+
+var moveCamera = function (obj, callback) {
+
+    var scene = scenes[activeScene];
+    var camera = scene.camera;
+
+    var positionAnimation = new BABYLON.Animation("camPos", "position", 30, BABYLON.Animation.ANIMATIONTYPE_VECTOR3, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
+
+    var key = [{
+        frame: 0,
+        value: obj.position
+    }, {
+        frame: 100,
+        value: obj.position
+    }];
+
+    positionAnimation.setKeys(key);
+    //easing function
+    var ease = new BABYLON.CubicEase();
+    ease.setEasingMode(BABYLON.EasingFunction.EASINGMODE_EASEINOUT);
+    positionAnimation.setEasingFunction(ease);
+
+    // Empty the animation array
+    camera.animations.splice(0, camera.animations.length);
+
+    camera.animations.push(positionAnimation);
+    scene.beginAnimation(camera, 0, 100, false, 1, callback);
+    scene.onBeforeRenderObservable.add(forceRebuild);
+
+}
+
+//Since using arcrotatecamera, the alpha, beta, radius must be
+//rebuild after the camera moving
+var forceRebuild = function () {
+    var camera = scenes[activeScene].camera;
+    camera.rebuildAnglesAndRadius();
+};
+
+
 function MOBloadScene(){
     var src = "https://udn.com/upf/newmedia/2017_data/hk_handover_20/video/video1.mp4";
     var type = "video/mp4"
@@ -219,8 +373,8 @@ function PCloadScene1(){
 
     BABYLON.SceneLoader.ShowLoadingScreen = false;
 
-    // BABYLON.SceneLoader.Load("assets/0911-2/", "north-3D-new-09-2-1.babylon", engine, function (scene) {
-    BABYLON.SceneLoader.Load("assets/09-finall/", "north-3D-new-09-final.babylon", engine, function (scene) {
+    // BABYLON.SceneLoader.Load("assets/09-finall/", "north-3D-new-09-final.babylon", engine, function (scene) {
+    BABYLON.SceneLoader.Load("assets/09-finall/", "north-3D-new-09-final_edited.babylon", engine, function (scene) {
 
         //Adding an Arc Rotate Camera
         var camAlpha = -0.3;
@@ -233,19 +387,38 @@ function PCloadScene1(){
         camera.upperAlphaLimit = 1.5;
         camera.lowerAlphaLimit = -1.5;
 
+        // A ghost camera 
+        var gcamera = new BABYLON.ArcRotateCamera("gCamera", camAlpha, camBeta, camRadius, new BABYLON.Vector3.Zero(), scene);
+        // camera.attachControl(canvas, false);
+        gcamera.checkCollisions = true;
+
+        // 加上waypoints
+        var waypoint1 = scene.getMeshByName("waypoint1");
+        var target1 = scene.getMeshByName("target1");
+        // var waypoint1 = BABYLON.Mesh.CreateBox("box1", 0.01, scene);
+        // var target1 = BABYLON.Mesh.CreateSphere("sphere1", 0.01, 0.01, scene);
+        // waypoint1.position = new BABYLON.Vector3(4, 3.78345073141672, -1.0032810597619022);
+        // target1.position = new BABYLON.Vector3(4.294345366846326, 3.820366305622412, -1.7780033698026012);
+
+        waypoint1.isVisible = false;
+        target1.isVisible = false;
+
+        var wp1index = waypoints.push(waypoint1)-1;
+        waypoints[wp1index].hasChanged = false;
+        waypoints[wp1index].target = target1;
+
+        var stopRotating = false;
+        
+        //  封面的旋轉
         var reachedUpperLimit = false;
 
-        // 若要加停止前的補間動畫
-            // var reachedStopRotatingPoint = false;
-
         scene.registerBeforeRender(function(){
+            
+            if(stopRotatingPointOffset){
+                stopRotating = (scroll_now <= stopRotatingPointOffset)?false:true;
+            }
 
-            // 若要加停止前的補間動畫
-                // if(scroll_now>0){
-                //     reachedStopRotatingPoint = (scroll_now <= stopRotatingPointOffset)?false:true;
-                // }
-
-            if (scenes[sceneIndex].reRender){
+            if (scenes[sceneIndex].reRender && !stopRotating){
 
                 if(!reachedUpperLimit){
     
@@ -269,6 +442,8 @@ function PCloadScene1(){
 
         var sceneIndex = scenes.push(scene) - 1;
         scenes[sceneIndex].reRender = true; 
+        scenes[sceneIndex].camera = camera;
+        scenes[sceneIndex].gcamera = gcamera;
         scenes[sceneIndex].renderLoop = function () {
                 this.render();
         }
@@ -283,7 +458,7 @@ function PCimportScene2(){
     // This creates a basic Babylon Scene object (non-mesh)
     var scene = new BABYLON.Scene(engine);
 
-    var camera = new BABYLON.ArcRotateCamera("Camera2", Math.PI*1.1, Math.PI/2, 10, new BABYLON.Vector3.Zero(), scene);
+    var camera = new BABYLON.ArcRotateCamera("Camera2", 0.2, Math.PI/2, 20, new BABYLON.Vector3.Zero(), scene);
     // camera.attachControl(canvas, false);
     camera.checkCollisions = true;
 
@@ -294,7 +469,9 @@ function PCimportScene2(){
     // The first parameter can be used to specify which mesh to import. Here we import all meshes
     BABYLON.SceneLoader.ImportMesh("", "assets/golden-stone/", "golden-stone.babylon", scene, function (newMeshes) {
         // newMeshes[0].position = BABYLON.Vector3.Zero();
-        newMeshes[0].position = new BABYLON.Vector3(0.5,2,-3);
+        // newMeshes[0].position = new BABYLON.Vector3(0.5,2,-3);
+
+        newMeshes[0].position = new BABYLON.Vector3(0, 0, 7);
 
         var materialStone = new BABYLON.StandardMaterial("texture1", scene);
         materialStone.diffuseTexture = new BABYLON.Texture("assets/golden-stone/golden-stone.jpg", scene);
@@ -321,7 +498,7 @@ function PCimportScene2(){
     return scene;
 }
 
-function PCimportScene3() {
+function PCimportScene3(){
     // This creates a basic Babylon Scene object (non-mesh)
     var scene = new BABYLON.Scene(engine);
 
@@ -387,6 +564,88 @@ function detectmob() {
     }
 }
 
+//disable scrolling
+
+var keys = { 37: 1, 38: 1, 39: 1, 40: 1 };
+
+function preventDefault(e) {
+    e = e || window.event;
+    if (e.preventDefault)
+        e.preventDefault();
+    e.returnValue = false;
+}
+
+function preventDefaultForScrollKeys(e) {
+    if (keys[e.keyCode]) {
+        preventDefault(e);
+        return false;
+    }
+}
+
+function disableScroll() {
+    if (window.addEventListener) // older FF
+        window.addEventListener('DOMMouseScroll', preventDefault, false);
+    window.onwheel = preventDefault; // modern standard
+    window.onmousewheel = document.onmousewheel = preventDefault; // older browsers, IE
+    window.ontouchmove = preventDefault; // mobile
+    document.onkeydown = preventDefaultForScrollKeys;
+}
+
+function enableScroll() {
+    if (window.removeEventListener)
+        window.removeEventListener('DOMMouseScroll', preventDefault, false);
+    window.onmousewheel = document.onmousewheel = null;
+    window.onwheel = null;
+    window.ontouchmove = null;
+    document.onkeydown = null;
+}
 
 
 
+/***Tools***/
+
+    /*1. unproject vector*/
+
+    var clickPos = [];
+    var clickVector = new BABYLON.Vector3(1, 0, 0);
+
+    var positionUnproject = function (evt) {
+        var scene = scenes[0];
+
+        if (evt.button !== 0) {
+            return;
+        }
+
+        clickPos[0] = scene.pointerX;
+        clickPos[1] = scene.pointerY;
+
+        clickVector = vectorUnproject(new BABYLON.Vector3(clickPos[0], clickPos[1], 0));
+
+        console.log('screen vector:' + clickPos);
+        console.log('world vector:' + clickVector);
+    }
+
+    function vectorUnproject(screenVector) {
+        var scene = scenes[0]; 
+        var camera = scene.camera;
+
+        //camera unproject test
+        var pMScene = camera.getProjectionMatrix();
+        // var pMScene = scene.getProjectionMatrix();
+        var vMScene = camera.getViewMatrix();
+        // var vMScene = scene.getViewMatrix();
+        var wMCamera = BABYLON.Matrix.Identity();
+        // var wMCamera = scene.activeCamera.getWorldMatrix();
+        var globalView = scene.activeCamera.viewport.toGlobal(window.innerWidth, window.innerHeight);
+        // var globalView = scene.activeCamera.viewport.toGlobal(engine);
+    
+        // var screenVector = new BABYLON.Vector3(1,0,0); //z=0 means near plane
+    
+        // static Unproject(source, viewportWidth, viewportHeight, world, view, projection) → Vector3
+        var worldVector = BABYLON.Vector3.Unproject(screenVector, globalView.width, globalView.height, wMCamera, vMScene, pMScene);
+    
+        return worldVector;
+    }
+
+    // canvas.addEventListener("pointerdown", positionUnproject, false);
+    

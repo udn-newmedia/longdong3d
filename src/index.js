@@ -12,6 +12,9 @@ var waypoints = [];
 
 var canvas;
 
+// variable to hold how many frames have elapsed in the animation
+var animFrame = 1;
+
 //jquery
     // $(document).ready(function(){
     // });
@@ -67,7 +70,9 @@ function RenderManager(){
 
         if (scroll_now >= changeViewWaypointsOffset[0] * 0.9 && scroll_now < changeViewWaypointsOffset[0]*1.1){
             scenes[activeScene].reRender = true;        
-        }else{
+        } else if (scroll_now >= changeViewWaypointsOffset[1] * 0.9 && scroll_now < changeViewWaypointsOffset[1] * 1.1){
+            scenes[activeScene].reRender = true;        
+        } else{
             scenes[activeScene].reRender = false;                    
         }
     } else if (scroll_now >= changeModelPointsOffset[0] && scroll_now < changeModelPointsOffset[1] * 0.9){
@@ -95,13 +100,25 @@ function viewChanger(){
     
     if (scroll_now < stopRotatingPointOffset && scenes[activeScene].billboards[0].isVisible){
         scenes[activeScene].billboards[0].isVisible = false;
-        
         displayBillboards(false);
     }
 
     if (scroll_now >= changeViewWaypointsOffset[0] && scroll_now < changeViewWaypointsOffset[0] * 1.1) {
-        changeView(function () {
+        changeView(waypoints[0],function () {
             displayBillboards([true,true,false]);
+        });
+    } else if (scroll_now >= changeViewWaypointsOffset[1] && scroll_now < changeViewWaypointsOffset[1] * 1.1) {
+        changeView(waypoints[1], function () {
+            displayBillboards(true);
+            setTimeout(function(){
+                disableScroll();
+                animateTexturePlay(scenes[activeScene].billboards[2]);
+                setTimeout(function(){
+                    animFrame = 1;
+                    enableScroll();
+                    scrollAnimation(changeModelPointsOffset[1], 1000);
+                },1000)
+            },3000);
         });
     }
 }
@@ -164,10 +181,14 @@ function setSectionOffset() {
         changeModelPointsOffset[0] = model1.getBoundingClientRect().top + window.pageYOffset;
         changeModelPointsOffset[1] = model2.getBoundingClientRect().top + window.pageYOffset;
         changeModelPointsOffset[2] = model3.getBoundingClientRect().top + window.pageYOffset;
+        changeModelPointsOffset[3] = model2.getBoundingClientRect().bottom + window.pageYOffset;
 
     //waypoints
         var changeViewWaypoint1 = document.getElementsByTagName("section")[2];
         changeViewWaypointsOffset[0] = changeViewWaypoint1.getBoundingClientRect().top + window.pageYOffset;
+
+        var changeViewWaypoint2 = document.getElementsByTagName("section")[5];
+        changeViewWaypointsOffset[1] = changeViewWaypoint2.getBoundingClientRect().top + window.innerHeight*0.75 + window.pageYOffset;        
 
     //other points
         var stopRotatingPoint = document.getElementsByTagName("section")[1];
@@ -178,8 +199,10 @@ function whichModel() {
 
     if (window.pageYOffset >= 0 && window.pageYOffset < changeModelPointsOffset[1]) {
         return 'model1';
-    } else if (window.pageYOffset >= changeModelPointsOffset[1] && window.pageYOffset < changeModelPointsOffset[2]) {
+    } else if (window.pageYOffset >= changeModelPointsOffset[1] && window.pageYOffset < changeModelPointsOffset[3]) {
         return 'model2';
+    } else if (window.pageYOffset >= changeModelPointsOffset[3] && window.pageYOffset< changeModelPointsOffset[2]){
+        return 'model1';
     } else if (window.pageYOffset >= changeModelPointsOffset[2]) {
         return 'model3';
     } else {
@@ -192,22 +215,21 @@ function setCanvasOpacityWithSection() {
     var canvas_style = window.getComputedStyle(canvas),
         canvas_opacity = canvas_style.getPropertyValue('opacity');
 
-    // for(var i=1;i<=2;i++){
+    //第一個換模型點的透明度轉換
+
+    // if (window.pageYOffset >= changeModelPointsOffset[1] * 0.9 && window.pageYOffset < changeModelPointsOffset[1]) {
+
+    //     canvas.style.opacity = 1 - ((window.pageYOffset - changeModelPointsOffset[1] * 0.9) / (changeModelPointsOffset[1] - changeModelPointsOffset[1] * 0.9));
+
+    // } else if (window.pageYOffset >= changeModelPointsOffset[1] && window.pageYOffset < changeModelPointsOffset[1] * 1.1) {
+
+    //     canvas.style.opacity = (window.pageYOffset - changeModelPointsOffset[1]) / (changeModelPointsOffset[1] * 1.1 - changeModelPointsOffset[1]);
+
+    // } else if (window.pageYOffset >= changeModelPointsOffset[1]){
+
+    //     canvas.style.opacity = 1;
+
     // }
-    
-    if (window.pageYOffset >= changeModelPointsOffset[1] * 0.9 && window.pageYOffset < changeModelPointsOffset[1]) {
-
-        canvas.style.opacity = 1 - ((window.pageYOffset - changeModelPointsOffset[1] * 0.9) / (changeModelPointsOffset[1] - changeModelPointsOffset[1] * 0.9));
-
-    } else if (window.pageYOffset >= changeModelPointsOffset[1] && window.pageYOffset < changeModelPointsOffset[1] * 1.1) {
-
-        canvas.style.opacity = (window.pageYOffset - changeModelPointsOffset[1]) / (changeModelPointsOffset[1] * 1.1 - changeModelPointsOffset[1]);
-
-    } else if (window.pageYOffset >= changeModelPointsOffset[1] * 1.1){
-
-        canvas.style.opacity = 1;
-
-    }
 
 
     if (window.pageYOffset >= changeModelPointsOffset[2] * 0.9 && window.pageYOffset < changeModelPointsOffset[2]) {
@@ -245,20 +267,20 @@ function displayBillboards(display){
     
 }
 
-function changeView(callback){
+function changeView(waypoint, callback){
 
-    if (waypoints[0].hasChanged){
+    if (waypoint.hasChanged){
         return;
     }else{
-        waypoints[0].hasChanged = true;
+        waypoint.hasChanged = true;
 
         // console.log('changeView');
         disableScroll()
         
-        var waypoint = waypoints[0];
-        var target = waypoint.target;
+        var point = waypoint;
+        var target = point.target;
         
-        smoothSetTarget(target, moveCameraWithGhostCam(waypoint,function(){
+        smoothSetTarget(target, moveCameraWithGhostCam(point,function(){
             scenes[activeScene].reRender = false;  
             enableScroll();      
             callback();            
@@ -339,9 +361,9 @@ var moveCameraWithGhostCam = function (obj, callback) {
     alphaAnimation.setKeys(keys2);
     betaAnimation.setKeys(keys3);
 
-    camera.animations.push(radiusAnimation);
-    camera.animations.push(alphaAnimation);
+    // camera.animations.push(alphaAnimation);  //不要移alpha以免旋轉太多
     camera.animations.push(betaAnimation);
+    camera.animations.push(radiusAnimation);
 
     scene.beginAnimation(camera, 0, 100, false, 2, callback);
 
@@ -425,16 +447,18 @@ function PCloadScene1(){
         gcamera.checkCollisions = true;
 
         // 加上waypoints
-        var waypoint1 = scene.getMeshByName("waypoint1");
-        var target1 = scene.getMeshByName("target1");
-        // var waypoint1 = BABYLON.Mesh.CreateBox("box1", 0.01, scene);
-        // var target1 = BABYLON.Mesh.CreateSphere("sphere1", 0.01, 0.01, scene);
-        // waypoint1.position = new BABYLON.Vector3(4, 3.78345073141672, -1.0032810597619022);
-        // target1.position = new BABYLON.Vector3(4.294345366846326, 3.820366305622412, -1.7780033698026012);
-        
-        waypoint1.isVisible = false;
-        target1.isVisible = false;
+            var waypoint1 = scene.getMeshByName("waypoint1");
+            var target1 = scene.getMeshByName("target1");
+            // var waypoint1 = BABYLON.Mesh.CreateBox("box1", 0.01, scene);
+            // var target1 = BABYLON.Mesh.CreateSphere("sphere1", 0.01, 0.01, scene);
+            // waypoint1.position = new BABYLON.Vector3(4, 3.78345073141672, -1.0032810597619022);
+            // target1.position = new BABYLON.Vector3(4.294345366846326, 3.820366305622412, -1.7780033698026012);
+            var waypoint2 = scene.getMeshByName("waypoint2");
 
+            waypoint1.isVisible = false;
+            target1.isVisible = false;
+
+            waypoint2.isVisible = false;
 
         // billboards
         
@@ -456,7 +480,6 @@ function PCloadScene1(){
             // var clearColor = "#555555";
             var font = "bold 40px Microsoft JhengHei";
             var color = "yellow"
-            var update = true;
 
             var text1 = "沉積灰岩後變質";
             var x = 10;
@@ -493,7 +516,7 @@ function PCloadScene1(){
             context.stroke();
             
             boardTexture.hasAlpha = true;//必須要clearColor沒被定義
-            boardTexture.update(update);
+            boardTexture.update();
 
             billboard1.isVisible = false;
 
@@ -515,7 +538,6 @@ function PCloadScene1(){
             // var clearColor = "#555555";
             // var font = "bold 40px Microsoft JhengHei";
             // var color = "yellow"
-            // var update = true;
 
             var text3 = "造山運動形成";
             // var x = 10;
@@ -538,143 +560,78 @@ function PCloadScene1(){
             context2.fillText(text4, x, y2);
 
             boardTexture2.hasAlpha = true;//必須要clearColor沒被定義
-            boardTexture2.update(update);
+            boardTexture2.update();
 
             billboard2.isVisible = false;
 
 
         // billboard3 (畫框框)
             var boardTexture3 = new BABYLON.DynamicTexture("dynamic texture3", 512, scene, true);
+            boardTexture3.hasAlpha = true;//必須要clearColor沒被定義
 
             var dynamicMaterial3 = new BABYLON.StandardMaterial('mat3', scene);
-            dynamicMaterial3.diffuseTexture = boardTexture2;
+            dynamicMaterial3.diffuseTexture = boardTexture3;
             dynamicMaterial3.specularColor = new BABYLON.Color3(0, 0, 0);
             dynamicMaterial3.backFaceCulling = true;
 
             var plane3 = scene.getMeshByName("plane3");
             plane3.isVisible = false;
+
             var billboard3 = BABYLON.Mesh.CreatePlane('board3', 1, scene);
             billboard3.position = plane3.position;
             billboard3.material = dynamicMaterial3;
             billboard3.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
-
-            var size3 = boardTexture3.getSize();
-            var context3 = boardTexture3._context;
-
-
-            // ctx.lineCap = "round";
-
-            // // variable to hold how many frames have elapsed in the animation
-            // var t = 1;
-
-            // // define the path to plot
-            // var vertices = [];
-            // vertices.push({
-            //     x: 0,
-            //     y: 0
-            // });
-            // vertices.push({
-            //     x: 300,
-            //     y: 100
-            // });
-            // vertices.push({
-            //     x: 80,
-            //     y: 200
-            // });
-            // vertices.push({
-            //     x: 10,
-            //     y: 100
-            // });
-            // vertices.push({
-            //     x: 0,
-            //     y: 0
-            // });
-
-            // // draw the complete line
-            // ctx.lineWidth = 10;
-            // // tell canvas you are beginning a new path
-            // ctx.beginPath();
-            // // draw the path with moveTo and multiple lineTo's
-            // ctx.moveTo(0, 0);
-            // ctx.lineTo(300, 100);
-            // ctx.lineTo(80, 200);
-            // ctx.lineTo(10, 100);
-            // ctx.lineTo(0, 0);
-            // // stroke the path
-            // //ctx.stroke();
-
-            // // set some style
-            // ctx.lineWidth = 5;
-            // ctx.strokeStyle = "blue";
-            // // calculate incremental points along the path
-            // var points = calcWaypoints(vertices);
-            // // extend the line from start to finish with animation
-
-            // animate(points);
-
-
-            // // calc waypoints traveling along vertices
-            // function calcWaypoints(vertices) {
-            //     var waypoints = [];
-            //     for (var i = 1; i < vertices.length; i++) {
-            //         var pt0 = vertices[i - 1];
-            //         var pt1 = vertices[i];
-            //         var dx = pt1.x - pt0.x;
-            //         var dy = pt1.y - pt0.y;
-            //         for (var j = 0; j < 100; j++) {
-            //             var x = pt0.x + dx * j / 100;
-            //             var y = pt0.y + dy * j / 100;
-            //             waypoints.push({
-            //                 x: x,
-            //                 y: y
-            //             });
-            //         }
-            //     }
-            //     return (waypoints);
-            // }
-
-
-            // function animate() {
-            //     if (t < points.length - 1) {
-            //         requestAnimationFrame(animate);
-            //     }
-
-            //     // draw a line segment from the last waypoint
-            //     // to the current waypoint
-            //     ctx.beginPath();
-            //     ctx.moveTo(points[t - 1].x, points[t - 1].y);
-            //     ctx.lineTo(points[t].x, points[t].y);
-            //     ctx.stroke();
-            //     // increment "t" to get the next waypoint
-            //     t++;
-            // }
-
-
-            // context3.font = font;
-            // context3.fillStyle = color;
-            // context3.fillText(text3, x, y1);
-            // context3.fillText(text4, x, y2);
-
-
-            boardTexture3.hasAlpha = true;//必須要clearColor沒被定義
-            boardTexture3.update(update);
-
             billboard3.isVisible = false;
+            billboard3.animTexture = boardTexture3;
+            
+            // define the path to plot
+            var vertices = [];
+                
+                vertices.push({
+                    x: 10,
+                    y: 10
+                });
+                vertices.push({
+                    x: 10+400,
+                    y: 10
+                });
+                vertices.push({
+                    x: 10+400,
+                    y: 10+400
+                });
+                vertices.push({
+                    x: 10,
+                    y: 10+400
+                });
+                vertices.push({
+                    x: 10,
+                    y: 10
+                });
 
 
+            // billboard3.animTexture.points = calcIntermediatepoints(vertices);
+            billboard3.animTexture.points = vertices;
+            billboard3.animTexture.ctxStyle = {
+                lineCap: "round",
+                lineWidth: "10",
+                strokeStyle: "white"
+            }
 
         // 設定waypoints和targets
         var wp1index = waypoints.push(waypoint1)-1;
         waypoints[wp1index].hasChanged = false;
         waypoints[wp1index].target = target1;
 
-        
+        var wp2index = waypoints.push(waypoint2) - 1;
+        waypoints[wp2index].hasChanged = false;
+        waypoints[wp2index].target = plane3;
+
         //  封面的旋轉
         var stopRotating = false;
         var reachedUpperLimit = false;
 
         scene.registerBeforeRender(function(){
-            
+            // 封面的旋轉
             if(stopRotatingPointOffset){
                 stopRotating = (scroll_now <= stopRotatingPointOffset)?false:true;
             }
@@ -719,6 +676,65 @@ function PCloadScene1(){
 
     modelLoaded[0] = !modelLoaded[0];
 
+}
+
+function scrollAnimation(destination,scrollDuration) {
+    var scrollStep = (destination - window.pageYOffset) / (scrollDuration / 15),
+        scrollInterval = setInterval(function () {
+            if (window.pageYOffset <= destination) {
+                window.scrollBy(0, scrollStep);
+            }
+            else clearInterval(scrollInterval);
+        }, 15);
+}
+
+function animateTexturePlay(billboard) {
+
+    var ctx = billboard.animTexture._context;
+    var points = billboard.animTexture.points;
+    var style = billboard.animTexture.ctxStyle;
+
+    ctx.lineCap = style.lineCap;
+    ctx.lineWidth = style.lineWidth;
+    ctx.strokeStyle = style.strokeStyle;
+
+    if (animFrame < points.length - 1) {
+        //Maximum call stack size exceeded error
+            // requestAnimationFrame(animateTexturePlay(billboard));
+        //another method
+        setTimeout(function(){
+            animateTexturePlay(billboard);
+            animFrame++;
+        },200)
+    } 
+
+    // draw a line segment from the last waypoint
+    // to the current waypoint
+    ctx.beginPath();
+    ctx.moveTo(points[animFrame - 1].x, points[animFrame - 1].y);
+    ctx.lineTo(points[animFrame].x, points[animFrame].y);
+    ctx.stroke();
+    billboard.animTexture.update();
+}
+
+// calc waypoints traveling along vertices
+function calcIntermediatepoints(vertices) {
+    var waypoints = [];
+    for (var i = 1; i < vertices.length; i++) {
+        var pt0 = vertices[i - 1];
+        var pt1 = vertices[i];
+        var dx = pt1.x - pt0.x;
+        var dy = pt1.y - pt0.y;
+        for (var j = 0; j < 100; j++) {
+            var x = pt0.x + dx * j / 100;
+            var y = pt0.y + dy * j / 100;
+            waypoints.push({
+                x: x,
+                y: y
+            });
+        }
+    }
+    return (waypoints);
 }
 
 function PCimportScene2(){
@@ -820,7 +836,6 @@ function PCimportScene3(){
 
         wall.material = materialStone;
 
-        //動態調參數
         // scene.beforeRender = function () {
         //     materialStone.diffuseTexture.wAng += .001;
         //     // outputplaneTexture.uOffset += .001;

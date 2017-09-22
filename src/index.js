@@ -650,10 +650,10 @@ function PCloadScene1(){
             // }
 
 
-            context3.font = font;
-            context3.fillStyle = color;
-            context3.fillText(text3, x, y1);
-            context3.fillText(text4, x, y2);
+            // context3.font = font;
+            // context3.fillStyle = color;
+            // context3.fillText(text3, x, y1);
+            // context3.fillText(text4, x, y2);
 
 
             boardTexture3.hasAlpha = true;//必須要clearColor沒被定義
@@ -806,14 +806,27 @@ function PCimportScene3(){
         materialStone.diffuseTexture.hasAlpha = true;
 
         // materialStone.diffuseTexture.vOffset = -0.05; //vertical offset 0f 10%
-        // materialStone.diffuseTexture.uOffset = 0.05;
+        materialStone.diffuseTexture.uOffset = -0.4;
 
-        materialStone.diffuseTexture.vAng = Math.PI;
+        materialStone.diffuseTexture.wrapU = BABYLON.Texture.CLAMP_ADDRESSMODE;
+        materialStone.diffuseTexture.wrapV = BABYLON.Texture.CLAMP_ADDRESSMODE;
+
+        // materialStone.diffuseTexture.uAng = -Math.PI * 0.01;
+        // materialStone.diffuseTexture.vAng = Math.PI * 1.1;
+        materialStone.diffuseTexture.vAng = 3.555555;
         materialStone.diffuseTexture.wAng = Math.PI / 2;
 
             // materialStone.bumpTexture = new BABYLON.Texture("assets/NormalMap.jpg",scene);
 
         wall.material = materialStone;
+
+        //動態調參數
+        // scene.beforeRender = function () {
+        //     materialStone.diffuseTexture.wAng += .001;
+        //     // outputplaneTexture.uOffset += .001;
+
+        //     // console.log(materialStone.diffuseTexture.wAng);
+        // };
 
     });
 

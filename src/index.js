@@ -57,9 +57,9 @@ function onScroll(){
     ticking = false;
 }
 
+//決定何時要重繪(第一層是換模型判斷點、第二層是換視角判斷點)
 function RenderManager(){
 
-    //決定何時要重繪(第一層是換模型判斷點、第二層是換視角判斷點)
     if (scroll_now >= 0 && scroll_now < stopRotatingPointOffset){
 
         scenes[activeScene].reRender = true;
@@ -90,15 +90,18 @@ function SceneManager() {
 
 }
 
+//轉換視角 & billboards控制
 function viewChanger(){
-    //轉換視角
-    if (scroll_now < stopRotatingPointOffset){
+    
+    if (scroll_now < stopRotatingPointOffset && scenes[activeScene].billboards[0].isVisible){
+        scenes[activeScene].billboards[0].isVisible = false;
+        
         displayBillboards(false);
     }
 
     if (scroll_now >= changeViewWaypointsOffset[0] && scroll_now < changeViewWaypointsOffset[0] * 1.1) {
         changeView(function () {
-            displayBillboards(true);
+            displayBillboards([true,true,false]);
         });
     }
 }
@@ -227,10 +230,19 @@ function setCanvasOpacityWithSection() {
 function displayBillboards(display){
 
     var scene = scenes[activeScene];
+
+    if(Array.isArray(display)){
+        console.log(scene.billboards.length);
+        for(var i=0;i<scene.billboards.length;i++){
+            scene.billboards[i].isVisible = display[i];
+        }
+    }else{
+        console.log(display);
+        scene.billboards.forEach(function (board) {
+            board.isVisible = display;
+        });
+    }
     
-    scene.billboards.forEach(function (board) {
-        board.isVisible = display;
-    });
 }
 
 function changeView(callback){
@@ -425,108 +437,230 @@ function PCloadScene1(){
 
 
         // billboards
-        var boardTexture = new BABYLON.DynamicTexture("dynamic texture", 512, scene, true);
-
-        var dynamicMaterial = new BABYLON.StandardMaterial('mat', scene);
-        dynamicMaterial.diffuseTexture = boardTexture;
-        dynamicMaterial.specularColor = new BABYLON.Color3(0,0,0);
-        dynamicMaterial.backFaceCulling = true;
-
-        var plane1 = scene.getMeshByName("plane1");
-        plane1.isVisible = false;
-        var billboard1 = BABYLON.Mesh.CreatePlane('board1', 1, scene);
-        billboard1.position = plane1.position;
-        billboard1.material = dynamicMaterial;
-        billboard1.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
-
-        // var clearColor = "#555555";
-        var font = "bold 40px Microsoft JhengHei";
-        var color = "yellow"
-        var update = true;
-
-        var text1 = "沉積灰岩後變質";
-        var x = 10;
-        var y1 = 10+70;
         
-        var text2 = "形成堅硬的四稜砂岩";
-        var y2 = 10+70+70;
+        //billboard1
+            var boardTexture = new BABYLON.DynamicTexture("dynamic texture", 512, scene, true);
 
-        var context = boardTexture._context;
-        var size = boardTexture.getSize();
+            var dynamicMaterial = new BABYLON.StandardMaterial('mat', scene);
+            dynamicMaterial.diffuseTexture = boardTexture;
+            dynamicMaterial.specularColor = new BABYLON.Color3(0,0,0);
+            dynamicMaterial.backFaceCulling = true;
 
-        // if(clearColor){
-        //     context.fillStyle = clearColor;
-        //     context.fillRect(0,0,size.width,size.height);
-        // }
+            var plane1 = scene.getMeshByName("plane1");
+            plane1.isVisible = false;
+            var billboard1 = BABYLON.Mesh.CreatePlane('board1', 1, scene);
+            billboard1.position = plane1.position;
+            billboard1.material = dynamicMaterial;
+            billboard1.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
 
-        
-        // if(x===null){
-            //     var textSize = boardTexture._context.measureText(text1);
-            //     x = (size.width - textSize.width) / 2;
-            // }
+            // var clearColor = "#555555";
+            var font = "bold 40px Microsoft JhengHei";
+            var color = "yellow"
+            var update = true;
+
+            var text1 = "沉積灰岩後變質";
+            var x = 10;
+            var y1 = 10+70;
             
-        context.font = font;
-        context.fillStyle = color;
-        context.fillText(text1, x, y1);
-        context.fillText(text2, x, y2);
-        
-        //draw line
-        context.beginPath();
-        context.moveTo(150, 200);
-        context.lineTo(150, 500);
-        context.lineWidth = 10;
-        context.strokeStyle = '#ff0000';
-        context.stroke();
-        
-        boardTexture.hasAlpha = true;//必須要clearColor沒被定義
-        boardTexture.update(update);
+            var text2 = "形成堅硬的四稜砂岩";
+            var y2 = 10+70+70;
 
-        billboard1.isVisible = false;
+            var context = boardTexture._context;
+            var size = boardTexture.getSize();
 
-        // billboards
-        var boardTexture2 = new BABYLON.DynamicTexture("dynamic texture", 512, scene, true);
+            // if(clearColor){
+            //     context.fillStyle = clearColor;
+            //     context.fillRect(0,0,size.width,size.height);
+            // }
 
-        var dynamicMaterial2 = new BABYLON.StandardMaterial('mat', scene);
-        dynamicMaterial2.diffuseTexture = boardTexture2;
-        dynamicMaterial2.specularColor = new BABYLON.Color3(0, 0, 0);
-        dynamicMaterial2.backFaceCulling = true;
+            
+            // if(x===null){
+                //     var textSize = boardTexture._context.measureText(text1);
+                //     x = (size.width - textSize.width) / 2;
+                // }
+                
+            context.font = font;
+            context.fillStyle = color;
+            context.fillText(text1, x, y1);
+            context.fillText(text2, x, y2);
+            
+            //draw line
+            context.beginPath();
+            context.moveTo(150, 200);
+            context.lineTo(150, 500);
+            context.lineWidth = 10;
+            context.strokeStyle = '#ff0000';
+            context.stroke();
+            
+            boardTexture.hasAlpha = true;//必須要clearColor沒被定義
+            boardTexture.update(update);
 
-        var plane2 = scene.getMeshByName("plane2");
-        plane2.isVisible = false;
-        var billboard2 = BABYLON.Mesh.CreatePlane('board2', 1, scene);
-        billboard2.position = plane2.position;
-        billboard2.material = dynamicMaterial2;
-        billboard2.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
+            billboard1.isVisible = false;
 
-        // var clearColor = "#555555";
-        // var font = "bold 40px Microsoft JhengHei";
-        // var color = "yellow"
-        // var update = true;
+        // billboard2
+            var boardTexture2 = new BABYLON.DynamicTexture("dynamic texture2", 512, scene, true);
 
-        var text3 = "造山運動形成";
-        // var x = 10;
-        // var y1 = 10 + 70;
+            var dynamicMaterial2 = new BABYLON.StandardMaterial('mat2', scene);
+            dynamicMaterial2.diffuseTexture = boardTexture2;
+            dynamicMaterial2.specularColor = new BABYLON.Color3(0, 0, 0);
+            dynamicMaterial2.backFaceCulling = true;
 
-        var text4 = "地層傾斜、結理及斷層";
-        // var y2 = 10 + 70 + 70;
+            var plane2 = scene.getMeshByName("plane2");
+            plane2.isVisible = false;
+            var billboard2 = BABYLON.Mesh.CreatePlane('board2', 1, scene);
+            billboard2.position = plane2.position;
+            billboard2.material = dynamicMaterial2;
+            billboard2.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
 
-        var context2 = boardTexture2._context;
-        var size2 = boardTexture2.getSize();
+            // var clearColor = "#555555";
+            // var font = "bold 40px Microsoft JhengHei";
+            // var color = "yellow"
+            // var update = true;
 
-        // if(clearColor){
-        //     context.fillStyle = clearColor;
-        //     context.fillRect(0,0,size.width,size.height);
-        // }
+            var text3 = "造山運動形成";
+            // var x = 10;
+            // var y1 = 10 + 70;
 
-        context2.font = font;
-        context2.fillStyle = color;
-        context2.fillText(text3, x, y1);
-        context2.fillText(text4, x, y2);
+            var text4 = "地層傾斜、結理及斷層";
+            // var y2 = 10 + 70 + 70;
 
-        boardTexture2.hasAlpha = true;//必須要clearColor沒被定義
-        boardTexture2.update(update);
+            var context2 = boardTexture2._context;
+            var size2 = boardTexture2.getSize();
 
-        billboard2.isVisible = false;
+            // if(clearColor){
+            //     context.fillStyle = clearColor;
+            //     context.fillRect(0,0,size.width,size.height);
+            // }
+
+            context2.font = font;
+            context2.fillStyle = color;
+            context2.fillText(text3, x, y1);
+            context2.fillText(text4, x, y2);
+
+            boardTexture2.hasAlpha = true;//必須要clearColor沒被定義
+            boardTexture2.update(update);
+
+            billboard2.isVisible = false;
+
+
+        // billboard3 (畫框框)
+            var boardTexture3 = new BABYLON.DynamicTexture("dynamic texture3", 512, scene, true);
+
+            var dynamicMaterial3 = new BABYLON.StandardMaterial('mat3', scene);
+            dynamicMaterial3.diffuseTexture = boardTexture2;
+            dynamicMaterial3.specularColor = new BABYLON.Color3(0, 0, 0);
+            dynamicMaterial3.backFaceCulling = true;
+
+            var plane3 = scene.getMeshByName("plane3");
+            plane3.isVisible = false;
+            var billboard3 = BABYLON.Mesh.CreatePlane('board3', 1, scene);
+            billboard3.position = plane3.position;
+            billboard3.material = dynamicMaterial3;
+            billboard3.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
+
+            var size3 = boardTexture3.getSize();
+            var context3 = boardTexture3._context;
+
+
+            // ctx.lineCap = "round";
+
+            // // variable to hold how many frames have elapsed in the animation
+            // var t = 1;
+
+            // // define the path to plot
+            // var vertices = [];
+            // vertices.push({
+            //     x: 0,
+            //     y: 0
+            // });
+            // vertices.push({
+            //     x: 300,
+            //     y: 100
+            // });
+            // vertices.push({
+            //     x: 80,
+            //     y: 200
+            // });
+            // vertices.push({
+            //     x: 10,
+            //     y: 100
+            // });
+            // vertices.push({
+            //     x: 0,
+            //     y: 0
+            // });
+
+            // // draw the complete line
+            // ctx.lineWidth = 10;
+            // // tell canvas you are beginning a new path
+            // ctx.beginPath();
+            // // draw the path with moveTo and multiple lineTo's
+            // ctx.moveTo(0, 0);
+            // ctx.lineTo(300, 100);
+            // ctx.lineTo(80, 200);
+            // ctx.lineTo(10, 100);
+            // ctx.lineTo(0, 0);
+            // // stroke the path
+            // //ctx.stroke();
+
+            // // set some style
+            // ctx.lineWidth = 5;
+            // ctx.strokeStyle = "blue";
+            // // calculate incremental points along the path
+            // var points = calcWaypoints(vertices);
+            // // extend the line from start to finish with animation
+
+            // animate(points);
+
+
+            // // calc waypoints traveling along vertices
+            // function calcWaypoints(vertices) {
+            //     var waypoints = [];
+            //     for (var i = 1; i < vertices.length; i++) {
+            //         var pt0 = vertices[i - 1];
+            //         var pt1 = vertices[i];
+            //         var dx = pt1.x - pt0.x;
+            //         var dy = pt1.y - pt0.y;
+            //         for (var j = 0; j < 100; j++) {
+            //             var x = pt0.x + dx * j / 100;
+            //             var y = pt0.y + dy * j / 100;
+            //             waypoints.push({
+            //                 x: x,
+            //                 y: y
+            //             });
+            //         }
+            //     }
+            //     return (waypoints);
+            // }
+
+
+            // function animate() {
+            //     if (t < points.length - 1) {
+            //         requestAnimationFrame(animate);
+            //     }
+
+            //     // draw a line segment from the last waypoint
+            //     // to the current waypoint
+            //     ctx.beginPath();
+            //     ctx.moveTo(points[t - 1].x, points[t - 1].y);
+            //     ctx.lineTo(points[t].x, points[t].y);
+            //     ctx.stroke();
+            //     // increment "t" to get the next waypoint
+            //     t++;
+            // }
+
+
+            context3.font = font;
+            context3.fillStyle = color;
+            context3.fillText(text3, x, y1);
+            context3.fillText(text4, x, y2);
+
+
+            boardTexture3.hasAlpha = true;//必須要clearColor沒被定義
+            boardTexture3.update(update);
+
+            billboard3.isVisible = false;
+
 
 
         // 設定waypoints和targets
@@ -571,9 +705,12 @@ function PCloadScene1(){
         scenes[sceneIndex].reRender = true; 
         scenes[sceneIndex].camera = camera;
         scenes[sceneIndex].gcamera = gcamera;
+
         scenes[sceneIndex].billboards = [];
         scenes[sceneIndex].billboards.push(billboard1);
         scenes[sceneIndex].billboards.push(billboard2);        
+        scenes[sceneIndex].billboards.push(billboard3);
+
         scenes[sceneIndex].renderLoop = function () {
                 this.render();
         }
@@ -597,7 +734,7 @@ function PCimportScene2(){
     // console.log('import2');
 
     // The first parameter can be used to specify which mesh to import. Here we import all meshes
-    BABYLON.SceneLoader.ImportMesh("", "assets/golden-stone/", "golden-stone.babylon", scene, function (newMeshes) {
+    BABYLON.SceneLoader.ImportMesh("", "assets/golden-stone/0922/", "golden-stone.babylon", scene, function (newMeshes) {
         // newMeshes[0].position = BABYLON.Vector3.Zero();
         // newMeshes[0].position = new BABYLON.Vector3(0.5,2,-3);
 
@@ -606,18 +743,28 @@ function PCimportScene2(){
         var materialStone = new BABYLON.StandardMaterial("texture1", scene);
         materialStone.diffuseTexture = new BABYLON.Texture("assets/golden-stone/golden-stone.png", scene);
         materialStone.diffuseTexture.hasAlpha = true;
-        materialStone.diffuseTexture.vOffset = 0.05; //vertical offset 0f 10%
-        materialStone.diffuseTexture.uOffset = 0.05;
 
-        materialStone.diffuseTexture.vAng = Math.PI;
+        // materialStone.diffuseTexture.uOffset = 0.05;
+        // materialStone.diffuseTexture.vOffset = 0.05; //vertical offset 0f 10%
+
+        // materialStone.diffuseTexture.uAng = Math.PI;
+        // materialStone.diffuseTexture.vAng = Math.PI;
         materialStone.diffuseTexture.wAng = Math.PI / 2;
 
-        materialStone.diffuseTexture.vScale = 0.8;
-        materialStone.diffuseTexture.uScale = 0.8;        
+        // materialStone.diffuseTexture.uScale = 1.2;        
+        // materialStone.diffuseTexture.vScale = 0.9;
 
-        // materialStone.bumpTexture = new BABYLON.Texture("assets/NormalMap.jpg",scene);
+        materialStone.diffuseTexture.wrapU = BABYLON.Texture.CLAMP_ADDRESSMODE;
+        materialStone.diffuseTexture.wrapV = BABYLON.Texture.CLAMP_ADDRESSMODE;
 
         newMeshes[0].material = materialStone;
+
+        //擺一個平面
+        // newMeshes[0].isVisible = false;
+        // var billboard = BABYLON.Mesh.CreatePlane('board4', 10, scene);
+        // billboard.position = newMeshes[0].position;
+        // billboard.material = materialStone;
+        // billboard.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
 
     });
 
@@ -636,7 +783,7 @@ function PCimportScene3(){
     // This creates a basic Babylon Scene object (non-mesh)
     var scene = new BABYLON.Scene(engine);
 
-    var camera = new BABYLON.ArcRotateCamera("Camera3", -Math.PI / 2, Math.PI / 2, 5, new BABYLON.Vector3.Zero(), scene);
+    var camera = new BABYLON.ArcRotateCamera("Camera3", -Math.PI / 2, Math.PI / 2, 6, new BABYLON.Vector3.Zero(), scene);
     camera.attachControl(canvas, false);
     camera.checkCollisions = true;
 
@@ -645,24 +792,24 @@ function PCimportScene3(){
     // console.log('import3');
 
     // The first parameter can be used to specify which mesh to import. Here we import all meshes
-    BABYLON.SceneLoader.ImportMesh("", "assets/backdoor/", "backdoor.babylon", scene, function (newMeshes) {
-        // newMeshes[0].position = BABYLON.Vector3.Zero();
-        newMeshes[0].position = new BABYLON.Vector3(10, 1, 15);
-        // newMeshes[1].isVisible = false;
+    BABYLON.SceneLoader.ImportMesh("", "assets/backdoor/0922/", "backdoor.babylon", scene, function (newMeshes) {
+        newMeshes[0].position = BABYLON.Vector3.Zero();
+        // newMeshes[0].position = new BABYLON.Vector3(10, 1, 15);
 
         var wall = scene.getMeshByName("1");
         var ground = scene.getMeshByName("2");
-        // wall.position = new BABYLON.Vector3(2, 1, 30);
+        wall.position = new BABYLON.Vector3(10, 2, 15);
         ground.isVisible = false;
 
         var materialStone = new BABYLON.StandardMaterial("texture2", scene);
         materialStone.diffuseTexture = new BABYLON.Texture("assets/backdoor/backdoor.png", scene);
+        materialStone.diffuseTexture.hasAlpha = true;
 
         // materialStone.diffuseTexture.vOffset = -0.05; //vertical offset 0f 10%
         // materialStone.diffuseTexture.uOffset = 0.05;
 
-        // materialStone.diffuseTexture.vAng = Math.PI;
-        // materialStone.diffuseTexture.wAng = Math.PI / 2;
+        materialStone.diffuseTexture.vAng = Math.PI;
+        materialStone.diffuseTexture.wAng = Math.PI / 2;
 
             // materialStone.bumpTexture = new BABYLON.Texture("assets/NormalMap.jpg",scene);
 

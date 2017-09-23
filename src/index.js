@@ -178,10 +178,12 @@ function setSectionOffset() {
         var model2 = document.getElementById("model2");
         var model3 = document.getElementById('model3');
 
+        var backTolongdong = document.getElementById('backTolongdong');
+
         changeModelPointsOffset[0] = model1.getBoundingClientRect().top + window.pageYOffset;
         changeModelPointsOffset[1] = model2.getBoundingClientRect().top + window.pageYOffset;
         changeModelPointsOffset[2] = model3.getBoundingClientRect().top + window.pageYOffset;
-        changeModelPointsOffset[3] = model2.getBoundingClientRect().bottom + window.pageYOffset;
+        changeModelPointsOffset[3] = backTolongdong.getBoundingClientRect().top + window.pageYOffset;
 
     //waypoints
         var changeViewWaypoint1 = document.getElementsByTagName("section")[2];
@@ -231,7 +233,7 @@ function setCanvasOpacityWithSection() {
 
     // }
 
-
+    //第二個換模型點的透明度轉換
     if (window.pageYOffset >= changeModelPointsOffset[2] * 0.9 && window.pageYOffset < changeModelPointsOffset[2]) {
 
         canvas.style.opacity = 1 - ((window.pageYOffset - changeModelPointsOffset[2] * 0.9) / (changeModelPointsOffset[2] - changeModelPointsOffset[2] * 0.9));
@@ -361,8 +363,8 @@ var moveCameraWithGhostCam = function (obj, callback) {
     alphaAnimation.setKeys(keys2);
     betaAnimation.setKeys(keys3);
 
-    // camera.animations.push(alphaAnimation);  //不要移alpha以免旋轉太多
     camera.animations.push(betaAnimation);
+    camera.animations.push(alphaAnimation);  //不要移alpha以免旋轉太多
     camera.animations.push(radiusAnimation);
 
     scene.beginAnimation(camera, 0, 100, false, 2, callback);
@@ -445,6 +447,8 @@ function PCloadScene1(){
         var gcamera = new BABYLON.ArcRotateCamera("gCamera", camAlpha, camBeta, camRadius, new BABYLON.Vector3.Zero(), scene);
         // camera.attachControl(canvas, false);
         gcamera.checkCollisions = true;
+        gcamera.upperAlphaLimit = 1.5;
+        gcamera.lowerAlphaLimit = -1.5;
 
         // 加上waypoints
             var waypoint1 = scene.getMeshByName("waypoint1");
@@ -814,7 +818,13 @@ function PCimportScene3(){
 
         var wall = scene.getMeshByName("1");
         var ground = scene.getMeshByName("2");
+        var board1 = scene.getMeshByName("billboard1");
+        var billboard1 = BABYLON.Mesh.CreatePlane('board4', 3, scene);
+        // billboard1.material = dynamicMaterial1;
+        // billboard1.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
+        
         wall.position = new BABYLON.Vector3(10, 2, 15);
+        billboard1.position = new BABYLON.Vector3(board1.position.x+2.5,board1.position.y,board1.position.z);
         ground.isVisible = false;
 
         var materialStone = new BABYLON.StandardMaterial("texture2", scene);

@@ -2,10 +2,10 @@ $(document).ready(function () {
     var scroll_now;
     var progress = [];
     var movie_progress = [null];
-    let w = $(window).width();
-    let h = $(window).height();
-    let total_height = $("body").height() - h;
-    const headTop = w >= 768 ? "6px" : "4px";
+    var w = $(window).width();
+    var h = $(window).height();
+    var total_height = $("body").height() - h;
+    var headTop = w >= 768 ? "6px" : "4px";
     var title = $("title").text();
 
 //video controller
@@ -139,7 +139,8 @@ $(document).ready(function () {
 
     $(window).on('scroll', function () {
         scroll_now = $(window).scrollTop();
-        let movie1 = scroll_now - $("#movie-1").offset().top + h;
+        var movie1 = scroll_now - $("#movie-1").offset().top + h;
+        var movie2 = scroll_now - $("#movie-2").offset().top + h;
 
         if (movie1 > h / 3 && movie1 < h + 200) {
             if ($("#movie-1").get(0).paused == true) {
@@ -148,6 +149,16 @@ $(document).ready(function () {
         } else {
             if ($("#movie-1").get(0).paused == false) {
                 moviePause(1);
+            }
+        }
+
+        if (movie2 > h / 3 && movie2 < h + 200) {
+            if ($("#movie-2").get(0).paused == true) {
+                moviePlay(2);
+            }
+        } else {
+            if ($("#movie-2").get(0).paused == false) {
+                moviePause(2);
             }
         }
     });

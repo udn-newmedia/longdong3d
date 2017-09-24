@@ -66,6 +66,7 @@ function RenderManager(){
     if (scroll_now >= 0 && scroll_now < stopRotatingPointOffset){
 
         scenes[activeScene].reRender = true;
+
     } else if (scroll_now >= stopRotatingPointOffset && scroll_now < changeModelPointsOffset[1]*0.9){
 
         if (scroll_now >= changeViewWaypointsOffset[0] * 0.9 && scroll_now < changeViewWaypointsOffset[0]*1.1){
@@ -77,9 +78,19 @@ function RenderManager(){
         }
     } else if (scroll_now >= changeModelPointsOffset[0] && scroll_now < changeModelPointsOffset[1] * 0.9){
         scenes[activeScene].reRender = false;        
-    } else if (scroll_now >= changeModelPointsOffset[1]*0.9){
+    } else if (scroll_now >= changeModelPointsOffset[1]*0.9 && scroll_now < changeModelPointsOffset[1]*1.1){
         scenes[activeScene].reRender = true;                
-    }
+    } else if (scroll_now >= changeModelPointsOffset[1] * 1.1 && scroll_now < changeModelPointsOffset[3] * 0.9){
+        scenes[activeScene].reRender = false;                
+    } else if (scroll_now >= changeModelPointsOffset[3] * 0.9 && scroll_now < changeModelPointsOffset[3] * 1.1){
+        scenes[activeScene].reRender = true;                
+    } else if (scroll_now >= changeModelPointsOffset[3] * 1.1 && scroll_now < changeModelPointsOffset[2] * 0.9){
+        scenes[activeScene].reRender = false;                        
+    } else if (scroll_now >= changeModelPointsOffset[2] * 0.9 && scroll_now < changeModelPointsOffset[2] * 1.1) {
+        scenes[activeScene].reRender = true;                        
+    } else if (scroll_now >= changeModelPointsOffset[2] * 1.1){
+        scenes[activeScene].reRender = false;                        
+    }   
 
     if (scenes[activeScene] && scenes[activeScene].reRender) {
         // console.log('render');
@@ -90,19 +101,20 @@ function RenderManager(){
 function SceneManager() {
 
     modelLoader();
-    setCanvasOpacityWithSection();
+    // setCanvasOpacityWithSection();
     viewChanger();
 
 }
 
-//轉換視角 & billboards控制
+//轉換視角 & billboards控制(包含在billboard上畫線)
+
 function viewChanger(){
     
     if (scroll_now < stopRotatingPointOffset && scenes[activeScene].billboards[0].isVisible){
         scenes[activeScene].billboards[0].isVisible = false;
         displayBillboards(false);
-    }
-
+    } 
+    
     if (scroll_now >= changeViewWaypointsOffset[0] && scroll_now < changeViewWaypointsOffset[0] * 1.1) {
         changeView(waypoints[0],function () {
             displayBillboards([true,true,false]);
@@ -120,7 +132,141 @@ function viewChanger(){
                 },1000)
             },3000);
         });
+    } else if (scroll_now >= changeModelPointsOffset[2] && scroll_now < changeModelPointsOffset[2]+window.innerHeight) {
+
+        // //動畫版本
+        // if(scenes[activeScene].billboards[0] && !scenes[activeScene].billboards[0].isVisible){
+        //     setTimeout(function(){
+        //         displayBillboards(true);
+        //         disableScroll();
+        //         animateTexturePlay(scenes[activeScene].billboards[0]);
+        //         setTimeout(function () {
+        //             animFrame = 1;
+        //             enableScroll();
+        //         }, 1000)
+        //     },500)
+        // }
+
+        if (scenes[activeScene].billboards[0]) {
+
+            //跟著scroll長線
+            if (!scenes[activeScene].billboards[0].isVisible) {
+
+                moveCameraByAdjustingParameters(scenes[activeScene].cameraPara2,function(){
+                    displayBillboards(true);
+                    scenes[activeScene].cameraPara2.hasChanged = true;
+                });
+
+            }else{
+
+                var start = changeModelPointsOffset[2];
+                var middlePoint1 = changeModelPointsOffset[2] + window.innerHeight * 1/3;
+                var middlePoint2 = changeModelPointsOffset[2] + window.innerHeight * 2/3;
+                var end = changeModelPointsOffset[2] + window.innerHeight;
+
+                var billboard = scenes[activeScene].billboards[0];
+
+                // start, end, billboard, points, style
+                // drawLineWithScroll(start, end, billboard, points, style);
+
+                if (scroll_now > start && scroll_now < middlePoint1){
+                    var points = billboard.animTexture.points1;
+                    var style = billboard.animTexture.ctxStyle1;
+
+                    drawLineWithScroll(start, middlePoint1, billboard, points, style);
+                } 
+                else if (scroll_now >= middlePoint1 && scroll_now < middlePoint2) {
+                    animFrame = 1;
+                    var points = billboard.animTexture.points2;
+                    var style = billboard.animTexture.ctxStyle2;
+
+                    showText(billboard, billboard.animTexture.text1);
+
+                    drawLineWithScroll(middlePoint1, middlePoint2, billboard, points, style);
+                }
+                else if (scroll_now >= middlePoint2 && scroll_now < end){
+
+                    showText(billboard, billboard.animTexture.text2);
+                    showText(billboard, billboard.animTexture.text3);
+
+                    if(!scenes[activeScene].cameraPara3.hasChanged){
+                        moveCameraByAdjustingParameters(scenes[activeScene].cameraPara3, function () {
+                            scenes[activeScene].cameraPara3.hasChanged = true;
+                        });
+                    }
+
+                    animFrame = 1;
+                    var points = billboard.animTexture.points3;
+                    var style = billboard.animTexture.ctxStyle3;
+                    drawLineWithScroll(middlePoint2, end, billboard, points, style);
+                } 
+
+            }
+
+        }
+
     }
+}
+
+function linearScaleFunc(domainArray,rangeArray){
+
+    // var sectionScale = d3.scaleLinear()
+    //     .domain(sectionData.map(function (d) {
+    //         return d.top;
+    //     }))
+    //     .range(d3.range(sectionData.length))
+    //     .clamp(true);
+    
+    //domain跟range要有同樣多的刻度
+    var scaleFunction = d3.scaleLinear()
+        .domain(domainArray)
+        .range(d3.range(rangeArray.length))
+        .clamp(true);
+
+
+    return scaleFunction;
+}
+
+function showText(billboard,text){
+
+    var context = billboard.animTexture._context;
+    context.font = text.font;
+    context.fillStyle = text.color;
+    context.fillText(text.text, text.x, text.y);
+
+    billboard.animTexture.update();
+
+}
+
+function drawLineWithScroll(start,end,billboard,points,style) {
+
+    var offset = scroll_now - start;
+    // var points = billboard.animTexture.points;
+    var targetFrame = Math.ceil((offset/(end-start))*(points.length));
+
+    var ctx = billboard.animTexture._context;
+    // var style = billboard.animTexture.ctxStyle;
+
+    ctx.lineCap = style.lineCap;
+    ctx.lineWidth = style.lineWidth;
+    ctx.strokeStyle = style.strokeStyle;
+
+    if (animFrame < points.length - 1) {
+
+        while (animFrame < targetFrame){
+            ctx.beginPath();
+            ctx.moveTo(points[animFrame - 1].x, points[animFrame - 1].y);
+            ctx.lineTo(points[animFrame].x, points[animFrame].y);
+            ctx.stroke();
+
+            setTimeout(function(){
+                billboard.animTexture.update();
+            },15);
+
+            animFrame++;
+        }
+            
+    } 
 }
 
 //只要有video在播，就停止render
@@ -144,7 +290,7 @@ function modelLoader() {
 
     var model = whichModel();
 
-    // console.log(section);
+    // console.log(model);
 
     if (model === 'model1') {
         activeScene = 0;
@@ -195,6 +341,8 @@ function setSectionOffset() {
     //other points
         var stopRotatingPoint = document.getElementsByTagName("section")[1];
         stopRotatingPointOffset = stopRotatingPoint.getBoundingClientRect().top + window.pageYOffset;
+
+
 }
 
 function whichModel() {
@@ -203,12 +351,10 @@ function whichModel() {
         return 'model1';
     } else if (window.pageYOffset >= changeModelPointsOffset[1] && window.pageYOffset < changeModelPointsOffset[3]) {
         return 'model2';
-    } else if (window.pageYOffset >= changeModelPointsOffset[3] && window.pageYOffset< changeModelPointsOffset[2]){
+    } else if (window.pageYOffset >= changeModelPointsOffset[3] && window.pageYOffset < changeModelPointsOffset[2]){
         return 'model1';
     } else if (window.pageYOffset >= changeModelPointsOffset[2]) {
         return 'model3';
-    } else {
-        return;
     }
 }
 
@@ -256,12 +402,12 @@ function displayBillboards(display){
     var scene = scenes[activeScene];
 
     if(Array.isArray(display)){
-        console.log(scene.billboards.length);
+        // console.log(scene.billboards.length);
         for(var i=0;i<scene.billboards.length;i++){
             scene.billboards[i].isVisible = display[i];
         }
     }else{
-        console.log(display);
+        // console.log(display);
         scene.billboards.forEach(function (board) {
             board.isVisible = display;
         });
@@ -364,7 +510,51 @@ var moveCameraWithGhostCam = function (obj, callback) {
     betaAnimation.setKeys(keys3);
 
     camera.animations.push(betaAnimation);
-    camera.animations.push(alphaAnimation);  //不要移alpha以免旋轉太多
+    camera.animations.push(alphaAnimation);  
+    camera.animations.push(radiusAnimation);
+
+    scene.beginAnimation(camera, 0, 100, false, 2, callback);
+}
+
+var moveCameraByAdjustingParameters = function(newPara, callback){
+
+    var scene = scenes[activeScene];
+    var camera = scene.camera;
+
+    var radiusAnimation = new BABYLON.Animation("camRadius", "radius", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
+    var alphaAnimation = new BABYLON.Animation("camAlpha", "alpha", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
+    var betaAnimation = new BABYLON.Animation("camBeta", "beta", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
+
+    var keys1 = [{
+        frame: 0,
+        value: camera.radius
+    }, {
+        frame: 100,
+        value: newPara.radius
+    }];
+
+    var keys2 = [{
+        frame: 0,
+        value: camera.alpha
+    }, {
+        frame: 100,
+        value: newPara.alpha
+    }];
+
+    var keys3 = [{
+        frame: 0,
+        value: camera.beta
+    }, {
+        frame: 100,
+        value: newPara.beta
+    }];
+
+    radiusAnimation.setKeys(keys1);
+    alphaAnimation.setKeys(keys2);
+    betaAnimation.setKeys(keys3);
+
+    camera.animations.push(betaAnimation);
+    camera.animations.push(alphaAnimation);
     camera.animations.push(radiusAnimation);
 
     scene.beginAnimation(camera, 0, 100, false, 2, callback);
@@ -407,7 +597,6 @@ var forceRebuild = function () {
     var camera = scenes[activeScene].camera;
     camera.rebuildAnglesAndRadius();
 };
-
 
 function MOBloadScene(){
     var src = "https://udn.com/upf/newmedia/2017_data/hk_handover_20/video/video1.mp4";
@@ -722,16 +911,16 @@ function animateTexturePlay(billboard) {
 }
 
 // calc waypoints traveling along vertices
-function calcIntermediatepoints(vertices) {
+function calcIntermediatepoints(vertices,num) {
     var waypoints = [];
     for (var i = 1; i < vertices.length; i++) {
         var pt0 = vertices[i - 1];
         var pt1 = vertices[i];
         var dx = pt1.x - pt0.x;
         var dy = pt1.y - pt0.y;
-        for (var j = 0; j < 100; j++) {
-            var x = pt0.x + dx * j / 100;
-            var y = pt0.y + dy * j / 100;
+        for (var j = 0; j < num; j++) {
+            var x = pt0.x + dx * j / num;
+            var y = pt0.y + dy * j / num;
             waypoints.push({
                 x: x,
                 y: y
@@ -803,69 +992,211 @@ function PCimportScene3(){
     // This creates a basic Babylon Scene object (non-mesh)
     var scene = new BABYLON.Scene(engine);
 
-    var camera = new BABYLON.ArcRotateCamera("Camera3", -Math.PI / 2, Math.PI / 2, 6, new BABYLON.Vector3.Zero(), scene);
+    //Adding an Arc Rotate Camera
+    var camAlpha = -Math.PI / 2;
+    var camBeta = Math.PI / 2;
+    var camRadius = 6;
+
+    var camera = new BABYLON.ArcRotateCamera("Camera1", camAlpha, camBeta, camRadius, new BABYLON.Vector3.Zero(), scene);
     camera.attachControl(canvas, false);
     camera.checkCollisions = true;
+    // camera.upperAlphaLimit = 1.5;
+    // camera.lowerAlphaLimit = -1.5;
+
+    var cameraPara2 = {
+        alpha: camAlpha,
+        beta: camBeta,
+        radius: camRadius * 0.5,
+        hasChanged: false
+    }
+
+    var cameraPara3 = {
+        alpha: camAlpha,
+        beta: camBeta * 1.3,
+        radius: camRadius * 0.3,
+        hasChanged: false
+    }
+
+
+    // var camera = new BABYLON.ArcRotateCamera("Camera3", -Math.PI / 2, Math.PI / 2, 6, new BABYLON.Vector3.Zero(), scene);
+    // camera.attachControl(canvas, false);
+    // camera.checkCollisions = true;
 
     var light = new BABYLON.HemisphericLight("hemi3", new BABYLON.Vector3(0, 1, 0), scene);
 
-    // console.log('import3');
+    // var billboard1;
 
     // The first parameter can be used to specify which mesh to import. Here we import all meshes
     BABYLON.SceneLoader.ImportMesh("", "assets/backdoor/0922/", "backdoor.babylon", scene, function (newMeshes) {
+
         newMeshes[0].position = BABYLON.Vector3.Zero();
         // newMeshes[0].position = new BABYLON.Vector3(10, 1, 15);
-
+        
         var wall = scene.getMeshByName("1");
         var ground = scene.getMeshByName("2");
         var board1 = scene.getMeshByName("billboard1");
-        var billboard1 = BABYLON.Mesh.CreatePlane('board4', 3, scene);
-        // billboard1.material = dynamicMaterial1;
-        // billboard1.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
-        
-        wall.position = new BABYLON.Vector3(10, 2, 15);
-        billboard1.position = new BABYLON.Vector3(board1.position.x+2.5,board1.position.y,board1.position.z);
+
+        board1.isVisible = false;
         ground.isVisible = false;
+
+        wall.position = new BABYLON.Vector3(10, 2, 15);
 
         var materialStone = new BABYLON.StandardMaterial("texture2", scene);
         materialStone.diffuseTexture = new BABYLON.Texture("assets/backdoor/backdoor.png", scene);
         materialStone.diffuseTexture.hasAlpha = true;
-
+    
         // materialStone.diffuseTexture.vOffset = -0.05; //vertical offset 0f 10%
         materialStone.diffuseTexture.uOffset = -0.4;
-
+    
         materialStone.diffuseTexture.wrapU = BABYLON.Texture.CLAMP_ADDRESSMODE;
         materialStone.diffuseTexture.wrapV = BABYLON.Texture.CLAMP_ADDRESSMODE;
-
+    
         // materialStone.diffuseTexture.uAng = -Math.PI * 0.01;
         // materialStone.diffuseTexture.vAng = Math.PI * 1.1;
         materialStone.diffuseTexture.vAng = 3.555555;
         materialStone.diffuseTexture.wAng = Math.PI / 2;
-
-            // materialStone.bumpTexture = new BABYLON.Texture("assets/NormalMap.jpg",scene);
-
+    
+        // materialStone.bumpTexture = new BABYLON.Texture("assets/NormalMap.jpg",scene);
+    
         wall.material = materialStone;
 
+        //用動畫來找參數
         // scene.beforeRender = function () {
         //     materialStone.diffuseTexture.wAng += .001;
         //     // outputplaneTexture.uOffset += .001;
-
+    
         //     // console.log(materialStone.diffuseTexture.wAng);
         // };
 
-    });
+        var boardTexture1 = new BABYLON.DynamicTexture("dynamic texture4", 512, scene, true);
+        boardTexture1.hasAlpha = true; //必須要clearColor沒被定義
+    
+        var dynamicMaterial1 = new BABYLON.StandardMaterial('mat4', scene);
+        dynamicMaterial1.diffuseTexture = boardTexture1;
+        dynamicMaterial1.specularColor = new BABYLON.Color3(0, 0, 0);
+        dynamicMaterial1.backFaceCulling = true;
+    
+        var billboard1 = BABYLON.Mesh.CreatePlane('board4', 10, scene);
+        // billboard1.position = new BABYLON.Vector3(board1.position.x + 2.5, board1.position.y, board1.position.z);
+        // billboard1.position = new BABYLON.Vector3(0.07737434613873993+2, 3.096316808221121-4, 2.2394179552192908);
+        billboard1.position = new BABYLON.Vector3(wall.position.x-5, wall.position.y-2.5, wall.position.z-4);
+        billboard1.material = dynamicMaterial1;
+        billboard1.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
+        billboard1.isVisible = false;
+        billboard1.animTexture = boardTexture1;
+        // define the path to plot
+        var vertices1 = [];
+        var vertices2 = [];
+        var vertices3 = [];
 
-    modelLoaded[2] = !modelLoaded[2];
+        vertices1.push({
+            x: 250,
+            y: 500
+        });
+        vertices1.push({
+            x: 270,
+            y: 290
+        });
+    
+        vertices2.push({
+            x: 270,
+            y: 290
+        });
+        vertices2.push({
+            x: 320,
+            y: 100
+        });
+
+        vertices3.push({
+            x: 320,
+            y: 100
+        });
+        vertices3.push({
+            x: 370,
+            y: 0
+        });
+
+        billboard1.animTexture.points1 = calcIntermediatepoints(vertices1, 50);
+        billboard1.animTexture.points2 = calcIntermediatepoints(vertices2, 50);
+        billboard1.animTexture.points3 = calcIntermediatepoints(vertices3, 50);
+
+        // billboard1.animTexture.points = vertices;
+        billboard1.animTexture.ctxStyle1 = {
+            lineCap: "round",
+            lineWidth: "5",
+            strokeStyle: "blue"
+        }
+    
+        billboard1.animTexture.ctxStyle2 = {
+            lineCap: "round",
+            lineWidth: "5",
+            strokeStyle: "red"
+        }
+
+        billboard1.animTexture.ctxStyle3 = {
+            lineCap: "round",
+            lineWidth: "3",
+            strokeStyle: "blue"
+        }
+
+        //文字部分
+        var font = "18px Microsoft JhengHei";
+        var color = "yellow"
+
+        var text1 = "最易墜落的凹槽段";
+        var x1 = 140;
+        var y1 = 200;
+
+        var text2 = "大平面攀爬";
+        var x2 = 190;
+        var y2 = 80;
+
+        var text3 = "需要力量與技巧";
+        var x3 = 190;
+        var y3 = 100;
+
+        billboard1.animTexture.text1 = {
+            font: font,
+            color: color,
+            text: text1,
+            x: x1,
+            y: y1
+        }
+
+        billboard1.animTexture.text2 = {
+            font: font,
+            color: color,
+            text: text2,
+            x: x2,
+            y: y2
+        }
+
+        billboard1.animTexture.text3 = {
+            font: font,
+            color: color,
+            text: text3,
+            x: x3,
+            y: y3
+        }
+
+        scenes[sceneIndex].billboards = [];
+        scenes[sceneIndex].billboards.push(billboard1);
+
+    });    
+    
+    modelLoaded[2] = !modelLoaded[2];    
 
     var sceneIndex = scenes.push(scene) - 1;
     scenes[sceneIndex].reRender = true;
+    scenes[sceneIndex].camera = camera;
+    scenes[sceneIndex].cameraPara2 = cameraPara2;
+    scenes[sceneIndex].cameraPara3 = cameraPara3;
     scenes[sceneIndex].renderLoop = function () {
         this.render();
-    }
-
+    }    
+    
     return scene;
 }
-
 
 function detectmob() {
     if (
@@ -920,7 +1251,6 @@ function enableScroll() {
 }
 
 
-
 /***Tools***/
 
     /*1. unproject vector*/
@@ -966,5 +1296,5 @@ function enableScroll() {
         return worldVector;
     }
 
-    // canvas.addEventListener("pointerdown", positionUnproject, false);
+    canvas.addEventListener("pointerdown", positionUnproject, false);
     

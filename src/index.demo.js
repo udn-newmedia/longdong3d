@@ -895,7 +895,8 @@ function PCloadScene1(){
 
 
 d3.select("#btn").on("click", function() {
-  console.log("alpha:"+camera.alpha, "beta:"+camera.beta, "radius:"+camera.radius);
+//   console.log("alpha:"+camera.alpha, "beta:"+camera.beta, "radius:"+camera.radius);
+  console.log("position:"+camara.position);
   console.log("target:"+camera.target);
 });
 
@@ -918,7 +919,17 @@ d3.select("#btn").on("click", function() {
             // waypoint2.isVisible = false;
 
 
+            // var waypoint1 = {
+            //     X:0.13900849037974,
+            //     Y:1.0869504240069845,
+            //     Z:
+            // }
 
+            // var target1 = {
+            //     X:
+            //     Y:
+            //     Z:
+            // }
 
         // billboards
         
@@ -1082,13 +1093,13 @@ d3.select("#btn").on("click", function() {
         plane4.isVisible = false;
 
         // 設定waypoints和targets
-        // var wp1index = waypoints.push(waypoint1)-1;
-        // waypoints[wp1index].hasChanged = false;
-        // waypoints[wp1index].target = target1;
+        var wp1index = waypoints.push(waypoint1)-1;
+        waypoints[wp1index].hasChanged = false;
+        waypoints[wp1index].target = target1;
 
-        // var wp2index = waypoints.push(waypoint2) - 1;
-        // waypoints[wp2index].hasChanged = false;
-        // waypoints[wp2index].target = plane3;
+        var wp2index = waypoints.push(waypoint2) - 1;
+        waypoints[wp2index].hasChanged = false;
+        waypoints[wp2index].target = plane3;
 
         //  封面的旋轉
         var stopRotating = true;

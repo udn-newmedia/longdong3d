@@ -896,7 +896,7 @@ function PCloadScene1(){
 
 d3.select("#btn").on("click", function() {
 //   console.log("alpha:"+camera.alpha, "beta:"+camera.beta, "radius:"+camera.radius);
-  console.log("position:"+camara.position);
+  console.log("position:"+camera.position);
   console.log("target:"+camera.target);
 });
 
@@ -1093,13 +1093,13 @@ d3.select("#btn").on("click", function() {
         plane4.isVisible = false;
 
         // 設定waypoints和targets
-        var wp1index = waypoints.push(waypoint1)-1;
-        waypoints[wp1index].hasChanged = false;
-        waypoints[wp1index].target = target1;
+        // var wp1index = waypoints.push(waypoint1)-1;
+        // waypoints[wp1index].hasChanged = false;
+        // waypoints[wp1index].target = target1;
 
-        var wp2index = waypoints.push(waypoint2) - 1;
-        waypoints[wp2index].hasChanged = false;
-        waypoints[wp2index].target = plane3;
+        // var wp2index = waypoints.push(waypoint2) - 1;
+        // waypoints[wp2index].hasChanged = false;
+        // waypoints[wp2index].target = plane3;
 
         //  封面的旋轉
         var stopRotating = true;

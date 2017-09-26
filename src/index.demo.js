@@ -923,7 +923,11 @@ function PCloadScene1(){
             billboard1.material = dynamicMaterial;
             billboard1.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
 
-            // var clearColor = "#555555";
+        //billboard2
+            var plane2 = scene.getMeshByName("plane2");
+            plane2.isVisible = false;
+
+        // var clearColor = "#555555";
             var font = "bold 40px Microsoft JhengHei";
             var color = "yellow"
 

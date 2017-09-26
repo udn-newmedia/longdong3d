@@ -923,10 +923,6 @@ function PCloadScene1(){
             billboard1.material = dynamicMaterial;
             billboard1.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
 
-        //billboard2
-            var plane2 = scene.getMeshByName("plane2");
-            plane2.isVisible = false;
-
         // var clearColor = "#555555";
             var font = "bold 40px Microsoft JhengHei";
             var color = "yellow"
@@ -1066,6 +1062,10 @@ function PCloadScene1(){
                 lineWidth: "10",
                 strokeStyle: "white"
             }
+
+        //billboard4
+        var plane4 = scene.getMeshByName("plane4");
+        plane4.isVisible = false;
 
         // 設定waypoints和targets
         var wp1index = waypoints.push(waypoint1)-1;

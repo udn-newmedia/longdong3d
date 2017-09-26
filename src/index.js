@@ -12,6 +12,15 @@ var waypoints = [];
 
 var canvas;
 
+//labels for model2
+var labels = d3.selectAll(".g-label");
+var labelData = [];
+
+labels.each(function () {
+    labelData.push(d3.select(this));
+});
+
+
 // variable to hold how many frames have elapsed in the animation
 var animFrame = 1;
 
@@ -81,15 +90,17 @@ function RenderManager(){
     } else if (scroll_now >= changeModelPointsOffset[1]*0.9 && scroll_now < changeModelPointsOffset[1]*1.1){
         scenes[activeScene].reRender = true;                
     } else if (scroll_now >= changeModelPointsOffset[1] * 1.1 && scroll_now < changeModelPointsOffset[3] * 0.9){
-        scenes[activeScene].reRender = false;                
+        // scenes[activeScene].reRender = false;  
+
     } else if (scroll_now >= changeModelPointsOffset[3] * 0.9 && scroll_now < changeModelPointsOffset[3] * 1.1){
         scenes[activeScene].reRender = true;                
     } else if (scroll_now >= changeModelPointsOffset[3] * 1.1 && scroll_now < changeModelPointsOffset[2] * 0.9){
-        scenes[activeScene].reRender = false;                        
+
+        // scenes[activeScene].reRender = false;                        
     } else if (scroll_now >= changeModelPointsOffset[2] * 0.9 && scroll_now < changeModelPointsOffset[2] * 1.1) {
         scenes[activeScene].reRender = true;                        
     } else if (scroll_now >= changeModelPointsOffset[2] * 1.1){
-        scenes[activeScene].reRender = false;                        
+        // scenes[activeScene].reRender = false;                        
     }   
 
     if (scenes[activeScene] && scenes[activeScene].reRender) {
@@ -120,6 +131,9 @@ function viewChanger(){
             displayBillboards([true,true,false]);
         });
     } else if (scroll_now >= changeViewWaypointsOffset[1] && scroll_now < changeViewWaypointsOffset[1] * 1.1) {
+
+        d3.selectAll(".g-label").style("opacity",0);
+
         //第一個模型，第二個視角    
         changeView(waypoints[1], function () {
             displayBillboards(true);
@@ -135,91 +149,172 @@ function viewChanger(){
                 });
             },3000);
         });
-    } else if (scroll_now >= changeModelPointsOffset[1] && scroll_now < changeModelPointsOffset[1] + 1 / 2 * window.innerHeight) {
+    } else if (scroll_now >= changeViewWaypointsOffset[2] && scroll_now < changeViewWaypointsOffset[3]) {
         //第二個模型，第一個視角
-        if (scenes[activeScene].billboards[0] && !scenes[activeScene].billboards[0].isVisible) {
-
-            console.log('1')
-    
-            moveCameraByAdjustingParameters(scenes[activeScene].cameraPara2, function () {
-            
-                var billboard = scenes[activeScene].billboards[0];
-                var style = billboard.animTexture.ctxStyle1;
-                var points = billboard.animTexture.points1;
         
-                displayBillboards(true);
-                // animateTexturePlay(billboard, style, points, function () {
-                //     animFrame = 1;
-                // });
-            });
+        // d3.selectAll(".g-label")
+        //     .style("opacity", 0);
+
+        // d3.select(".g-label .model2-1").style("opacity",1);
+
+        if (scenes[activeScene].billboards[0]) {
+
+            if (!scenes[activeScene].cameraPara2.hasChanged){
+
+
+                scenes[activeScene].cameraPara2.hasChanged = true;
+    
+                moveCameraByAdjustingParameters(scenes[activeScene].cameraPara2, function () {
+                
+                    var billboard = scenes[activeScene].billboards[0];
+                    var style = billboard.animTexture.ctxStyle1;
+                    var points = billboard.animTexture.points1;
+            
+                    displayBillboards(true);
+    
+                    animateTexturePlay(billboard, style, points, function () {
+                        animFrame = 1;
+                        // showTextFlipped(billboard, billboard.animTexture.text1);
+
+                        for (var i = 0; i < labelData.length; i++) {
+                            if (i === 0) {
+                                labelData[i].style('opacity', 1);
+                            } else {
+                                labelData[i].style('opacity', 0);
+                            }
+                        }
+
+                    });
+                });
+            }
         }
 
-    } else if (scroll_now >= changeModelPointsOffset[1] + 1 / 2 * window.innerHeight && scroll_now < changeModelPointsOffset[1] + window.innerHeight) {
+    } else if (scroll_now >= changeViewWaypointsOffset[3] && scroll_now < changeViewWaypointsOffset[4]) {
         //第二個模型，第二個視角
+
         if (!scenes[activeScene].cameraPara3.hasChanged) {
 
-            console.log('2')
+            scenes[activeScene].cameraPara3.hasChanged = true;
+
 
             moveCameraByAdjustingParameters(scenes[activeScene].cameraPara3, function () {
         
                 var billboard = scenes[activeScene].billboards[0];
-                var style = billboard.animTexture.ctxStyle2;
-                var points = billboard.animTexture.points2;
-        
-                // animateTexturePlay(billboard, style, points, function () {
-                //     animFrame = 1;
-                // });
+                var ctxStyle2 = billboard.animTexture.ctxStyle2;
+                var ctxStyle3 = billboard.animTexture.ctxStyle3;
+                var points2 = billboard.animTexture.points2;
+                var points3 = billboard.animTexture.points3;
+                
+                billboard.animTexture._context.clearRect(0, 0, 512, 512);
+
+                animateTexturePlay(billboard, ctxStyle2, points2, function () {
+                    animFrame = 1;
+                    // showText(billboard, billboard.animTexture.text2);
+                    // showText(billboard, billboard.animTexture.text3);
+
+                    for (var i = 0; i < labelData.length; i++) {
+                        if (i === 1 || i === 2) {
+                            labelData[i].style('opacity', 1);
+                        } else {
+                            labelData[i].style('opacity', 0);
+                        }
+                    }
+
+                });
+
+                animateTexturePlay(billboard, ctxStyle3, points3, function () {
+                    animFrame = 1;
+                    // showText(billboard, billboard.animTexture.text4);
+                    // showText(billboard, billboard.animTexture.text5);
+                });
+
 
             });
 
         }
 
-
-    } else if (scroll_now >= changeModelPointsOffset[1] + window.innerHeight && scroll_now < changeModelPointsOffset[1] + 3 / 2 * window.innerHeight) {
+    } else if (scroll_now >= changeViewWaypointsOffset[4] && scroll_now < changeViewWaypointsOffset[5]) {
         //第二個模型，第三個視角
-        if (!scenes[activeScene].cameraPara4.hasChanged) {
 
-            console.log('3')
+        if (!scenes[activeScene].cameraPara4.hasChanged) {
+            
+            scenes[activeScene].cameraPara4.hasChanged = true;
+
 
             moveCameraByAdjustingParameters(scenes[activeScene].cameraPara4, function () {
     
                 var billboard = scenes[activeScene].billboards[0];
-                var style = billboard.animTexture.ctxStyle3;
-                var points = billboard.animTexture.points3;
-
-                // animateTexturePlay(billboard, style, points, function () {
-                //     animFrame = 1;
-                // });
-            });
-        }
-
-
-    } else if (scroll_now >= changeModelPointsOffset[1] + 3 / 2 * window.innerHeight && scroll_now < changeModelPointsOffset[1] + 2 * window.innerHeight) {
-        //第二個模型，第四個視角        
-        if (!scenes[activeScene].cameraPara4.hasChanged) {
-
-            console.log('4')
-    
-            moveCameraByAdjustingParameters(scenes[activeScene].cameraPara5, function () {
-                
-                var billboard = scenes[activeScene].billboards[0];
                 var style = billboard.animTexture.ctxStyle4;
                 var points = billboard.animTexture.points4;
 
-                // animateTexturePlay(billboard, style, points, function () {
-                //     animFrame = 1;
-                // });
+                billboard.animTexture._context.clearRect(0, 0, 512, 512);
+
+                animateTexturePlay(billboard, style, points, function () {
+                    animFrame = 1;
+                    // showText(billboard, billboard.animTexture.text6);
+                    // showText(billboard, billboard.animTexture.text7);
+
+                    for (var i = 0; i < labelData.length; i++) {
+                        if (i === 3) {
+                            labelData[i].style('opacity', 1);
+                        } else {
+                            labelData[i].style('opacity', 0);
+                        }
+                    }
+
+                });
             });
         }
+
+
+    } else if (scroll_now >= changeViewWaypointsOffset[5] && scroll_now < changeModelPointsOffset[3]) {
+        //第二個模型，第四個視角        
+
+        if (!scenes[activeScene].cameraPara5.hasChanged) {
+            
+            scenes[activeScene].cameraPara5.hasChanged = true;
+
+        
+            
+            moveCameraByAdjustingParameters(scenes[activeScene].cameraPara5, function () {
+                
+                var billboard = scenes[activeScene].billboards[0];
+                var style = billboard.animTexture.ctxStyle5;
+                var points = billboard.animTexture.points5;
+
+                billboard.animTexture._context.clearRect(0, 0, 512, 512);
+
+                animateTexturePlay(billboard, style, points, function () {
+                    animFrame = 1;
+                    // showText(billboard, billboard.animTexture.text8);
+                    // showText(billboard, billboard.animTexture.text9);
+
+                    for (var i = 0; i < labelData.length; i++) {
+                        if (i === 4) {
+                            labelData[i].style('opacity', 1);
+                        } else {
+                            labelData[i].style('opacity', 0);
+                        }
+                    }
+
+                });
+            }); 
+        }
+
+    } else if (scroll_now >= changeViewWaypointsOffset[5] && scroll_now < changeModelPointsOffset[2]){
+
+        d3.selectAll(".g-label").style("opacity", 0);
 
     } else if (scroll_now >= changeModelPointsOffset[2] && scroll_now < changeModelPointsOffset[2] + 2/3 * window.innerHeight) {
         //第三個模型，第一個視角
 
         //定點觸發動畫
         if (scroll_now < changeModelPointsOffset[2]+ 1/3 * window.innerHeight){
+            
+            if (scenes[activeScene].billboards[0] && !scenes[activeScene].cameraPara2.hasChanged){
 
-            if(scenes[activeScene].billboards[0] && !scenes[activeScene].billboards[0].isVisible){
-    
+                scenes[activeScene].cameraPara2.hasChanged = true;
+
                 moveCameraByAdjustingParameters(scenes[activeScene].cameraPara2, function(){
     
                     var billboard = scenes[activeScene].billboards[0];
@@ -227,26 +322,29 @@ function viewChanger(){
                     var points = billboard.animTexture.points1;
     
                     displayBillboards(true);
-                    scenes[activeScene].cameraPara2.hasChanged = true;
                     animateTexturePlay(billboard,style,points,function(){
                         animFrame = 1;
+                        showText(billboard, billboard.animTexture.text1);
                     });
                 });
             
             }
+
         } else {
 
             var billboard = scenes[activeScene].billboards[0];
             
             if (!billboard.animTexture.ctxStyle2.draw) {
 
-                billboard.animTexture.ctxStyle2.draw = false;
+                billboard.animTexture.ctxStyle2.draw = true;
 
                 var style = billboard.animTexture.ctxStyle2;
                 var points = billboard.animTexture.points2;
 
                 animateTexturePlay(billboard, style, points, function () {
                     animFrame = 1;
+                    showText(billboard, billboard.animTexture.text2);
+                    showText(billboard, billboard.animTexture.text3);
                 });
             }
 
@@ -311,13 +409,15 @@ function viewChanger(){
 
         //第三個模型，第二個視角
         if (!scenes[activeScene].cameraPara3.hasChanged){
+
+            scenes[activeScene].cameraPara3.hasChanged = true;
+
             //定點觸發動畫
             moveCameraByAdjustingParameters(scenes[activeScene].cameraPara3, function () {
     
                 var billboard = scenes[activeScene].billboards[0];
                 var style = billboard.animTexture.ctxStyle3;
                 var points = billboard.animTexture.points3;
-                scenes[activeScene].cameraPara3.hasChanged = true;
     
                 animateTexturePlay(billboard, style, points, function () {
                     animFrame = 1;
@@ -345,6 +445,15 @@ function linearScaleFunc(domainArray,rangeArray){
 
 
     return scaleFunction;
+}
+
+function showTextFlipped(billboard,text){
+
+    var context = billboard.animTexture._context;
+    context.font = text.font;
+    context.fillStyle = text.color;
+    context.fillText(text.text, text.x, text.y);
+    billboard.animTexture.update();    
 }
 
 function showText(billboard,text){
@@ -452,17 +561,29 @@ function setSectionOffset() {
         changeModelPointsOffset[3] = backTolongdong.getBoundingClientRect().top + window.pageYOffset;
 
     //waypoints
+        //model1 longdong
         var changeViewWaypoint1 = document.getElementsByTagName("section")[2];
         changeViewWaypointsOffset[0] = changeViewWaypoint1.getBoundingClientRect().top + window.pageYOffset;
 
         var changeViewWaypoint2 = document.getElementsByTagName("section")[5];
-        changeViewWaypointsOffset[1] = changeViewWaypoint2.getBoundingClientRect().top + window.innerHeight*0.75 + window.pageYOffset;        
+        changeViewWaypointsOffset[1] = changeViewWaypoint2.getBoundingClientRect().top + window.innerHeight + window.pageYOffset;        
+
+        //model2
+        var changeViewWaypoint3 = document.getElementById("model2-1");
+        changeViewWaypointsOffset[2] = changeViewWaypoint3.getBoundingClientRect().top + window.pageYOffset;
+
+        var changeViewWaypoint4 = document.getElementById("model2-2");
+        changeViewWaypointsOffset[3] = changeViewWaypoint4.getBoundingClientRect().top + window.pageYOffset;
+
+        var changeViewWaypoint5 = document.getElementById("model2-3");
+        changeViewWaypointsOffset[4] = changeViewWaypoint5.getBoundingClientRect().top + window.pageYOffset;
+
+        var changeViewWaypoint6 = document.getElementById("model2-4");
+        changeViewWaypointsOffset[5] = changeViewWaypoint6.getBoundingClientRect().top + window.pageYOffset;
 
     //other points
         var stopRotatingPoint = document.getElementsByTagName("section")[1];
         stopRotatingPointOffset = stopRotatingPoint.getBoundingClientRect().top + window.pageYOffset;
-
-
 }
 
 function whichModel() {
@@ -638,10 +759,10 @@ var moveCameraWithGhostCam = function (obj, callback) {
 
 var moveCameraByAdjustingParameters = function(newPara, callback){
 
-    if(newPara.hasChanged) return;
+    // if(newPara.hasChanged) return;
 
     var scene = scenes[activeScene];
-    var camera = scene.camera;
+    var camera = scene.activeCamera;
 
     var radiusAnimation = new BABYLON.Animation("camRadius", "radius", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
     var alphaAnimation = new BABYLON.Animation("camAlpha", "alpha", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
@@ -675,12 +796,13 @@ var moveCameraByAdjustingParameters = function(newPara, callback){
     alphaAnimation.setKeys(keys2);
     betaAnimation.setKeys(keys3);
 
+    camera.animations.splice(0, camera.animations.length);
     camera.animations.push(betaAnimation);
     camera.animations.push(alphaAnimation);
     camera.animations.push(radiusAnimation);
 
-    scene.beginAnimation(camera, 0, 100, false, 1, function(){
-        newPara.hasChanged = true;
+    scene.beginAnimation(camera, 0, 100, false, 3, function(){
+        // newPara.hasChanged = true;
         callback();
     });
 }
@@ -1016,13 +1138,12 @@ function animateTexturePlay(billboard, style, points, callback) {
     ctx.strokeStyle = style.strokeStyle;
 
     if (animFrame < points.length) {
-        //Maximum call stack size exceeded error
-            // requestAnimationFrame(animateTexturePlay(billboard));
-        //another method
+
         setTimeout(function(){
             animateTexturePlay(billboard, style, points, callback);
             animFrame++;
         },15)
+        
     } else {
         callback();
     }
@@ -1164,9 +1285,9 @@ function PCimportScene2(){
     }
 
     var cameraPara3 = {
-        alpha: camAlpha,
-        beta: camBeta,
-        radius: camRadius * 0.75,
+        alpha: camAlpha * 3,
+        beta: camBeta * 0.9,
+        radius: camRadius * 0.7,
         hasChanged: false
     }
 
@@ -1224,11 +1345,13 @@ function PCimportScene2(){
 
         var billboard2 = BABYLON.Mesh.CreatePlane('board5', 10, scene);
         billboard2.position = new BABYLON.Vector3(newMeshes[0].position.x + 4, newMeshes[0].position.y, newMeshes[0].position.z);
+        // billboard2.rotation = new BABYLON.Vector3(Math.PI, Math.PI / 2, -Math.PI);
         billboard2.rotation = new BABYLON.Vector3(Math.PI, Math.PI / 2, 0);
+
 
         billboard2.material = dynamicMaterial2;
         // billboard2.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
-        billboard2.isVisible = false;
+        billboard2.isVisible = true;
         billboard2.animTexture = boardTexture2;
 
         // define the path to plot
@@ -1236,41 +1359,52 @@ function PCimportScene2(){
         var vertices2 = [];
         var vertices3 = [];
         var vertices4 = [];
+        var vertices5 = [];
+
 
         vertices1.push({
-            x: 250,
-            y: 500
+            x: 220,
+            y: 200
         });
         vertices1.push({
-            x: 270,
-            y: 290
+            x: 180,
+            y: 80
         });
     
         vertices2.push({
-            x: 270,
-            y: 290
+            x: 255,
+            y: 170
         });
         vertices2.push({
-            x: 320,
-            y: 100
+            x: 265,
+            y: 343
         });
 
         vertices3.push({
-            x: 320,
-            y: 100
+            x: 265,
+            y: 345
         });
         vertices3.push({
-            x: 370,
-            y: 0
+            x: 275,
+            y: 400
         });
 
         vertices4.push({
-            x: 370,
-            y: 0
+            x: 150,
+            y: 100
         });
         vertices4.push({
-            x: 370,
-            y: 20
+            x: 160,
+            y: 190
+        });
+
+        vertices5.push({
+            x: 260,
+            y: 190
+        });
+        vertices5.push({
+            x: 275,
+            y: 400
         });
 
         // billboard1.animTexture.points1 = calcIntermediatepoints(vertices1, 10);
@@ -1281,35 +1415,161 @@ function PCimportScene2(){
         billboard2.animTexture.points2 = vertices2;
         billboard2.animTexture.points3 = vertices3;
         billboard2.animTexture.points4 = vertices4;
+        billboard2.animTexture.points5 = vertices5;
 
         // billboard1.animTexture.points = vertices;
         billboard2.animTexture.ctxStyle1 = {
             lineCap: "round",
-            lineWidth: "5",
+            lineWidth: "1",
             strokeStyle: "blue",
             draw: false
         }
     
         billboard2.animTexture.ctxStyle2 = {
             lineCap: "round",
-            lineWidth: "5",
-            strokeStyle: "red",
+            lineWidth: "1",
+            strokeStyle: "blue",
             draw: false
         }
 
         billboard2.animTexture.ctxStyle3 = {
             lineCap: "round",
-            lineWidth: "3",
-            strokeStyle: "blue",
+            lineWidth: "1",
+            strokeStyle: "red",
             draw: false
         }
 
         billboard2.animTexture.ctxStyle4 = {
             lineCap: "round",
-            lineWidth: "5",
+            lineWidth: "1",
             strokeStyle: "red",
             draw: false
         }
+
+        billboard2.animTexture.ctxStyle5 = {
+            lineCap: "round",
+            lineWidth: "1",
+            strokeStyle: "blue",
+            draw: false
+        }
+
+        //文字部分
+        var font = "12px Microsoft JhengHei";
+        var color = "yellow"
+
+        //第一個視角
+        var text1 = "翻越2組小天花板地形";
+        var x1 = 280;
+        var y1 = 300;
+
+        //第二個視角
+        var text2 = "大角度攀爬";
+        var x2 = 260;
+        var y2 = 190;
+
+        var text3 = "手跟腳都延伸到極致";
+        var x3 = 260;
+        var y3 = 170;
+
+        var text4 = "無確保的2公尺";
+        var x4 = 275;
+        var y4 = 400;
+
+        var text5 = "極容易大幅度墜落";
+        var x5 = 275;
+        var y5 = 420;
+
+        var text6 = "最難的是翻過天花板地形";
+        var x6 = 160;
+        var y6 = 190;
+
+        var text7 = "我練了3個月單槓才成功";
+        var x7 = 160;
+        var y7 = 170;
+
+        var text8 = "這是條傳攀路線";
+        var x8 = 260;
+        var y8 = 190;
+
+        var text9 = "每次都能設計不同爬法";
+        var x9 = 260;
+        var y9 = 170;
+
+        billboard2.animTexture.text1 = {
+            font: font,
+            color: color,
+            text: text1,
+            x: x1,
+            y: y1
+        }    
+
+        billboard2.animTexture.text2 = {
+            font: font,
+            color: color,
+            text: text2,
+            x: x2,
+            y: y2
+        }
+
+        billboard2.animTexture.text3 = {
+            font: font,
+            color: color,
+            text: text3,
+            x: x3,
+            y: y3
+        }
+
+        billboard2.animTexture.text4 = {
+            font: font,
+            color: color,
+            text: text4,
+            x: x4,
+            y: y4
+        }
+
+        billboard2.animTexture.text5 = {
+            font: font,
+            color: color,
+            text: text5,
+            x: x5,
+            y: y5
+        }
+
+        billboard2.animTexture.text6 = {
+            font: font,
+            color: color,
+            text: text6,
+            x: x6,
+            y: y6
+        }
+
+        billboard2.animTexture.text7 = {
+            font: font,
+            color: color,
+            text: text7,
+            x: x7,
+            y: y7
+        }
+
+        billboard2.animTexture.text8 = {
+            font: font,
+            color: color,
+            text: text8,
+            x: x8,
+            y: y8
+        }
+
+        billboard2.animTexture.text9 = {
+            font: font,
+            color: color,
+            text: text9,
+            x: x9,
+            y: y9
+        }
+
+        // var clearColor;
+        // billboard2.animTexture.drawText(text1, x1, y1, font, color, clearColor, true, true);
+        // billboard2.animTexture.hasAlpha = true;
 
         scenes[sceneIndex].billboards = [];
         scenes[sceneIndex].billboards.push(billboard2);
@@ -1461,9 +1721,9 @@ function PCimportScene3(){
             y: 0
         });
 
-        // billboard1.animTexture.points1 = calcIntermediatepoints(vertices1, 10);
-        // billboard1.animTexture.points2 = calcIntermediatepoints(vertices2, 10);
-        // billboard1.animTexture.points3 = calcIntermediatepoints(vertices3, 10);
+        // billboard1.animTexture.points1 = calcIntermediatepoints(vertices1, 20);
+        // billboard1.animTexture.points2 = calcIntermediatepoints(vertices2, 20);
+        // billboard1.animTexture.points3 = calcIntermediatepoints(vertices3, 20);
 
         billboard1.animTexture.points1 = vertices1;
         billboard1.animTexture.points2 = vertices2;
@@ -1492,7 +1752,7 @@ function PCimportScene3(){
         }
 
         //文字部分
-        var font = "18px Microsoft JhengHei";
+        var font = "16px Microsoft JhengHei";
         var color = "yellow"
 
         var text1 = "最易墜落的凹槽段";
@@ -1649,5 +1909,5 @@ function enableScroll() {
         return worldVector;
     }
 
-    // canvas.addEventListener("pointerdown", positionUnproject, false);
+    canvas.addEventListener("pointerdown", positionUnproject, false);
     

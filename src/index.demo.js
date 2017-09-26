@@ -17,6 +17,7 @@ d3.select('#head').style('opacity',0);
 
 d3.select(".article").style('opacity',0);
 
+
 //labels for model2
 var labels = d3.selectAll(".g-label");
 var labelData = [];
@@ -132,8 +133,9 @@ function viewChanger(){
 
     if (scroll_now >= changeViewWaypointsOffset[0] && scroll_now < changeViewWaypointsOffset[0] * 1.1) {
         //第一個模型，第一個視角
-        changeView(waypoints[0],function () {
-            // displayBillboards([true,true,false]);
+
+        changeView(waypoints[0], function() {
+          // displayBillboards([true,true,false]);
         });
 
     } else if (scroll_now >= changeViewWaypointsOffset[1] && scroll_now < changeViewWaypointsOffset[1] * 1.1) {
@@ -885,10 +887,19 @@ function PCloadScene1(){
         var camRadius = 7;
 
         var camera = new BABYLON.ArcRotateCamera("Camera1", camAlpha, camBeta, camRadius, new BABYLON.Vector3(0, 2, 0), scene);
-        // camera.attachControl(canvas, false);
+        camera.attachControl(canvas, false);
         camera.checkCollisions = true;
         camera.upperAlphaLimit = 1.1;
         camera.lowerAlphaLimit = -1.1;
+
+
+
+d3.select("#btn").on("click", function() {
+  console.log("alpha:"+camera.alpha, "beta:"+camera.beta, "radius:"+camera.radius);
+  console.log("target:"+camera.target);
+});
+
+
 
         // A ghost camera 
         var gcamera = new BABYLON.ArcRotateCamera("gCamera", camAlpha, camBeta, camRadius, new BABYLON.Vector3(0, 2, 0), scene);
@@ -897,14 +908,17 @@ function PCloadScene1(){
         gcamera.upperAlphaLimit = 1.1;
         gcamera.lowerAlphaLimit = -1.1;
 
-        // 加上waypoints
-            var waypoint1 = scene.getMeshByName("waypoint1");
-            var target1 = scene.getMeshByName("target1");
-            var waypoint2 = scene.getMeshByName("waypoint2");
+        // 加上waypoints & target
+            // var waypoint1 = scene.getMeshByName("waypoint1");
+            // var target1 = scene.getMeshByName("target1");
+            // var waypoint2 = scene.getMeshByName("waypoint2");
 
-            waypoint1.isVisible = false;
-            target1.isVisible = false;
-            waypoint2.isVisible = false;
+            // waypoint1.isVisible = false;
+            // target1.isVisible = false;
+            // waypoint2.isVisible = false;
+
+
+
 
         // billboards
         
@@ -1068,19 +1082,20 @@ function PCloadScene1(){
         plane4.isVisible = false;
 
         // 設定waypoints和targets
-        var wp1index = waypoints.push(waypoint1)-1;
-        waypoints[wp1index].hasChanged = false;
-        waypoints[wp1index].target = target1;
+        // var wp1index = waypoints.push(waypoint1)-1;
+        // waypoints[wp1index].hasChanged = false;
+        // waypoints[wp1index].target = target1;
 
-        var wp2index = waypoints.push(waypoint2) - 1;
-        waypoints[wp2index].hasChanged = false;
-        waypoints[wp2index].target = plane3;
+        // var wp2index = waypoints.push(waypoint2) - 1;
+        // waypoints[wp2index].hasChanged = false;
+        // waypoints[wp2index].target = plane3;
 
         //  封面的旋轉
-        var stopRotating = false;
+        var stopRotating = true;
         var reachedUpperLimit = false;
 
         scene.registerBeforeRender(function(){
+
             // 封面的旋轉
             if(stopRotatingPointOffset){
                 stopRotating = (scroll_now <= stopRotatingPointOffset)?false:true;
@@ -1920,5 +1935,5 @@ function enableScroll() {
         return worldVector;
     }
 
-    canvas.addEventListener("pointerdown", positionUnproject, false);
+    // canvas.addEventListener("pointerdown", positionUnproject, false);
     

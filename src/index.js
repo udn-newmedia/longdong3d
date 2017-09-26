@@ -870,6 +870,8 @@ function PCloadScene1(){
     // BABYLON.SceneLoader.Load("assets/09-finall/", "north-3D-new-09-final.babylon", engine, function (scene) {
     BABYLON.SceneLoader.Load("assets/09-finall/", "north-3D-new-09-final_edited.babylon", engine, function (scene) {
 
+        scene.clearColor = new BABYLON.Color3.FromHexString("#28253a");
+
         //Adding an Arc Rotate Camera
         var camAlpha = -0.3;
         var camBeta = 0.9;

@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    <title>龍洞3D</title>
+    <link rel="stylesheet" href="https://udn.com/upf/newmedia/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://udn.com/upf/newmedia/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://udn-newmedia.github.io/udn-newmedia-css/css/style.css">
+    <link rel="stylesheet" href="lib/css/nivo-slider.css">
+    <link rel="stylesheet" href="lib/css/default.css">
+    <link rel="stylesheet" href="src/style.css" >
+
+    <!-- Babylon.js -->
+    <script src="http://www.babylonjs.com/hand.minified-1.2.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babylonjs/2.5.0/babylon.js"></script>
+    <!-- newmedia -->
+    <script src="https://udn.com/upf/newmedia/js/jquery-3.2.1.min.js"></script>
+    <script defer src="https://udn.com/upf/newmedia/js/bootstrap.min.js"></script>
+    <script defer src="https://udn.com/upf/newmedia/js/lazysizes.min.js"></script>
+    <!-- <script src="https://udn-newmedia.github.io/udn-newmedia-css/js/index.js"></script> -->
+
+    <script src="src/videoctrl.js"></script>
+    <script async src="lib/js/RAF.polyfill.js"></script>
+
+    <!-- nivoSlider -->
+    <script defer src="lib/js/jquery.nivo.slider.js"></script>
+    <script defer src="src/nivo-slider.js"></script>    
+
+    <!-- d3v4 -->
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+
+</head>
+
+<body>
+    <div id="indicator">
+        <div id="indicator-bar"></div>
+    </div>
+    <div id="head">
+        <div id="icon">
+            <a href="."><img src="https://udn.com/upf/newmedia/image/udn.png"></a>
+        </div>
+    </div>
+
+    <div id="g-graphic"></div>
+
+    <!-- <div class="g-label model2-1" style="position:fixed; left:913px; top: 339px; z-index:2; color:yellow; opacity:0;">翻越2組小天花板地形</div>
+    <div class="g-label model2-2" style="position:fixed; left:1107px; top: 367px; z-index:2; color:yellow; opacity:0;">大角度攀爬<br>手跟腳都延伸到極致</div>
+    <div class="g-label model2-3" style="position:fixed; left:1070px; top: 175px; z-index:2; color:yellow; opacity:0;">無確保的2公尺<br>極容易大幅度墜落</div>
+    <div class="g-label model2-4" style="position:fixed; left:981px; top: 398px; z-index:2; color:yellow; opacity:0;">最難的是翻過天花板地形<br>我練了3個月單槓才成功</div>
+    <div class="g-label model2-5" style="position:fixed; left:1134px; top: 271px; z-index:2; color:yellow; opacity:0;">這是條傳攀路線<br>每次都能設計不同爬法</div> -->
+
+    <div class="article">
+        <section id="model1">
+            <h1>龍洞攀岩3D</h1>
+            <div id="share-block-top" class="share-block container">
+                <div class="fb-like-block">
+                    <div class="fb-like" data-href="./index.html" data-layout="button_count" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
+                </div>
+                <div class="line-block">
+                    <img class="line-share" style="position:relative;" src="//media.line.me/img/button/zh-hant/84x20.png" width="86" height="22" alt="LINE分享給朋友">
+                </div>
+            </div>
+        </section>
+        <section>
+            <div class="content container">
+                <p>2002年2月微雨的冷天，才剛到台灣兩天的Matt Robertson ，不會半句中文，卻迫不及待的從新竹獨自北上基隆，客運、火車、計程車轉換，花了7小時才抵達龍洞。</p>                
+                <p><br/></p>
+                <p>他一摸到岩壁就覺得這地方跟亞洲多數光滑的石灰岩場不一樣。《台灣龍洞攀岩》作者Matt Robertson 是美國的攀岩好手，他回憶第一次到龍洞攀爬的情形，「當時接近傍晚，天色昏暗，又下雨、颳風，沒有人知道我在那裏，爬上去很冒險，但這趟試爬，我覺得龍洞是個我一直在找尋的地方。」</p>
+
+            </div>
+            <div class="img-contain container">
+                <picture>
+                    <source srcset="./assets/images/img_2_m.jpg" media="(max-width:1199px)">
+                    <img class="lazyload" data-src="./assets/images/img_2.jpg">
+                </picture>
+            </div>
+            <div class="content container">
+                <p>龍洞的岩壁品質良好且磨擦力十足，Matt放下包包試爬，他在龍洞第一條試爬路線，直到今天依舊是造訪龍洞地質必爬的熱身選項。</p>
+                <p><br/></p>
+                <p>攀岩帶給Matt探索異地的滿足感，每次為了造訪一個新的攀岩場，在陌生的國家旅行，克服一切麻煩抵達人跡罕至的地點，是非常享受的過程。那是一種面對未知的勇氣，你不知道前方情況，也無法預測是否有驚喜在眼前，「找到一些當地人也不知道的秘密基地，就像是尋寶，有時有趣，有時覺得痛苦。」</p>
+            </div>
+            <div class="img-contain container">
+                <picture>
+                    <source srcset="./assets/images/img_1_m.jpg" media="(max-width:1199px)">
+                    <img class="lazyload" data-src="./assets/images/img_1.jpg">
+                </picture>
+            </div>
+            <div class="content container">
+                <p>當他爬到視野遼闊的高處，「我看到有確保點在岩壁上，相信這是台灣人的攀岩場。」第一次相遇後，他每週回到龍洞攀岩，隨著時間累積，一步一腳印的探索這個岩場。Matt發現這個岩場極為特別，但是這裡的人並不理解它的真實面貌。</p>
+                <p><br/></p>
+                <p>我一直在找好的傳攀的場地，龍洞就是一個很棒的地方。當我聽到台灣人說龍洞是個只適合運動攀登的場地時，激起了我想將龍洞真實面貌介紹給大家的動力。」2012年他與好友陳震宇共同編寫《台灣龍洞攀岩》一書，更建立龍洞攀岩網站，網站信箱經常收到外國攀岩者的詢問，越來越多外國攀岩者特地為了龍洞到台灣。</p>
+            </div>
+            <div class="video-contain">
+                <video preload="metadata" class="rwd-2dv" id="movie-1" src="https://udn.com/upf/newmedia/2017_data/hk_handover_20/video/video1.mp4" playsinline data-target="1"></video>
+                <div style="margin-top: -8px;" class="video-control">
+                <div class="progress hidden-md hidden-lg">
+                    <div id="progress-bar-1" class="progress-bar progress-bar-striped"></div>
+                </div>
+                <div class="img-say-out volume-text hidden-md hidden-lg" data-target="1">點按開聲音</div>
+                    <i class="fa fa-spinner fa-pulse video-wait" data-target="1"></i>
+                    <i class="fa fa-play video-play hidden-md hidden-lg" data-target="1"></i>
+                    <i class="fa fa-volume-off volume hidden-md hidden-lg" data-target="1"></i>
+                    <i class="fa fa-repeat replay hidden-md hidden-lg" data-target="1"></i>
+                </div>
+            </div>
+        </section>
+        <section>
+            <div class="content container">
+                <h2>少見的臨海混合岩場，外國人朝聖</h2>
+                <p>台灣北海岸的龍洞，穿越層層疊疊的石陣，除了外圍地區有遊客戲水，越往龍洞心臟地帶前進，被清澈海水包圍的岩壁宛如世外仙境，灌木雜草從岩縫鑽出，除了野生動物外，還有攀岩者的足跡。</p>
+                <p><br/></p>
+                <p>40年來的探索，連當地居民也不清楚的峭壁地形，攀岩者們瞭若指掌，龍洞是台灣攀岩大本營，舉目所及的每一片岩壁，都是攀岩者躍躍欲試的目標，短短2公里，已開發出600多條攀爬路線。</p>
+                <p><br/></p>
+                <p>「龍洞空間多又大、地形多變，同時擁有傳統攀登與運動攀登的路線，還在海邊，台灣人真的很幸運。」15年攀岩經驗的澳洲人Stephen Parr說。龍洞3500多年前沉積，形成四陵砂岩，穩定的岩質，遠眺太平洋的濱海攀岩環境，近年大受國內外攀岩者喜愛，逐步躍升為世界知名的濱海岩場。</p>                
+            </div>
+        </section>
+        <section class="blankHalfPage"></section>
+        <section>
+            <div class="img-contain hidden-xs hidden-sm">
+                <div class="slider-wrapper theme-default">
+                    <div id="slider" class="nivoSlider">
+                        <img class="lazyload fullscreen" src="./assets/images/img_4.jpg" alt="">
+                        <img class="lazyload fullscreen" src="./assets/images/img_5.jpg" alt="">
+                        <img class="lazyload fullscreen" src="./assets/images/img_6.jpg" alt="">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="img-contain hidden-lg hidden-md">
+                <picture>
+                    <source srcset="./assets/images/img_4_m.jpg" media="(max-width:1199px)">
+                    <img class="lazyload fullscreen" data-src="./assets/images/img_4.jpg">
+                </picture>
+            </div>
+            <div class="img-contain hidden-lg hidden-md">
+                <picture>
+                    <source srcset="./assets/images/img_5_m.jpg" media="(max-width:1199px)">
+                    <img class="lazyload fullscreen" data-src="./assets/images/img_5.jpg">
+                </picture>
+            </div>
+            <div class="img-contain hidden-lg hidden-md">
+                <picture>
+                    <source srcset="./assets/images/img_6_m.jpg" media="(max-width:1199px)">
+                    <img class="lazyload fullscreen" data-src="./assets/images/img_6.jpg">
+                </picture>
+            </div>
+        </section>
+        <section>
+            <div class="content container">
+                <p>美景之外，攀岩者們的熱情也成了一道風景，「在龍洞，無論你們熟不熟，其他攀岩者都願意主動告訴你怎麼做，這在國外不可能發生。」回想在國外攀岩的經驗，有15年攀岩經驗的吳美齡點出「熱情」是台灣攀岩社群的特色，一起攀岩的夥伴是啦啦隊，「你在岩壁上快撐不下去時，聽到地面上的人對你大喊：可以的！加油！因為他們的鼓勵，許多難關這樣就撐過去了。」吳美齡笑著說自己的攀岩技術是大家鼓勵出來的成果。</p>
+                <p><br/></p>
+                <h2>攀岩的人生課</h2>
+                <p><br></p>
+                <p>從底部攀到頂部，沒有標準答案，「同一條路線，每個人抓的手點腳點不太一樣，攀岩平衡感與手腳協調非常重要，但人人的風格都不同。」正職是美術老師的吳美齡，喜歡觀察攀岩者在岩壁上的動作，有人輕盈的彷彿是「岩壁上的舞者」，手與腳的搭配協調性絕佳，有些人像是在牆上打太極，有些人像在跟牆壁打架，有些人是問題解決者，安靜的思考眼前的難題。</p>
+                <p><br/></p>
+                <p>攀岩者眼前的那面牆，就是一道道待解的謎，每個人解謎需要的時間不同，答案也不盡相同。有些路線簡單一下就破關，有些路線複雜難解，往往耗上數月至數年的時間，才挑戰成功。</p>
+            </div>
+        </section>
+        <section class="blankPage"></section>
+        <section id="model2">
+            <div class="content container">
+                <div class="narrow-in-pc">
+                    <h2>陳震宇<br/>黃金谷 黃金勇氣</h2>
+                    <p>從這條路線，我花了3年才挑戰成功，成功之前的每一次攀爬都在墜落。</p>
+                    <p><br/></p>
+                    <p>向外傾斜的岩壁，且最後2公尺沒有任何可以支撐的確保點，我要在力氣耗盡前，將手腳伸到極限抓住下一個攀附點。</p>
+                    <p><br/></p>
+                    <p>岩壁向外傾斜，上爬的過程多半依靠手的抓力，力氣流失非常快速，但同時要想辦法保留體力供應終點前毫無支撐的2公尺，如果沒有一次成功上攀，這一墜落至少一公尺，那種感覺壓力很大，非常考驗體力與意志力。</p>
+                </div>
+            </div>
+        </section>
+        <section id="model2-1">
+            <div class="content container">
+                <div class="narrow-in-pc">
+                    <div class="video-contain">
+                            <video preload="metadata" class="rwd-2dv" id="movie-2" src="assets/videos/golden-stone.mp4"
+                            playsinline data-target="2"></video>
+                            <div style="margin-top: -8px;" class="video-control">
+                                <div class="progress hidden-md hidden-lg">
+                                    <div id="progress-bar-1" class="progress-bar progress-bar-striped"></div>
+                                </div>
+                                <div class="img-say-out volume-text hidden-md hidden-lg" data-target="2">點按開聲音</div>
+                                <i class="fa fa-spinner fa-pulse video-wait" data-target="2"></i>
+                                <i class="fa fa-play video-play hidden-md hidden-lg" data-target="2"></i>
+                                <i class="fa fa-volume-off volume hidden-md hidden-lg" data-target="2"></i>
+                                <i class="fa fa-repeat replay hidden-md hidden-lg" data-target="2"></i>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="model2-2">
+            <div class="content container">
+                <div class="narrow-in-pc">
+                    <p>上攀一次，墜落一次，到最後我已經習慣了。幾十次的失敗，那些位置要做什麼動作、怎麼有效地串聯動作，到最後近乎本能反射。成功的那一次，我是前沒有預設要成功，心中只想著下一個動作，一回神人就到頂端。</p>
+                    <p><br/></p>
+                    <p>後來我理解了：想要爬上去，最重要的是放鬆。</p>                        
+                </div>
+                <div class="img-contain" style="margin-top: 50vh">
+                    <picture>
+                        <source srcset="./assets/images/img_3_m.jpg" media="(max-width:1199px)">
+                        <img class="lazyload" data-src="./assets/images/img_3.jpg">
+                    </picture>
+                </div>
+            </div>
+        </section>
+        <section id="model2-3">
+            <div class="content container">
+                <div class="narrow-in-pc">
+                    <h2>吳美齡<br/>黃金谷 黃金浴</h2>
+                    <p>攀岩就是要不斷的在上爬的過程中，找到平衡點。黃金浴是我第一條先鋒完攀的路線，剛起步就要克服一道全身暴露感極強的大天花板。</p>
+                    <p><br/></p>
+                    <p>想要橫越一點五米寬的天花板，必須靠全身肌肉的幫忙，動到的不只是手臂與雙腳，也要靠腹部的力量讓懸空的腳擺盪，勾到岩壁上，再單槓式上拉，才能成功上到另外一片岩面。</p>
+                    <p><br/></p>
+                    <p>這條傳統攀登的路線，沒有預先固定的確保點，你必須要自己找到適當的岩壁裂隙，並且把岩契放入固定確保自己安全。</p>
+                </div>
+            </div>
+        </section>
+        <section id="model2-4">
+            <div class="content container">
+                <p>跟現在流行的運動攀登很不同，傳統攀登最吸引我的地方是，從路線設計、上攀、放入岩契設置確保，每一步依賴的是自己的決斷，我的每一步都要負起全責，沒有任何外在因素可以責怪或卸責。</p>
+                <p><br/></p>
+                <p>攀岩教會我的是，要做對自己百分之百負責的決定。</p>
+            </div>
+            <div class="video-contain" style="margin-top: 50vh">
+                <video preload="metadata" class="rwd-2dv" id="movie-3" src="assets/videos/wu.mp4" playsinline data-target="3"></video>
+                <div style="margin-top: -8px;" class="video-control">
+                <div class="progress hidden-md hidden-lg">
+                    <div id="progress-bar-1" class="progress-bar progress-bar-striped"></div>
+                </div>
+                <div class="img-say-out volume-text hidden-md hidden-lg" data-target="3">點按開聲音</div>
+                    <i class="fa fa-spinner fa-pulse video-wait" data-target="3"></i>
+                    <i class="fa fa-play video-play hidden-md hidden-lg" data-target="3"></i>
+                    <i class="fa fa-volume-off volume hidden-md hidden-lg" data-target="3"></i>
+                    <i class="fa fa-repeat replay hidden-md hidden-lg" data-target="3"></i>
+                </div>
+            </div>
+        </section>
+        <section id="backTolongdong" class="blankPage"></section>
+        <section id="model3">
+            <div class="content container">
+                <div class="narrow-in-pc">
+                    <h2>林倍璁<br/>後門 大家的福利</h2>
+                    <p>「力量、技巧、恐懼」這是攀岩的三大練習項目，善用身體、四肢的力量，攀岩不是一直使用手臂去拉出身體的重量，而是讓雙腳扮演承重的角色，手引導方向，並練習隨時找到重心的技巧。</p>
+                    <p><br/></p>
+                    <p>最難的還是「恐懼」，十個攀岩九個怕，但要練習的並不是克服恐懼，而是學會跟恐懼相處，了解自己的力量和極限。</p>
+ 
+                    <div class="img-contain">
+                        <picture>
+                            <source srcset="./assets/images/img_4_m.jpg" media="(max-width:1199px)">
+                            <img class="lazyload fullscreen" data-src="./assets/images/img_4.jpg">
+                        </picture>
+                    </div>
+ 
+                    <p>我在爬的時候，常覺得岩石有自己的生命力與個性。一條路線就算再熟悉，也會因為天候、時間、溫度的不同而有不同變化，上攀的過程，我們自然的會繞過一些鬆動、看起來不穩的區域，而非一味跟著教學書或前人的路線攀爬，沒有固定答案，唯一的答案就是確保安全。</p>
+                    <p><br/></p>
+                    <p>你要是說自己很厲害，大家都會叫你先鋒！一爬上去就知道幾兩重拉！仔細觀察，攀岩者都有一種特性，沒有人會大聲嚷嚷自己很厲害，不是講求謙虛的美德，而是因為在岩石上，面對自己的極限，你沒有絕對的把握。</p>
+                </div>
+            </div>
+        </section>
+        <section>
+            <div class="content container">
+                <h2>攀岩教會我的事 找最適路徑</h2>
+                <p>從底部攀到頂部，沒有標準答案，「同一條路線，每個人抓的手點腳點不太一樣，攀岩平衡感與手腳協調非常重要，但人人的風格都不同。」正職是美術老師的吳美齡，喜歡觀察攀岩者在岩壁上的動作，有人輕盈的彷彿是「岩壁上的舞者」，手與腳的搭配協調性絕佳，有些人像是在牆上打太極，有些人像在跟牆壁打架，有些人是問題解決者，安靜的思考眼前的難題。</p>
+                <p><br/></p>
+                <p>攀岩者眼前的那面牆，就是一道道待解的謎，每個人解謎需要的時間不同，答案也不盡相同。有些路線簡單一下就破關，有些路線複雜難解，往往耗上數月至數年的時間，才挑戰成功。</p>
+            </div>
+            <div class="img-contain container">
+                <picture>
+                    <source srcset="./assets/images/img_4_m.jpg" media="(max-width:1199px)">
+                    <img class="lazyload fullscreen" data-src="./assets/images/img_4.jpg">
+                </picture>
+            </div>
+            <div class="content container">
+                <p>攀岩不只改變一些人對事情的看法，甚至可能改變一個人的生活。從小學五年級就在龍洞攀岩的張宇翔，自在的穿梭岩石與岩石間，就像走在自家後院。跟所有青少年一樣，都經歷過叛逆期，但他亂跑的去處是龍洞，用攀岩填滿了青春，也爬出了想要追求的生活，「我就是想過著一直爬的簡單生活，接觸大自然、感受環境，物質慾望不是最重要需求，「開心」反而是我最在乎的生活條件因素。」</p>
+                <p><br/></p>
+                <p>在臨海的龍洞，向上找路，這裡一直會是這群攀岩者持續追求攀岩體悟與冒險精神的香格里拉。</p>
+            </div>
+        </section>
+        <div class="share-block container">
+            <div class="fb-like-block">
+				<div class="fb-like" data-href="./index.html" data-layout="button_count" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
+			</div>
+			<div class="line-block">
+				<img class="line-share" style="position:relative;" src="//media.line.me/img/button/zh-hant/84x20.png" width="86" height="22" alt="LINE分享給朋友">
+			</div>
+            <div class="logo-block">
+                <div class="udn-logo">
+                    <a href="https://udn.com/news/index" target="_blank">
+                        <img class="lazyload" data-src="https://udn.com/upf/newmedia/image/udn-logo.jpg">
+                    </a>
+                </div>
+                <div class="nmd-logo">
+                    <a href="https://udn.com/upf/newmedia/udn_newmedia/index.html" target="_blank">
+                        <img class="lazyload" data-src="https://udn.com/upf/newmedia/image/nmd-logo.png">
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="container" id="editor">
+			<div class="editor">文字：魏妤庭</div>
+            <div class="editor">2017.05.08</div>
+        </div>
+        <div id="report" class="container">
+            <h6>聯合報聯沙龍研究報告</h6>
+            <div class="row">
+                <div class="col-sm-6 col-md-3">
+                    <a href="http://p.udn.com.tw/upf/newmedia/2017_data/20170303_3dmedia/index.html" target="_blank">
+                        <img class="lazyload" data-src="https://udn.com/upf/newmedia/2017_data/20170508_marketing/image/3Dmodel.jpg">
+                        <p>3D模型新聞應用 簡易入門分享</p>
+                    </a>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <a href="http://p.udn.com.tw/upf/newmedia/2017_data/20170222_maps/index.html" target="_blank">
+                        <img class="lazyload" data-src="https://udn.com/upf/newmedia/2017_data/20170508_marketing/image/maps.jpg">
+                        <p>新聞✖地圖✖資訊 新媒體菜鳥的QGIS心得</p>
+                    </a>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <a href="http://p.udn.com.tw/upf/newmedia/2017_data/20170208_vrarmr2/index.html" target="_blank">
+                        <img class="lazyload" data-src="https://udn.com/upf/newmedia/2017_data/20170508_marketing/image/vr.jpg">
+                        <p>實境科技發展 給媒體的未來啟示</p>
+                    </a>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <a href="https://www.facebook.com/groups/UDNNEWMEDIA/?fref=ts" target="_blank">
+                        <img class="lazyload" data-src="https://udn.com/upf/newmedia/2017_data/20170508_marketing/image/salon.jpg">
+                        <p>聯。沙龍</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="fb-comment-block container">
+            <div class="fb-comments" data-href="https://udn.com/upf/newmedia/index.html" data-order-by="social" data-numposts="5" data-width="100%"></div>
+        </div>
+        <footer>
+            <span class="footer-link footer-right-board"><a href="http://www.udngroup.com/" target="_blank">聯合報系</a></span>
+            <span class="footer-link footer-right-board"><a href="https://www.facebook.com/udnplus" target="_blank">粉絲團</a></span>
+            <span class="footer-link footer-right-board"><a href="http://udndata.com/udnauthority.html" target="_blank">新聞授權</a></span>
+            <span class="footer-link"><a href="http://www.udngroup.com/information/privacy" target="_blank">隱私權聲明</a></span>
+        </footer>
+    </div>
+    <script src="./src/index.demo.js"></script>
+</body>
+
+</html>

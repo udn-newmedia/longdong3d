@@ -682,13 +682,16 @@ function changeView(waypoint, callback){
 
 var smoothSetTarget = function (obj, onEndcallback) {
 
-    var camera = scenes[0].camera;
+    var camera = scenes[activeScene].camera;
 
     var provTargetX = camera.getTarget().x;
     var provTargetY = camera.getTarget().y;
     var provTargetZ = camera.getTarget().z;
 
     camera.setTarget(obj.position);
+
+    console.log(obj.position);
+
     targetX = camera.target.x;
     targetY = camera.target.y;
     targetZ = camera.target.z;
@@ -892,12 +895,12 @@ function PCloadScene1(){
             // var target1 = BABYLON.Mesh.CreateSphere("sphere1", 0.01, 0.01, scene);
             // waypoint1.position = new BABYLON.Vector3(4, 3.78345073141672, -1.0032810597619022);
             // target1.position = new BABYLON.Vector3(4.294345366846326, 3.820366305622412, -1.7780033698026012);
-            var waypoint2 = scene.getMeshByName("waypoint2");
+            // var waypoint2 = scene.getMeshByName("waypoint2");
 
             waypoint1.isVisible = false;
             target1.isVisible = false;
 
-            waypoint2.isVisible = false;
+            // waypoint2.isVisible = false;
 
         // billboards
         
@@ -1061,9 +1064,9 @@ function PCloadScene1(){
         waypoints[wp1index].hasChanged = false;
         waypoints[wp1index].target = target1;
 
-        var wp2index = waypoints.push(waypoint2) - 1;
-        waypoints[wp2index].hasChanged = false;
-        waypoints[wp2index].target = plane3;
+        // var wp2index = waypoints.push(waypoint2) - 1;
+        // waypoints[wp2index].hasChanged = false;
+        // waypoints[wp2index].target = plane3;
 
         //  封面的旋轉
         var stopRotating = false;

@@ -1,4 +1,6 @@
 
+coordinaes of waypoints and targets
+
 scene1: 
     waypoint1:
 

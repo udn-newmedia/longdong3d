@@ -144,17 +144,23 @@ function viewChanger(){
 
         //第一個模型，第二個視角    
         changeView(waypoints[1], function () {
-            // displayBillboards(true);
+
+            displayBillboards([false, false, false, true]);
+
+
             setTimeout(function(){
-                var billboard = scenes[activeScene].billboards[2];
+                var billboard = scenes[activeScene].billboards[3];
                 var points = billboard.animTexture.points;
                 var style = billboard.animTexture.ctxStyle;
+
                 disableScroll();
-                // animateTexturePlay(billboard,style,points,function(){
-                //     animFrame = 1;
-                //     enableScroll();
-                //     scrollAnimation(changeModelPointsOffset[1], 1000);
-                // });
+
+                animateTexturePlay(billboard,style,points,function(){
+                    animFrame = 1;
+                    enableScroll();
+                    scrollAnimation(changeModelPointsOffset[1], 1000);
+                });
+
             },3000);
         });
     } else if (scroll_now >= changeViewWaypointsOffset[2] && scroll_now < changeViewWaypointsOffset[3]) {
@@ -311,7 +317,20 @@ function viewChanger(){
 
     } else if (scroll_now >= changeViewWaypointsOffset[5] && scroll_now < changeModelPointsOffset[2]){
 
-        d3.selectAll(".g-label").style("opacity", 0);
+        // d3.selectAll(".g-label").style("opacity", 0);
+        displayBillboards([false, false, true, false]);
+
+          var billboard = scenes[activeScene].billboards[2];
+          var points = billboard.animTexture.points;
+          var style = billboard.animTexture.ctxStyle;
+
+          disableScroll();
+
+          animateTexturePlay(billboard, style, points, function() {
+            animFrame = 1;
+            enableScroll();
+            scrollAnimation(changeModelPointsOffset[2], 1000);
+          });
 
     } else if (scroll_now >= changeModelPointsOffset[2] && scroll_now < changeModelPointsOffset[2] + 2/3 * window.innerHeight) {
         //第三個模型，第一個視角
@@ -691,13 +710,19 @@ function changeView(waypoint, callback){
 
 var smoothSetTarget = function (obj, onEndcallback) {
 
-    var camera = scenes[0].camera;
+    var camera = scenes[activeScene].camera;
 
-    var provTargetX = camera.getTarget().x;
-    var provTargetY = camera.getTarget().y;
-    var provTargetZ = camera.getTarget().z;
+    // var provTargetX = camera.getTarget().x;
+    // var provTargetY = camera.getTarget().y;
+    // var provTargetZ = camera.getTarget().z;
 
-    camera.setTarget(obj.position);
+    var provTargetX = camera.target.x;
+    var provTargetY = camera.target.x;
+    var provTargetZ = camera.target.x;
+
+//    camera.setTarget(obj.position);
+    camera.setTarget(new BABYLON.Vector3(obj.x,obj.y,obj.z));
+
     targetX = camera.target.x;
     targetY = camera.target.y;
     targetZ = camera.target.z;
@@ -725,7 +750,8 @@ var moveCameraWithGhostCam = function (obj, callback) {
     var camera = scenes[activeScene].camera;
     var gcamera = scenes[activeScene].gcamera;
 
-    gcamera.setPosition(obj.position);
+    // gcamera.setPosition(obj.position);
+    gcamera.setPosition(obj);
 
     var radiusAnimation = new BABYLON.Animation("camRadius", "radius", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
     var alphaAnimation = new BABYLON.Animation("camAlpha", "alpha", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
@@ -759,8 +785,8 @@ var moveCameraWithGhostCam = function (obj, callback) {
     alphaAnimation.setKeys(keys2);
     betaAnimation.setKeys(keys3);
 
-    camera.animations.push(betaAnimation);
     camera.animations.push(alphaAnimation);  
+    camera.animations.push(betaAnimation);
     camera.animations.push(radiusAnimation);
 
     scene.beginAnimation(camera, 0, 100, false, 2, callback);
@@ -919,17 +945,29 @@ d3.select("#btn").on("click", function() {
             // waypoint2.isVisible = false;
 
 
-            // var waypoint1 = {
-            //     X:0.13900849037974,
-            //     Y:1.0869504240069845,
-            //     Z:
-            // }
+            var waypoint1 = {
+                x:6.878846228549867,
+                y:5.624442667001714,
+                z:2.785135595239103
+            }
 
-            // var target1 = {
-            //     X:
-            //     Y:
-            //     Z:
-            // }
+            var target1 = {
+                x:0,
+                y:2,
+                z:0
+            }
+
+            var waypoint2 = {
+                x:4.01723914000348,
+                y:2.6102516854780466,
+                z:6.705014908367961
+            }
+
+            var target2 = {
+                x:0.6099509019598574,
+                y:1.25727781865985,
+                z:0.010512437642007032
+            }
 
         // billboards
         
@@ -1080,29 +1118,53 @@ d3.select("#btn").on("click", function() {
                 });
 
 
-            // billboard3.animTexture.points = calcIntermediatepoints(vertices,20);
-            billboard3.animTexture.points = vertices;
+            billboard3.animTexture.points = calcIntermediatepoints(vertices,20);
+            // billboard3.animTexture.points = vertices;
             billboard3.animTexture.ctxStyle = {
                 lineCap: "round",
                 lineWidth: "10",
-                strokeStyle: "white"
+                strokeStyle: "yellow"
             }
 
-        //billboard4
+
+        // billboard4 (畫框框)
+
+        var boardTexture4 = new BABYLON.DynamicTexture("dynamic texture4", 512, scene, true);
+        boardTexture4.hasAlpha = true;//必須要clearColor沒被定義
+
+        var dynamicMaterial4 = new BABYLON.StandardMaterial('mat4', scene);
+        dynamicMaterial4.diffuseTexture = boardTexture4;
+        dynamicMaterial4.specularColor = new BABYLON.Color3(0, 0, 0);
+        dynamicMaterial4.backFaceCulling = true;
+
         var plane4 = scene.getMeshByName("plane4");
-        plane4.isVisible = false;
+        plane4.isVisible = true;
+
+        var billboard4 = BABYLON.Mesh.CreatePlane('board4', 1, scene);
+        billboard4.position = plane4.position;
+        billboard4.material = dynamicMaterial4;
+        billboard4.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
+        billboard4.isVisible = false;
+        billboard4.animTexture = boardTexture4;
+
+        billboard4.animTexture.points = calcIntermediatepoints(vertices, 20);
+        billboard4.animTexture.ctxStyle = {
+            lineCap: "round",
+            lineWidth: "10",
+            strokeStyle: "yellow"
+        }
 
         // 設定waypoints和targets
-        // var wp1index = waypoints.push(waypoint1)-1;
-        // waypoints[wp1index].hasChanged = false;
-        // waypoints[wp1index].target = target1;
+        var wp1index = waypoints.push(waypoint1)-1;
+        waypoints[wp1index].hasChanged = false;
+        waypoints[wp1index].target = target1;
 
-        // var wp2index = waypoints.push(waypoint2) - 1;
-        // waypoints[wp2index].hasChanged = false;
-        // waypoints[wp2index].target = plane3;
+        var wp2index = waypoints.push(waypoint2) - 1;
+        waypoints[wp2index].hasChanged = false;
+        waypoints[wp2index].target = target2;
 
         //  封面的旋轉
-        var stopRotating = true;
+        var stopRotating = false;
         var reachedUpperLimit = false;
 
         scene.registerBeforeRender(function(){
@@ -1143,6 +1205,7 @@ d3.select("#btn").on("click", function() {
         scenes[sceneIndex].billboards.push(billboard1);
         scenes[sceneIndex].billboards.push(billboard2);        
         scenes[sceneIndex].billboards.push(billboard3);
+        scenes[sceneIndex].billboards.push(billboard4);
 
         scenes[sceneIndex].renderLoop = function () {
                 this.render();
@@ -1315,7 +1378,7 @@ function PCimportScene2(){
     camera.checkCollisions = true;
 
     var cameraPara2 = {
-        alpha: camAlpha * 5,
+        alpha: camAlpha * 5.5,
         beta: camBeta * 1.1,
         radius: camRadius * 0.7,
         hasChanged: false
@@ -1329,7 +1392,7 @@ function PCimportScene2(){
     }
 
     var cameraPara4 = {
-        alpha: camAlpha * 5,
+        alpha: camAlpha * 5.5,
         beta: camBeta * 1.1,
         radius: camRadius * 0.7,
         hasChanged: false
@@ -1352,6 +1415,7 @@ function PCimportScene2(){
         // newMeshes[0].position = new BABYLON.Vector3(0.5,2,-3);
 
         newMeshes[0].position = new BABYLON.Vector3(0, 0, 7);
+        newMeshes[0].rotation = new BABYLON.Vector3(-Math.PI/2*1.1, Math.PI/2, Math.PI);
 
         var materialStone = new BABYLON.StandardMaterial("texture1", scene);
         materialStone.diffuseTexture = new BABYLON.Texture("assets/golden-stone/golden-stone.png", scene);

@@ -147,10 +147,11 @@ function viewChanger(){
 
             displayBillboards([false, false, false, true]);
 
-
             setTimeout(function(){
+                //等待change view
+
                 var billboard = scenes[activeScene].billboards[3];
-                var points = billboard.animTexture.points;
+                // var points = billboard.animTexture.points;
                 var style = billboard.animTexture.ctxStyle;
 
                 disableScroll();
@@ -197,7 +198,6 @@ function viewChanger(){
                     //             labelData[i].style('opacity', 0);
                     //         }
                     //     }
-
                     // });
                 });
             }
@@ -242,7 +242,6 @@ function viewChanger(){
                 //     // showText(billboard, billboard.animTexture.text5);
                 // });
 
-
             });
 
         }
@@ -253,7 +252,6 @@ function viewChanger(){
         if (!scenes[activeScene].cameraPara4.hasChanged) {
             
             scenes[activeScene].cameraPara4.hasChanged = true;
-
 
             moveCameraByAdjustingParameters(scenes[activeScene].cameraPara4, function () {
     
@@ -288,7 +286,6 @@ function viewChanger(){
             
             scenes[activeScene].cameraPara5.hasChanged = true;
 
-        
             
             moveCameraByAdjustingParameters(scenes[activeScene].cameraPara5, function () {
                 
@@ -321,7 +318,7 @@ function viewChanger(){
         displayBillboards([false, false, true, false]);
 
           var billboard = scenes[activeScene].billboards[2];
-          var points = billboard.animTexture.points;
+        //   var points = billboard.animTexture.points;
           var style = billboard.animTexture.ctxStyle;
 
           disableScroll();
@@ -1120,12 +1117,13 @@ d3.select("#btn").on("click", function() {
                 });
 
 
-            billboard3.animTexture.points = calcIntermediatepoints(vertices,20);
+            // billboard3.animTexture.points = calcIntermediatepoints(vertices,20);
             // billboard3.animTexture.points = vertices;
             billboard3.animTexture.ctxStyle = {
                 lineCap: "round",
-                lineWidth: "10",
-                strokeStyle: "yellow"
+                lineWidth: "25",
+                strokeStyle: "#ffde2a",
+                setLineDash: [10, 40]
             }
 
 
@@ -1140,7 +1138,7 @@ d3.select("#btn").on("click", function() {
         dynamicMaterial4.backFaceCulling = true;
 
         var plane4 = scene.getMeshByName("plane4");
-        plane4.isVisible = true;
+        plane4.isVisible = false;
 
         var billboard4 = BABYLON.Mesh.CreatePlane('board4', 1, scene);
         billboard4.position = plane4.position;
@@ -1149,11 +1147,12 @@ d3.select("#btn").on("click", function() {
         billboard4.isVisible = false;
         billboard4.animTexture = boardTexture4;
 
-        billboard4.animTexture.points = calcIntermediatepoints(vertices, 20);
+        // billboard4.animTexture.points = calcIntermediatepoints(vertices, 20);
         billboard4.animTexture.ctxStyle = {
             lineCap: "round",
-            lineWidth: "10",
-            strokeStyle: "yellow"
+            lineWidth: "25",
+            strokeStyle: "#ffde2a",
+            setLineDash: [10, 40]
         }
 
         // 設定waypoints和targets
@@ -1229,34 +1228,62 @@ function scrollAnimation(destination,scrollDuration) {
         }, 15);
 }
 
-function animateTexturePlay(billboard, style, points, callback) {
+function animateTexturePlay(billboard, style, points, callback, start) {
+    //用來畫線的animate texture
 
     var ctx = billboard.animTexture._context;
-    // var points = billboard.animTexture.points;
-    // var style = billboard.animTexture.ctxStyle;
+
+    var canvasSize = 512;
+    var centerX = canvasSize/2;
+    var centerY = canvasSize/2;
+    var radius = canvasSize * 0.4;
+
+    var timePerCircle = 200; //畫圓的時間
+    var progress = start || 0;
+    var drawSpeed = 15; // 15微秒畫一次
 
     ctx.lineCap = style.lineCap;
     ctx.lineWidth = style.lineWidth;
     ctx.strokeStyle = style.strokeStyle;
-    
+    ctx.setLineDash(style.setLineDash);
 
-    if (animFrame < points.length) {
+    // draw a circle
+        var circle = progress / timePerCircle;
 
-        setTimeout(function(){
-            animateTexturePlay(billboard, style, points, callback);
-            animFrame++;
-        },15)
-        
-    } else {
-        callback();
-    }
+        if(circle<1){ 
+            setTimeout(function () {
+                progress+=drawSpeed;
+                animateTexturePlay(billboard, style, points, callback, progress);
+            },drawSpeed);
+        }else{
+            callback();
+        }
 
-    // draw a line segment from the last waypoint
-    // to the current waypoint
-    ctx.beginPath();
-    ctx.moveTo(points[animFrame - 1].x, points[animFrame - 1].y);
-    ctx.lineTo(points[animFrame].x, points[animFrame].y);
-    ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius, 0, Math.PI * 2 * Math.min(circle, 1));
+        // ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+        ctx.stroke();
+
+    // draw a line
+        // draw a line segment from the last waypoint
+        // to the current waypoint
+
+        // if (animFrame < points.length) {
+
+        //     setTimeout(function(){
+        //         animateTexturePlay(billboard, style, points, callback);
+        //         animFrame++;
+        //     },15)
+            
+        // } else {
+        //     callback();
+        // }
+
+        // ctx.beginPath();
+        // ctx.moveTo(points[animFrame - 1].x, points[animFrame - 1].y);
+        // ctx.lineTo(points[animFrame].x, points[animFrame].y);
+        // ctx.stroke();
+
     billboard.animTexture.update();
 }
 

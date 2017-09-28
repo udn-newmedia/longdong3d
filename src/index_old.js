@@ -1,3 +1,5 @@
+//waypoint 還不是餵值進去
+
 var mob=(detectmob())?true:false;
 var modelLoaded = [false,false,false];
 var scenes = [];

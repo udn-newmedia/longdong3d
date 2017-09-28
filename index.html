@@ -16,6 +16,8 @@
     <!-- Babylon.js -->
     <script src="http://www.babylonjs.com/hand.minified-1.2.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babylonjs/2.5.0/babylon.js"></script>
+    <!-- <script src="https://preview.babylonjs.com/babylon.js"></script> -->
+    
     <!-- newmedia -->
     <script src="https://udn.com/upf/newmedia/js/jquery-3.2.1.min.js"></script>
     <script defer src="https://udn.com/upf/newmedia/js/bootstrap.min.js"></script>
@@ -46,12 +48,15 @@
 
     <div id="g-graphic"></div>
 
-    <div class="g-label model2-1" style="position:fixed; left:913px; top: 339px; z-index:2; color:yellow; opacity:0;">翻越2組小天花板地形</div>
-    <div class="g-label model2-2" style="position:fixed; left:1107px; top: 367px; z-index:2; color:yellow; opacity:0;">大角度攀爬<br>手跟腳都延伸到極致</div>
-    <div class="g-label model2-3" style="position:fixed; left:1070px; top: 175px; z-index:2; color:yellow; opacity:0;">無確保的2公尺<br>極容易大幅度墜落</div>
-    <div class="g-label model2-4" style="position:fixed; left:981px; top: 398px; z-index:2; color:yellow; opacity:0;">最難的是翻過天花板地形<br>我練了3個月單槓才成功</div>
-    <div class="g-label model2-5" style="position:fixed; left:1134px; top: 271px; z-index:2; color:yellow; opacity:0;">這是條傳攀路線<br>每次都能設計不同爬法</div>
+    <div class="g-labels">
+        <div class="g-label model2" data-position="">翻越2組小天花板地形</div>
+        <div class="g-label model2">大角度攀爬<br>手跟腳都延伸到極致</div>
+        <div class="g-label model2">無確保的2公尺<br>極容易大幅度墜落</div>
+        <div class="g-label model2">最難的是翻過天花板地形<br>我練了3個月單槓才成功</div>
+        <div class="g-label model2">這是條傳攀路線<br>每次都能設計不同爬法</div>
+    </div>
 
+    <!-- <button id="btn" style="z-index:10000000; position:fixed; left:0; right:0;">camera</button> -->
 
     <div class="article">
         <section id="model1">
@@ -344,7 +349,7 @@
             <span class="footer-link"><a href="http://www.udngroup.com/information/privacy" target="_blank">隱私權聲明</a></span>
         </footer>
     </div>
-    <script src="./src/index.js"></script>
+    <script src="./src/index.js?v=2"></script>
 </body>
 
 </html>

@@ -14,7 +14,6 @@ var canvas;
 
 // d3.select("#indicator").style('opacity',0);
 // d3.select('#head').style('opacity',0);
-
 // d3.select(".article").style('opacity',0);
 
 
@@ -135,17 +134,15 @@ function viewChanger(){
         //第一個模型，第一個視角
 
         changeView(waypoints[0], function() {
-          // displayBillboards([true,true,false]);
+          displayBillboards([true,true,false,false]);
         });
 
     } else if (scroll_now >= changeViewWaypointsOffset[1] && scroll_now < changeViewWaypointsOffset[1] * 1.1) {
 
-        d3.selectAll(".g-label").style("opacity",0);
-
         //第一個模型，第二個視角    
         changeView(waypoints[1], function () {
 
-            displayBillboards([false, false, false, true]);
+            displayBillboards([true, true, false, true]);
 
             setTimeout(function(){
                 //等待change view
@@ -167,38 +164,36 @@ function viewChanger(){
     } else if (scroll_now >= changeViewWaypointsOffset[2] && scroll_now < changeViewWaypointsOffset[3]) {
         //第二個模型，第一個視角
         
-        // d3.selectAll(".g-label")
-        //     .style("opacity", 0);
-
-        // d3.select(".g-label .model2-1").style("opacity",1);
-
         if (scenes[activeScene].billboards[0]) {
 
             if (!scenes[activeScene].cameraPara2.hasChanged){
 
-
                 scenes[activeScene].cameraPara2.hasChanged = true;
-    
-                moveCameraByAdjustingParameters(scenes[activeScene].cameraPara2, function () {
                 
-                    var billboard = scenes[activeScene].billboards[0];
-                    var style = billboard.animTexture.ctxStyle1;
-                    var points = billboard.animTexture.points1;
-            
-                    // displayBillboards(true);
-    
-                    // animateTexturePlay(billboard, style, points, function () {
-                    //     animFrame = 1;
-                    //     // showTextFlipped(billboard, billboard.animTexture.text1);
+                // Hide all of labels
+                    d3.selectAll('.g-label')
+                        .classed("hidden", true);
 
-                    //     for (var i = 0; i < labelData.length; i++) {
-                    //         if (i === 0) {
-                    //             labelData[i].style('opacity', 1);
-                    //         } else {
-                    //             labelData[i].style('opacity', 0);
-                    //         }
-                    //     }
-                    // });
+                moveCameraByAdjustingParameters(scenes[activeScene].cameraPara2, function () {
+                                    
+                    displayBillboards([true,false,false,false]);
+
+                    // route labels
+                        d3.selectAll('.g-label').attr("class", "g-label model2")
+                            .each(function (d, i) {
+                                if (i === 0) {
+                                    d3.select(this)
+                                        .classed("hidden", false)
+                                        .style('display', 'inline')
+                                        .style('left', 688.6946548938735 + 'px')
+                                        .style('top', 397.3339768474 + 'px');
+                                } else {
+                                    d3.select(this)
+                                        .classed("hidden", true);
+                                }
+                            }
+                        );
+
                 });
             }
         }
@@ -210,37 +205,47 @@ function viewChanger(){
 
             scenes[activeScene].cameraPara3.hasChanged = true;
 
+            scenes[activeScene].light0.intensity = 0.2;
+
+            displayBillboards(false);
+
+            // Hide all of labels
+                d3.selectAll('.g-label')
+                    .classed("hidden", true);
 
             moveCameraByAdjustingParameters(scenes[activeScene].cameraPara3, function () {
-        
-                var billboard = scenes[activeScene].billboards[0];
-                var ctxStyle2 = billboard.animTexture.ctxStyle2;
-                var ctxStyle3 = billboard.animTexture.ctxStyle3;
-                var points2 = billboard.animTexture.points2;
-                var points3 = billboard.animTexture.points3;
-                
-                billboard.animTexture._context.clearRect(0, 0, 512, 512);
 
-                // animateTexturePlay(billboard, ctxStyle2, points2, function () {
-                //     animFrame = 1;
-                //     // showText(billboard, billboard.animTexture.text2);
-                //     // showText(billboard, billboard.animTexture.text3);
+                displayBillboards([false, true, false, false]);
 
-                //     for (var i = 0; i < labelData.length; i++) {
-                //         if (i === 1 || i === 2) {
-                //             labelData[i].style('opacity', 1);
-                //         } else {
-                //             labelData[i].style('opacity', 0);
-                //         }
-                //     }
+                d3.selectAll('.g-label').attr("class", "g-label model2")
+                    .each(function (d, i) {
+                        if (i === 1) {
+                            d3.select(this)
+                                .classed("hidden", false)
+                                .style('display', 'inline')
+                                // 原來的投影位置
+                                // .style('left', 915.6750358885913 + 'px')
+                                // .style('top', 313.67419401656275 + 'px');
+                                .style('left', 920.6750358885913 + 'px')
+                                .style('top', 318.67419401656275 + 'px');
 
-                // });
+                        }else if(i===2){
 
-                // animateTexturePlay(billboard, ctxStyle3, points3, function () {
-                //     animFrame = 1;
-                //     // showText(billboard, billboard.animTexture.text4);
-                //     // showText(billboard, billboard.animTexture.text5);
-                // });
+                            d3.select(this)
+                                .classed("hidden", false)
+                                .style('display', 'inline')
+                                // 原來的投影位置
+                                // .style('left', 915.6750358885913 + 'px')
+                                // .style('top', 313.67419401656275 + 'px');
+                                .style('left', 964 + 'px')
+                                .style('top', 208 + 'px');
+
+                        } else {
+                            d3.select(this)
+                                .classed("hidden", true);
+                        }
+                    }
+                );
 
             });
 
@@ -253,28 +258,39 @@ function viewChanger(){
             
             scenes[activeScene].cameraPara4.hasChanged = true;
 
+            displayBillboards(false);
+
+            // Hide all of labels
+            d3.selectAll('.g-label')
+                .classed("hidden", true);
+
+            scenes[activeScene].billboards[0].isVisible = false;
+            scenes[activeScene].billboards[2].isVisible = true;
+
+
             moveCameraByAdjustingParameters(scenes[activeScene].cameraPara4, function () {
-    
-                var billboard = scenes[activeScene].billboards[0];
-                var style = billboard.animTexture.ctxStyle4;
-                var points = billboard.animTexture.points4;
 
-                billboard.animTexture._context.clearRect(0, 0, 512, 512);
+                displayBillboards([false, false, true, false]);
 
-                // animateTexturePlay(billboard, style, points, function () {
-                //     animFrame = 1;
-                //     // showText(billboard, billboard.animTexture.text6);
-                //     // showText(billboard, billboard.animTexture.text7);
+                d3.selectAll('.g-label').attr("class", "g-label model2")
+                    .each(function (d, i) {
+                        if (i === 3) {
+                            d3.select(this)
+                                .classed("hidden", false)
+                                .style('display', 'inline')
+                                // 原來的投影位置
+                                // .style('left', 915.6750358885913 + 'px')
+                                // .style('top', 313.67419401656275 + 'px');
+                                .style('left', 809.4389298448883 + 'px')
+                                .style('top', 388.2740448861042 + 'px');
 
-                //     for (var i = 0; i < labelData.length; i++) {
-                //         if (i === 3) {
-                //             labelData[i].style('opacity', 1);
-                //         } else {
-                //             labelData[i].style('opacity', 0);
-                //         }
-                //     }
+                        } else {
+                            d3.select(this)
+                                .classed("hidden", true);
+                        }
+                    }
+                );
 
-                // });
             });
         }
 
@@ -286,39 +302,49 @@ function viewChanger(){
             
             scenes[activeScene].cameraPara5.hasChanged = true;
 
-            
+            displayBillboards(false);
+
+            // Hide all of labels
+            d3.selectAll('.g-label')
+                .classed("hidden", true);
+
+            scenes[activeScene].billboards[1].isVisible = false;
+            scenes[activeScene].billboards[3].isVisible = true;
+
             moveCameraByAdjustingParameters(scenes[activeScene].cameraPara5, function () {
                 
-                var billboard = scenes[activeScene].billboards[0];
-                var style = billboard.animTexture.ctxStyle5;
-                var points = billboard.animTexture.points5;
+                displayBillboards([false, false, false, true]);
 
-                billboard.animTexture._context.clearRect(0, 0, 512, 512);
+                d3.selectAll('.g-label').attr("class", "g-label model2")
+                    .each(function (d, i) {
+                        if (i === 4) {
+                            d3.select(this)
+                                .classed("hidden", false)
+                                .style('display', 'inline')
+                                .style('left', 1011.2279941885878 + 'px')
+                                .style('top', 395.1615063147416 + 'px');
 
-                // animateTexturePlay(billboard, style, points, function () {
-                //     animFrame = 1;
-                //     // showText(billboard, billboard.animTexture.text8);
-                //     // showText(billboard, billboard.animTexture.text9);
+                        } else {
+                            d3.select(this)
+                                .classed("hidden", true);
+                        }
+                    }
+                );
 
-                //     for (var i = 0; i < labelData.length; i++) {
-                //         if (i === 4) {
-                //             labelData[i].style('opacity', 1);
-                //         } else {
-                //             labelData[i].style('opacity', 0);
-                //         }
-                //     }
-
-                // });
             }); 
         }
 
     } else if (scroll_now >= changeViewWaypointsOffset[5] && scroll_now < changeModelPointsOffset[2]){
 
-        // d3.selectAll(".g-label").style("opacity", 0);
-        displayBillboards([false, false, true, false]);
+        //回到model1
+
+        // Hide all of labels of model2
+        d3.selectAll('.g-label').attr("class", "g-label model2")
+            .classed("hidden", true);
+
+        displayBillboards([true, true, true, false]);
 
           var billboard = scenes[activeScene].billboards[2];
-        //   var points = billboard.animTexture.points;
           var style = billboard.animTexture.ctxStyle;
 
           disableScroll();
@@ -326,7 +352,7 @@ function viewChanger(){
           animateTexturePlay(billboard, style, points, function() {
             animFrame = 1;
             enableScroll();
-            scrollAnimation(changeModelPointsOffset[2], 1000);
+            scrollAnimation(changeModelPointsOffset[2], 500);
           });
 
     } else if (scroll_now >= changeModelPointsOffset[2] && scroll_now < changeModelPointsOffset[2] + 2/3 * window.innerHeight) {
@@ -341,16 +367,6 @@ function viewChanger(){
 
                 moveCameraByAdjustingParameters(scenes[activeScene].cameraPara2, function(){
     
-                    var billboard = scenes[activeScene].billboards[0];
-                    var style = billboard.animTexture.ctxStyle1;
-                    var points = billboard.animTexture.points1;
-    
-                    // displayBillboards(true);
-
-                    // animateTexturePlay(billboard,style,points,function(){
-                    //     animFrame = 1;
-                    //     showText(billboard, billboard.animTexture.text1);
-                    // });
                 });
             
             }
@@ -375,7 +391,6 @@ function viewChanger(){
 
         }
 
-        
         //跟著scroll長線
         // if (scenes[activeScene].billboards[0]) {
         //     if (!scenes[activeScene].billboards[0].isVisible) {
@@ -663,6 +678,25 @@ function setCanvasOpacityWithSection() {
 
 }
 
+function dynamicallyChangeBillboardsTexture(billboard,src){
+    
+    var ctx = billboard.animTexture._context;
+    var canvasSize = 512;
+    var img = new Image();
+
+    img.onload = function(){
+
+        var pattern = ctx.createPattern(img, "no-repeat");
+        ctx.rect(0, 0, canvasSize, canvasSize);
+        ctx.fillStyle = pattern;
+        ctx.fill();
+
+        billboard.animTexture.update();
+    }
+    
+    img.src = src;
+}
+
 function displayBillboards(display){
 
     var scene = scenes[activeScene];
@@ -917,13 +951,16 @@ function PCloadScene1(){
         camera.upperAlphaLimit = 1.1;
         camera.lowerAlphaLimit = -1.1;
 
+        var light0 = new BABYLON.PointLight("Omni", new BABYLON.Vector3(0, 2, 0), scene);
+        light0.parent = camera; //light follows camera
+        light0.intensity = 0.4;
 
 
-// d3.select("#btn").on("click", function() {
-// //   console.log("alpha:"+camera.alpha, "beta:"+camera.beta, "radius:"+camera.radius);
-//   console.log("position:"+camera.position);
-//   console.log("target:"+camera.target);
-// });
+d3.select("#btn").on("click", function() {
+//   console.log("alpha:"+camera.alpha, "beta:"+camera.beta, "radius:"+camera.radius);
+  console.log("position:"+camera.position);
+  console.log("target:"+camera.target);
+});
 
 
 
@@ -1265,8 +1302,8 @@ function animateTexturePlay(billboard, style, points, callback, start) {
         ctx.stroke();
 
     // draw a line
-        // draw a line segment from the last waypoint
-        // to the current waypoint
+        // // draw a line segment from the last waypoint
+        // // to the current waypoint
 
         // if (animFrame < points.length) {
 
@@ -1407,6 +1444,11 @@ function PCimportScene2(){
     camera.attachControl(canvas, false);
     camera.checkCollisions = true;
 
+    var light0 = new BABYLON.PointLight("Omni", new BABYLON.Vector3.Zero(), scene);
+    light0.parent = camera; //light follows camera
+    light0.intensity = 0.4;
+    scene.light0 = light0;
+
     var cameraPara2 = {
         alpha: camAlpha * 5.5,
         beta: camBeta * 1.1,
@@ -1416,8 +1458,10 @@ function PCimportScene2(){
 
     var cameraPara3 = {
         alpha: camAlpha * 3,
-        beta: camBeta * 0.9,
-        radius: camRadius * 0.7,
+        // beta: camBeta * 0.9,
+        beta: camBeta * 0.85,
+        // radius: camRadius * 0.7,
+        radius: camRadius * 0.8,
         hasChanged: false
     }
 
@@ -1429,9 +1473,9 @@ function PCimportScene2(){
     }
 
     var cameraPara5 = {
-        alpha: camAlpha,
-        beta: camBeta,
-        radius: camRadius * 0.8,
+        alpha: camAlpha * 3,
+        beta: camBeta * 0.825,
+        radius: camRadius * 0.825,
         hasChanged: false
     }    
 
@@ -1466,244 +1510,93 @@ function PCimportScene2(){
 
         newMeshes[0].material = materialStone;
 
-        var boardTexture2 = new BABYLON.DynamicTexture("dynamic texture5", 512, scene, true);
-        boardTexture2.hasAlpha = true; //必須要clearColor沒被定義
+        // var boardTexture1 = new BABYLON.DynamicTexture("dynamic texture5", 512, scene, true);
+        // boardTexture1.hasAlpha = true; //必須要clearColor沒被定義
 
-        var dynamicMaterial2 = new BABYLON.StandardMaterial('mat5', scene);
-        dynamicMaterial2.diffuseTexture = boardTexture2;
-        dynamicMaterial2.specularColor = new BABYLON.Color3(0, 0, 0);
-        dynamicMaterial2.backFaceCulling = true;
+        // var dynamicMaterial1 = new BABYLON.StandardMaterial('mat5', scene);
+        // dynamicMaterial1.diffuseTexture = boardTexture1;
+        // dynamicMaterial1.specularColor = new BABYLON.Color3(0, 0, 0);
+        // dynamicMaterial1.backFaceCulling = true;
 
-        var billboard2 = BABYLON.Mesh.CreatePlane('board5', 10, scene);
-        billboard2.position = new BABYLON.Vector3(newMeshes[0].position.x + 4, newMeshes[0].position.y, newMeshes[0].position.z);
-        // billboard2.rotation = new BABYLON.Vector3(Math.PI, Math.PI / 2, -Math.PI);
-        billboard2.rotation = new BABYLON.Vector3(Math.PI, Math.PI / 2, 0);
+    //billboards
+        // for route1
+        var billboard1 = BABYLON.Mesh.CreatePlane('board5', 1.8, scene);
+        billboard1.position = new BABYLON.Vector3(newMeshes[0].position.x + 4, newMeshes[0].position.y - 2, newMeshes[0].position.z + 1.5);
+
+        var route1 = new BABYLON.StandardMaterial("route1", scene);
+        route1.diffuseTexture = new BABYLON.Texture("assets/golden-stone/golden-stone-route1.png", scene);
+        route1.diffuseTexture.hasAlpha = true;
+        route1.useAlphaFromDiffuseTexture = true;
+
+        billboard1.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
+        billboard1.isVisible = false;
+        billboard1.material = route1;
+
+        //如果需要淡入淡出->使用dynamicMaterial
+        // billboard1.material = dynamicMaterial1;
+        // billboard1.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
+        // billboard1.isVisible = true;
+        // billboard1.animTexture = boardTexture1;
 
 
-        billboard2.material = dynamicMaterial2;
-        // billboard2.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
-        billboard2.isVisible = true;
-        billboard2.animTexture = boardTexture2;
+        // for route2
+        var billboard2 = BABYLON.Mesh.CreatePlane('board6', 4, scene);
+        billboard2.position = new BABYLON.Vector3(newMeshes[0].position.x + 4.5, newMeshes[0].position.y + 1.8, newMeshes[0].position.z - 0.2);
 
-        // define the path to plot
-        var vertices1 = [];
-        var vertices2 = [];
-        var vertices3 = [];
-        var vertices4 = [];
-        var vertices5 = [];
+        var route2 = new BABYLON.StandardMaterial("route2", scene);
+        route2.diffuseTexture = new BABYLON.Texture("assets/golden-stone/golden-stone-route2.png", scene);
+        route2.diffuseTexture.hasAlpha = true;
+        route2.useAlphaFromDiffuseTexture = true;
 
+        billboard2.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
+        billboard2.isVisible = false;
+        billboard2.material = route2;
 
-        vertices1.push({
-            x: 220,
-            y: 200
-        });
-        vertices1.push({
-            x: 180,
-            y: 80
-        });
-    
-        vertices2.push({
-            x: 255,
-            y: 170
-        });
-        vertices2.push({
-            x: 265,
-            y: 343
-        });
+        // for route3
+        var billboard3 = BABYLON.Mesh.CreatePlane('board7', 1.6, scene);
+        billboard3.position = new BABYLON.Vector3(newMeshes[0].position.x + 4, newMeshes[0].position.y - 2, newMeshes[0].position.z + 2.6);
 
-        vertices3.push({
-            x: 265,
-            y: 345
-        });
-        vertices3.push({
-            x: 275,
-            y: 400
-        });
+        var route3 = new BABYLON.StandardMaterial("route3", scene);
+        route3.diffuseTexture = new BABYLON.Texture("assets/golden-stone/golden-stone-route3.png", scene);
+        route3.diffuseTexture.hasAlpha = true;
+        route3.useAlphaFromDiffuseTexture = true;
 
-        vertices4.push({
-            x: 150,
-            y: 100
-        });
-        vertices4.push({
-            x: 160,
-            y: 190
-        });
+        billboard3.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
+        billboard3.isVisible = false;
+        billboard3.material = route3;
 
-        vertices5.push({
-            x: 260,
-            y: 190
-        });
-        vertices5.push({
-            x: 275,
-            y: 400
-        });
+        // for route4
+        var billboard4 = BABYLON.Mesh.CreatePlane('board8', 5.5, scene);
+        billboard4.position = new BABYLON.Vector3(newMeshes[0].position.x + 4, newMeshes[0].position.y + 1.2, newMeshes[0].position.z + 1);
 
-        // billboard1.animTexture.points1 = calcIntermediatepoints(vertices1, 10);
-        // billboard1.animTexture.points2 = calcIntermediatepoints(vertices2, 10);
-        // billboard1.animTexture.points3 = calcIntermediatepoints(vertices3, 10);
+        var route4 = new BABYLON.StandardMaterial("route4", scene);
+        route4.diffuseTexture = new BABYLON.Texture("assets/golden-stone/golden-stone-route4.png", scene);
+        route4.diffuseTexture.hasAlpha = true;
+        route4.useAlphaFromDiffuseTexture = true;
 
-        billboard2.animTexture.points1 = vertices1;
-        billboard2.animTexture.points2 = vertices2;
-        billboard2.animTexture.points3 = vertices3;
-        billboard2.animTexture.points4 = vertices4;
-        billboard2.animTexture.points5 = vertices5;
+        billboard4.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
+        billboard4.isVisible = false;
+        billboard4.material = route4;
 
-        // billboard1.animTexture.points = vertices;
-        billboard2.animTexture.ctxStyle1 = {
-            lineCap: "round",
-            lineWidth: "1",
-            strokeStyle: "blue",
-            draw: false
-        }
-    
-        billboard2.animTexture.ctxStyle2 = {
-            lineCap: "round",
-            lineWidth: "1",
-            strokeStyle: "blue",
-            draw: false
-        }
+    // labels
 
-        billboard2.animTexture.ctxStyle3 = {
-            lineCap: "round",
-            lineWidth: "1",
-            strokeStyle: "red",
-            draw: false
-        }
+        // d3.selectAll('.g-label').attr("class", "g-label model2")
+        //     .attr('data-name', function (d, i) {
+        //         return "route #" + 2 + '-' + (i + 1);
+        //     });
 
-        billboard2.animTexture.ctxStyle4 = {
-            lineCap: "round",
-            lineWidth: "1",
-            strokeStyle: "red",
-            draw: false
-        }
+        billboard1.labels = [];
+        billboard1.labels.push(billboard1.position); //route1
+        billboard1.labels.push(billboard2.position); //route2
+        billboard1.labels.push(billboard3.position); //route3
+        billboard1.labels.push(billboard4.position); //route4
 
-        billboard2.animTexture.ctxStyle5 = {
-            lineCap: "round",
-            lineWidth: "1",
-            strokeStyle: "blue",
-            draw: false
-        }
-
-        //文字部分
-        var font = "12px Microsoft JhengHei";
-        var color = "yellow"
-
-        //第一個視角
-        var text1 = "翻越2組小天花板地形";
-        var x1 = 280;
-        var y1 = 300;
-
-        //第二個視角
-        var text2 = "大角度攀爬";
-        var x2 = 260;
-        var y2 = 190;
-
-        var text3 = "手跟腳都延伸到極致";
-        var x3 = 260;
-        var y3 = 170;
-
-        var text4 = "無確保的2公尺";
-        var x4 = 275;
-        var y4 = 400;
-
-        var text5 = "極容易大幅度墜落";
-        var x5 = 275;
-        var y5 = 420;
-
-        var text6 = "最難的是翻過天花板地形";
-        var x6 = 160;
-        var y6 = 190;
-
-        var text7 = "我練了3個月單槓才成功";
-        var x7 = 160;
-        var y7 = 170;
-
-        var text8 = "這是條傳攀路線";
-        var x8 = 260;
-        var y8 = 190;
-
-        var text9 = "每次都能設計不同爬法";
-        var x9 = 260;
-        var y9 = 170;
-
-        billboard2.animTexture.text1 = {
-            font: font,
-            color: color,
-            text: text1,
-            x: x1,
-            y: y1
-        }    
-
-        billboard2.animTexture.text2 = {
-            font: font,
-            color: color,
-            text: text2,
-            x: x2,
-            y: y2
-        }
-
-        billboard2.animTexture.text3 = {
-            font: font,
-            color: color,
-            text: text3,
-            x: x3,
-            y: y3
-        }
-
-        billboard2.animTexture.text4 = {
-            font: font,
-            color: color,
-            text: text4,
-            x: x4,
-            y: y4
-        }
-
-        billboard2.animTexture.text5 = {
-            font: font,
-            color: color,
-            text: text5,
-            x: x5,
-            y: y5
-        }
-
-        billboard2.animTexture.text6 = {
-            font: font,
-            color: color,
-            text: text6,
-            x: x6,
-            y: y6
-        }
-
-        billboard2.animTexture.text7 = {
-            font: font,
-            color: color,
-            text: text7,
-            x: x7,
-            y: y7
-        }
-
-        billboard2.animTexture.text8 = {
-            font: font,
-            color: color,
-            text: text8,
-            x: x8,
-            y: y8
-        }
-
-        billboard2.animTexture.text9 = {
-            font: font,
-            color: color,
-            text: text9,
-            x: x9,
-            y: y9
-        }
-
-        // var clearColor;
-        // billboard2.animTexture.drawText(text1, x1, y1, font, color, clearColor, true, true);
-        // billboard2.animTexture.hasAlpha = true;
 
         scenes[sceneIndex].billboards = [];
+        scenes[sceneIndex].billboards.push(billboard1);
         scenes[sceneIndex].billboards.push(billboard2);
+        scenes[sceneIndex].billboards.push(billboard3);
+        scenes[sceneIndex].billboards.push(billboard4);
 
     });
 
@@ -1718,6 +1611,11 @@ function PCimportScene2(){
     scenes[sceneIndex].cameraPara5 = cameraPara5;
 
     scenes[sceneIndex].renderLoop = function () {
+
+        // vectorProject(scenes[1].billboards[0].labels[0]); //{x: 809.4389298448883, y: 388.2740448861042, z: 0.7097805578331373}
+        // vectorProject(scenes[1].billboards[0].labels[1]); //{x: 915.6750358885913, y: 313.67419401656275, z: 0.8786538503590725}
+        // vectorProject(scenes[1].billboards[0].labels[3]); //{x: 915.6750358885913, y: 313.67419401656275, z: 0.8786538503590725}
+
         this.render();
     }
 
@@ -1739,10 +1637,16 @@ function PCimportScene3(){
     // camera.upperAlphaLimit = 1.5;
     // camera.lowerAlphaLimit = -1.5;
 
+    var light0 = new BABYLON.PointLight("Omni", new BABYLON.Vector3.Zero(), scene);
+    light0.parent = camera; //light follows camera
+    light0.intensity = 0.4;
+    scene.light0 = light0;
+
+
     var cameraPara2 = {
         alpha: camAlpha,
-        beta: camBeta,
-        radius: camRadius * 0.5,
+        beta: camBeta * 0.95,
+        radius: camRadius * 0.05,
         hasChanged: false
     }
 
@@ -1997,7 +1901,7 @@ function enableScroll() {
 
 /***Tools***/
 
-    /*1. unproject vector*/
+    /*1. unproject vector : 2d->3d*/
 
     var clickPos = [];
     var clickVector = new BABYLON.Vector3(1, 0, 0);
@@ -2019,7 +1923,7 @@ function enableScroll() {
     }
 
     function vectorUnproject(screenVector) {
-        var scene = scenes[0]; 
+        var scene = scenes[activeScene]; 
         var camera = scene.camera;
 
         //camera unproject test
@@ -2040,5 +1944,28 @@ function enableScroll() {
         return worldVector;
     }
 
-    // canvas.addEventListener("pointerdown", positionUnproject, false);
+    canvas.addEventListener("pointerdown", positionUnproject, false);
+
     
+    
+    /* 2. unproject vector : 3d->2d */
+    
+    function vectorProject(vector) {
+        // var vector = vector || new BABYLON.Vector3(0, 0, 0);
+        var scene = scenes[activeScene];
+        var camera = scene.activeCamera;
+        
+        var renderWidth = engine.getRenderWidth(true) * engine.getHardwareScalingLevel();
+        var renderHeight = engine.getRenderHeight(true) * engine.getHardwareScalingLevel();
+
+        var p = BABYLON.Vector3.Project(vector,
+            BABYLON.Matrix.Identity(),
+            scene.getTransformMatrix(),
+            camera.viewport.toGlobal(renderWidth, renderHeight));
+            
+        console.log(p);
+
+        return {x:p.x,y:p.y};
+    }
+        
+    // canvas.addEventListener("pointerdown", vectorProject, false);

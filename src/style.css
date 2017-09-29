@@ -31,6 +31,11 @@ p,h2,h6 {
     margin-top: 0;
 }
 
+#movie-1 {
+    height: 100vh;
+    object-fit: cover;
+}
+
  .g-labels {
      text-shadow: 0 0 2px rgba(0, 0, 0, 0.8);
  }

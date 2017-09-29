@@ -4,6 +4,15 @@ html,body {
     background-color: #28253a;
 }
 
+._title {
+    padding-bottom: 30%;    
+}
+
+h1 {
+    padding-right: 20%;
+    /* padding-bottom: 30%; */
+}
+
 p,h2,h6 {
     color: white;
 }
@@ -16,6 +25,10 @@ p,h2,h6 {
     top: 0;
     z-index: 0;
     /* z-index: 99; */
+}
+
+.video-contain {
+    margin-top: 0;
 }
 
  .g-labels {
@@ -62,7 +75,7 @@ section.blankHalfPage {
     height: 50vh;
 }
 
-section:first-child {
+section:nth-child(2){
     height: 100vh;
     display: flex;
     justify-content: center;
@@ -70,12 +83,17 @@ section:first-child {
     flex-direction: column;
 }
 
-section:first-child .share-block{
+section:nth-child(2) .share-block{
     margin: 0 auto;
 }
 
-section:nth-child(2) {
+section.masked {
     background-color:rgba(0, 0, 0, 0.7);
+}
+
+section:last-child {
+    z-index: 2;
+    background-color: #28253a;
 }
 
 div.narrow-in-pc{
@@ -94,8 +112,33 @@ img.fullscreen {
     width: 100%;
 }
 
-#editor{
+.profile {
+    display: flex;
+    align-items: center;
+    padding: 25px 0;
+}
+
+.profile img {
+    width: 30%;
+}
+
+.subtitle {
+    margin-left: 20px;
+}
+
+.subtitle h2 {
+    margin: 25px 0;
+}
+
+#editor {
     color: white;
+}
+
+.quote-contain {
+    font-family: "Microsoft JhengHei";
+    border-top: none;
+    border-bottom: none;
+    color : #fff1c6;
 }
 
 .theme-default .nivo-directionNav a{

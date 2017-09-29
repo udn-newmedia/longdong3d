@@ -1777,6 +1777,10 @@ function PCimportScene3(){
     
         // materialStone.bumpTexture = new BABYLON.Texture("assets/NormalMap.jpg",scene);
     
+        var materialGround = new BABYLON.StandardMaterial("texture2-2", scene);
+        materialGround.diffuseTexture = new BABYLON.Texture("assets/backdoor/ground.png", scene);
+        // materialGround.diffuseTexture.hasAlpha = true;
+
         wall.material = materialStone;
         ground.material = materialStone;
 

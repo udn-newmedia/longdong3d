@@ -139,6 +139,10 @@ function viewChanger(){
           displayBillboards([true,true,false,false]);
         });
 
+        // moveCameraByAdjustingParameters(scenes[activeScene].cameraPara2,function(){
+
+        // });
+
     } else if (scroll_now >= changeViewWaypointsOffset[1] && scroll_now < changeViewWaypointsOffset[1] * 1.1) {
 
         //第一個模型，第二個視角    
@@ -598,7 +602,9 @@ function drawLineWithScroll(start,end,billboard,points,style) {
 function videoControllFunction(){
 
     var movie1 = document.getElementsByTagName('video')[0];
-    var movieIndex = movies.push(movie1) - 1;
+    var movie3 = document.getElementById('movie-3');
+    movies.push(movie1);
+    movies.push(movie3);
 
     movies[0].addEventListener("play",function(){
         engine.stopRenderLoop();
@@ -610,17 +616,21 @@ function videoControllFunction(){
         });
     });
 
-    movies[0].addEventListener("pause", function () {
-        engine.runRenderLoop(function () {
-            RenderManager();
-        });
-    });
-
     movies[0].addEventListener('ended', function(){
         var modelStart = document.getElementById('model1');
         var startOffset = modelStart.getBoundingClientRect().top + window.pageYOffset;
 
         scrollAnimation(startOffset, 500);
+    });
+
+    movies[1].addEventListener("play", function () {
+        engine.stopRenderLoop();
+    });
+
+    movies[1].addEventListener("pause", function () {
+        engine.runRenderLoop(function () {
+            RenderManager();
+        });
     });
 }
 
@@ -901,7 +911,7 @@ var moveCameraWithGhostCam = function (obj, callback) {
 
 var moveCameraByAdjustingParameters = function(newPara, callback){
 
-    // if(newPara.hasChanged) return;
+    if(newPara.hasChanged) return;
 
     var scene = scenes[activeScene];
     var camera = scene.activeCamera;
@@ -1033,7 +1043,7 @@ function PCloadScene1(){
 
 
 d3.select("#btn").on("click", function() {
-//   console.log("alpha:"+camera.alpha, "beta:"+camera.beta, "radius:"+camera.radius);
+  console.log("alpha:"+camera.alpha, "beta:"+camera.beta, "radius:"+camera.radius);
   console.log("position:"+camera.position);
   console.log("target:"+camera.target);
 });

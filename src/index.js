@@ -57,7 +57,7 @@ var animFrame = 1;
             engine.resize();
         });
 
-        engineStopRenderOnVideoPlaying();
+        videoControllFunction();
         
         engine.runRenderLoop(function(){
             RenderManager()
@@ -339,7 +339,7 @@ function viewChanger(){
             .classed("hidden", true);
 
         if (!waypoints[2].hasChanged){
-            displayBillboards([true, true, false, false]);
+            displayBillboards(false);
         }
             
         changeView(waypoints[2], function () {
@@ -352,7 +352,7 @@ function viewChanger(){
                 var style = billboard.animTexture.ctxStyle;
 
 
-                displayBillboards([true, true, true, false]);
+                displayBillboards([false, false, true, false]);
 
                 disableScroll();
 
@@ -595,7 +595,7 @@ function drawLineWithScroll(start,end,billboard,points,style) {
 }
 
 //只要有video在播，就停止render
-function engineStopRenderOnVideoPlaying(){
+function videoControllFunction(){
 
     var movie1 = document.getElementsByTagName('video')[0];
     var movieIndex = movies.push(movie1) - 1;
@@ -608,6 +608,19 @@ function engineStopRenderOnVideoPlaying(){
         engine.runRenderLoop(function(){
             RenderManager();
         });
+    });
+
+    movies[0].addEventListener("pause", function () {
+        engine.runRenderLoop(function () {
+            RenderManager();
+        });
+    });
+
+    movies[0].addEventListener('ended', function(){
+        var modelStart = document.getElementById('model1');
+        var startOffset = modelStart.getBoundingClientRect().top + window.pageYOffset;
+
+        scrollAnimation(startOffset, 500);
     });
 }
 
@@ -1313,7 +1326,7 @@ d3.select("#btn").on("click", function() {
                 if(!reachedUpperLimit){
     
                     if (scene.activeCamera.alpha < camera.upperAlphaLimit){
-                        scene.activeCamera.alpha += .01;
+                        scene.activeCamera.alpha += .005;
                     } else{
                         reachedUpperLimit = !reachedUpperLimit;
                     }
@@ -1321,7 +1334,7 @@ d3.select("#btn").on("click", function() {
                 }else{
     
                     if (scene.activeCamera.alpha > camera.lowerAlphaLimit) {
-                        scene.activeCamera.alpha -= .01;
+                        scene.activeCamera.alpha -= .005;
                     } else {
                         reachedUpperLimit = !reachedUpperLimit;
                     }

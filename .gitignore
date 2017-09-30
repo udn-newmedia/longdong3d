@@ -1,4 +1,7 @@
 node_modules/
 package-lock.json
-assets/
-assets_old/
+assets_blender/
+assets/longdong/
+assets/backdoor/
+assets/golden-stone/
+assets/videos/

@@ -43,10 +43,21 @@ var animFrame = 1;
         var canvas = document.getElementById("g-graphic").appendChild(canvasNode);
         var engine = new BABYLON.Engine(canvas, true);
 
+
+        // var scene = loadScene1();
+
+        // engine.runRenderLoop(function() {
+        //   if (scenes[activeScene]) {
+        //     scenes[activeScene].renderLoop();
+        //   }
+        // });
+
+
         PCloadScene1();
 
         videoControllFunction();
 
+        // scroll event
         window.addEventListener('scroll', function(){
             if(!ticking){
                 requestAnimationFrame(onScroll);
@@ -798,7 +809,9 @@ function changeView(waypoint, callback){
         
         smoothSetTarget(target, moveCameraWithGhostCam(point,function(){
             scenes[activeScene].reRender = false;  
-            // enableScroll();      
+
+            // enableScroll(); 
+
             callback();            
             })
         );
@@ -981,8 +994,7 @@ function PCloadScene1(){
 
     BABYLON.SceneLoader.ShowLoadingScreen = false;
 
-    // BABYLON.SceneLoader.Load("assets/09-finall/", "north-3D-new-09-final.babylon", engine, function (scene) {
-    BABYLON.SceneLoader.Load("assets/09-finall/", "north-3D-new-09-final_edited.babylon", engine, function (scene) {
+    BABYLON.SceneLoader.Load("assets/longdong/", "north-3D-new-09-final_edited.babylon", engine, function (scene) {
 
         scene.clearColor = new BABYLON.Color3.FromHexString("#28253a");
 
@@ -1361,7 +1373,7 @@ function animateTexturePlay(billboard, style, points, callback, start) {
     var centerY = canvasSize/2;
     var radius = canvasSize * 0.4;
 
-    var timePerCircle = 200; //畫圓的時間
+    var timePerCircle = 100; //畫圓的時間
     var progress = start || 0;
     var drawSpeed = 15; // 15微秒畫一次
 
@@ -1570,7 +1582,7 @@ function PCimportScene2(){
     // console.log('import2');
 
     // The first parameter can be used to specify which mesh to import. Here we import all meshes
-    BABYLON.SceneLoader.ImportMesh("", "assets/golden-stone/0922/", "golden-stone.babylon", scene, function (newMeshes) {
+    BABYLON.SceneLoader.ImportMesh("", "assets/golden-stone/", "golden-stone.babylon", scene, function (newMeshes) {
         // newMeshes[0].position = BABYLON.Vector3.Zero();
         // newMeshes[0].position = new BABYLON.Vector3(0.5,2,-3);
 
@@ -1742,7 +1754,7 @@ function PCimportScene3(){
 
 
     // The first parameter can be used to specify which mesh to import. Here we import all meshes
-    BABYLON.SceneLoader.ImportMesh("", "assets/backdoor/0922/", "backdoor.babylon", scene, function (newMeshes) {
+    BABYLON.SceneLoader.ImportMesh("", "assets/backdoor/", "backdoor.babylon", scene, function (newMeshes) {
 
         newMeshes[0].position = BABYLON.Vector3.Zero();
         

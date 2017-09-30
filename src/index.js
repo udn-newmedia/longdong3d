@@ -911,7 +911,7 @@ var moveCameraWithGhostCam = function (obj, callback) {
 
 var moveCameraByAdjustingParameters = function(newPara, callback){
 
-    if(newPara.hasChanged) return;
+    // if(newPara.hasChanged) return
 
     var scene = scenes[activeScene];
     var camera = scene.activeCamera;
@@ -1049,9 +1049,8 @@ d3.select("#btn").on("click", function() {
 });
 
 
-
         // A ghost camera 
-        var gcamera = new BABYLON.ArcRotateCamera("gCamera", camAlpha, camBeta, camRadius, new BABYLON.Vector3(0, 2, 0), scene);
+        var gcamera = new BABYLON.ArcRotateCamera("gCamera", camAlpha, camBeta*1.2, camRadius, new BABYLON.Vector3(0, 2, 0), scene);
         // camera.attachControl(canvas, false);
         gcamera.checkCollisions = true;
         gcamera.upperAlphaLimit = 1.1;
@@ -1066,7 +1065,6 @@ d3.select("#btn").on("click", function() {
             // target1.isVisible = false;
             // waypoint2.isVisible = false;
 
-
             var waypoint1 = {
                 x:6.878846228549867,
                 y:5.624442667001714,
@@ -1080,15 +1078,15 @@ d3.select("#btn").on("click", function() {
             }
 
             var waypoint2 = {
-                x:4.01723914000348,
-                y:2.6102516854780466,
-                z:6.705014908367961
+                x:3.6829458901717187,
+                y:3.369587763632281,
+                z:6.051473963140251
             }
 
             var target2 = {
-                x:0.6099509019598574,
-                y:1.25727781865985,
-                z:0.010512437642007032
+                x:-0.968912836726127,
+                y:1.1287283044234226,
+                z:1.311103877323937
             }
 
             var waypoint3 = {
@@ -1337,6 +1335,7 @@ d3.select("#btn").on("click", function() {
     
                     if (scene.activeCamera.alpha < camera.upperAlphaLimit){
                         scene.activeCamera.alpha += .005;
+                        scene.gcamera.alpha = scene.activeCamera.alpha;
                     } else{
                         reachedUpperLimit = !reachedUpperLimit;
                     }
@@ -1345,6 +1344,7 @@ d3.select("#btn").on("click", function() {
     
                     if (scene.activeCamera.alpha > camera.lowerAlphaLimit) {
                         scene.activeCamera.alpha -= .005;
+                        scene.gcamera.alpha = scene.activeCamera.alpha;
                     } else {
                         reachedUpperLimit = !reachedUpperLimit;
                     }

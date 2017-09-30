@@ -12,8 +12,8 @@ var waypoints = [];
 
 var canvas;
 
-// d3.select("#indicator").style('opacity',0);
-// d3.select('#head').style('opacity',0);
+d3.select("#indicator").style('opacity',0);
+d3.select('#head').style('opacity',0);
 // d3.select(".article").style('opacity',0);
 
 
@@ -36,7 +36,9 @@ var animFrame = 1;
 //以行動裝置與否區分讀取的是模型或影片
     if(mob){
         // MOBloadScene();
+
         // window.addEventListener('scroll', MOBonScroll);
+
     }else{
 
         var canvasNode = document.createElement("CANVAS");
@@ -615,15 +617,15 @@ function videoControllFunction(){
         scrollAnimation(startOffset, 500);
     });
 
-    movies[1].addEventListener("play", function () {
-        engine.stopRenderLoop();
-    });
+    // movies[1].addEventListener("play", function () {
+    //     engine.stopRenderLoop();
+    // });
 
-    movies[1].addEventListener("pause", function () {
-        engine.runRenderLoop(function () {
-            RenderManager();
-        });
-    });
+    // movies[1].addEventListener("pause", function () {
+    //     engine.runRenderLoop(function () {
+    //         RenderManager();
+    //     });
+    // });
 }
 
 function modelLoader() {
@@ -975,9 +977,10 @@ var forceRebuild = function () {
 };
 
 function MOBloadScene(){
-    var src = "https://udn.com/upf/newmedia/2017_data/hk_handover_20/video/video1.mp4";
     var type = "video/mp4"
+    var src = "https://udn.com/upf/newmedia/2017_data/hk_handover_20/video/video1.mp4";
     var videoNode = document.createElement("VIDEO");
+
     var video = document.getElementById("g-graphic").appendChild(videoNode);
     var source = document.createElement('source');
 
@@ -1570,12 +1573,20 @@ function PCimportScene2(){
         hasChanged: false
     }
 
+    // var cameraPara5 = {
+    //     alpha: camAlpha * 3,
+    //     beta: camBeta * 0.825,
+    //     radius: camRadius * 0.825,
+    //     hasChanged: false
+    // }    
+
     var cameraPara5 = {
         alpha: camAlpha * 3,
         beta: camBeta * 0.825,
-        radius: camRadius * 0.825,
+        radius: camRadius * 0.79,
         hasChanged: false
     }    
+
 
     var light = new BABYLON.HemisphericLight("hemi2", new BABYLON.Vector3(0, 1, 0), scene);
 
@@ -1851,22 +1862,6 @@ function PCimportScene3(){
     }    
     
     return scene;
-}
-
-function detectmob() {
-    if (
-        navigator.userAgent.match(/Android/i) ||
-        navigator.userAgent.match(/webOS/i) ||
-        navigator.userAgent.match(/iPhone/i) ||
-        navigator.userAgent.match(/iPad/i) ||
-        navigator.userAgent.match(/iPod/i) ||
-        navigator.userAgent.match(/BlackBerry/i) ||
-        navigator.userAgent.match(/Windows Phone/i)
-    ) {
-        return true;
-    } else {
-        return false;
-    }
 }
 
 //disable scrolling

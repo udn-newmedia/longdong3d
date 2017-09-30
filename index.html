@@ -26,6 +26,7 @@
     <script defer src="https://udn.com/upf/newmedia/js/lazysizes.min.js"></script>
     <!-- <script src="https://udn-newmedia.github.io/udn-newmedia-css/js/index.js"></script> -->
 
+    <script src="src/common.js"></script>
     <script src="src/videoctrl.js"></script>
     <script async src="lib/js/RAF.polyfill.js"></script>
 
@@ -48,7 +49,7 @@
         </div>
     </div>
 
-    <div id="g-graphic"></div>
+    <div id="g-graphic" class="hidden-sm hidden-xs"></div>
 
     <div class="g-labels">
         <div class="g-label model2" data-position="">翻越2組小天花板地形</div>
@@ -64,8 +65,8 @@
     <!--<button id="btn" style="z-index:10000000; position:fixed; left:0; right:0;">camera</button>-->
     <div class="article">
         <div class="video-contain">
-            <!-- <video preload="metadata" class="rwd-2dv" id="movie-1" src="https://udn.com/upf/newmedia/2017_data/hk_handover_20/video/video1.mp4" playsinline data-target="1" autoplay></video> -->
-            <video preload="metadata" class="rwd-2dv" id="movie-1" src="assets/videos/cover-video.mp4" playsinline data-target="1" autoplay></video>
+             <!--<video preload="metadata" class="rwd-2dv" id="movie-1" src="https://udn.com/upf/newmedia/2017_data/hk_handover_20/video/video1.mp4" playsinline data-target="1" autoplay></video> -->
+            <video preload="metadata" class="rwd-2dv" id="movie-1" data-src="assets/videos/cover-video.mp4" playsinline data-target="1" autoplay></video>
             <div style="margin-top: -8px;" class="video-control">
             <div class="progress hidden-md hidden-lg">
                 <div id="progress-bar-1" class="progress-bar progress-bar-striped"></div>
@@ -77,7 +78,7 @@
                 <i class="fa fa-repeat replay hidden-md hidden-lg" data-target="1"></i>
             </div>
         </div>
-        <section id="model1">
+        <section id="model1" class="hidden-xs hidden-sm">
             <div class="_title">
                 <h1>攀岩者天堂 3D帶你遊龍洞</h1>
                 <div id="share-block-top" class="share-block container">

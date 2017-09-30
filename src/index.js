@@ -828,37 +828,20 @@ function changeView(waypoint, callback){
 var smoothSetTarget = function (obj, onEndcallback) {
 
     var camera = scenes[activeScene].camera;
-
-    // var provTargetX = camera.getTarget().x;
-    // var provTargetY = camera.getTarget().y;
-    // var provTargetZ = camera.getTarget().z;
-
-    var provTargetX = camera.target.x;
-    var provTargetY = camera.target.x;
-    var provTargetZ = camera.target.x;
-
-//    camera.setTarget(obj.position);
-    camera.setTarget(new BABYLON.Vector3(obj.x,obj.y,obj.z));
-
-    targetX = camera.target.x;
-    targetY = camera.target.y;
-    targetZ = camera.target.z;
+    
+    var targetX = obj.x;
+    var targetY = obj.y;
+    var targetZ = obj.z;
 
     //easing function
-    // var ease = new BABYLON.CubicEase();
-    // ease.setEasingMode(BABYLON.EasingFunction.EASINGMODE_EASEINOUT);
-
-    var ease = new BABYLON.SineEase();
+    var ease = new BABYLON.CubicEase();
     ease.setEasingMode(BABYLON.EasingFunction.EASINGMODE_EASEINOUT);
-
-    camera.setTarget(new BABYLON.Vector3(provTargetX, provTargetY, provTargetZ));
 
     // Empty the animation array
     camera.animations.splice(0, camera.animations.length);
 
     var anim = BABYLON.Animation.CreateAndStartAnimation("CamTaranim", camera, "target", 30, 120, camera.target,
         new BABYLON.Vector3(targetX, targetY, targetZ), 2, ease, onEndcallback);
-
 };
 
 var moveCameraWithGhostCam = function (obj, callback) {

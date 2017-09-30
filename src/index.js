@@ -45,6 +45,8 @@ var animFrame = 1;
 
         PCloadScene1();
 
+        videoControllFunction();
+
         window.addEventListener('scroll', function(){
             if(!ticking){
                 requestAnimationFrame(onScroll);
@@ -56,8 +58,6 @@ var animFrame = 1;
         window.addEventListener("resize", function () {
             engine.resize();
         });
-
-        videoControllFunction();
         
         engine.runRenderLoop(function(){
             RenderManager()
@@ -77,6 +77,8 @@ function onScroll(){
 //決定何時要重繪(第一層是換模型判斷點、第二層是換視角判斷點)
 function RenderManager(){
 
+    if(!scenes[activeScene]) return;
+
     if (scroll_now >= 0 && scroll_now < stopRotatingPointOffset){
 
         scenes[activeScene].reRender = true;
@@ -90,6 +92,7 @@ function RenderManager(){
         } else{
             scenes[activeScene].reRender = false;                    
         }
+
     } else if (scroll_now >= changeModelPointsOffset[0] && scroll_now < changeModelPointsOffset[1] * 0.9){
         scenes[activeScene].reRender = false;        
     } else if (scroll_now >= changeModelPointsOffset[1]*0.9 && scroll_now < changeModelPointsOffset[1]*1.1){
@@ -124,382 +127,367 @@ function SceneManager() {
 }
 
 //轉換視角 & billboards控制(包含在billboard上畫線)
-
 function viewChanger(){
-    //開頭旋轉隱藏billboards
-    if (scroll_now < stopRotatingPointOffset && scenes[activeScene].billboards[0].isVisible){
-        scenes[activeScene].billboards[0].isVisible = false;
-        displayBillboards(false);
-    } 
 
-    if (scroll_now >= changeViewWaypointsOffset[0] && scroll_now < changeViewWaypointsOffset[0] * 1.1) {
-        //第一個模型，第一個視角
+    if (scenes[0] && activeScene === 0) {
 
-        changeView(waypoints[0], function() {
-          displayBillboards([true,true,false,false]);
-        });
+        //開頭旋轉隱藏billboards
+        if (scroll_now < stopRotatingPointOffset){
 
-        // moveCameraByAdjustingParameters(scenes[activeScene].cameraPara2,function(){
+            displayBillboards(false);
 
-        // });
+        } else if (scroll_now >= changeViewWaypointsOffset[0] && scroll_now < changeViewWaypointsOffset[0] * 1.1) {
+            //第一個模型，第一個視角
 
-    } else if (scroll_now >= changeViewWaypointsOffset[1] && scroll_now < changeViewWaypointsOffset[1] * 1.1) {
-
-        //第一個模型，第二個視角    
-        changeView(waypoints[1], function () {
-
+            changeView(waypoints[0], function() {
+            displayBillboards([true, true, false, false]);
+            });
+        } else if (scroll_now >= changeViewWaypointsOffset[1] && scroll_now < changeViewWaypointsOffset[1] * 1.1) {
+            //第一個模型，第二個視角
+            changeView(waypoints[1], function() {
             displayBillboards([true, true, false, true]);
 
-            setTimeout(function(){
+            setTimeout(function() {
                 //等待change view
 
                 var billboard = scenes[activeScene].billboards[3];
                 var points = billboard.animTexture.points;
                 var style = billboard.animTexture.ctxStyle;
 
-                disableScroll();
+                // disableScroll();
 
-                animateTexturePlay(billboard,style,points,function(){
-                    animFrame = 1;
-                    enableScroll();
-                    scrollAnimation(changeModelPointsOffset[1], 1000);
+                animateTexturePlay(billboard, style, points, function() {
+                animFrame = 1;
+                // enableScroll();
+                scrollAnimation(changeModelPointsOffset[1], 1000);
                 });
+            }, 3000);
+            });
+        } else if (scroll_now >= changeViewWaypointsOffset[5] && scroll_now < changeModelPointsOffset[2]) {
+            //回到model1
 
-            },3000);
-        });
+            // Hide all of labels of model2
+            d3.selectAll(".g-label").classed("hidden", true);
 
-    } else if (scroll_now >= changeViewWaypointsOffset[2] && scroll_now < changeViewWaypointsOffset[3]) {
-        //第二個模型，第一個視角
-        
-        if (scenes[activeScene].billboards[0]) {
-
-            if (!scenes[activeScene].cameraPara2.hasChanged){
-
-                scenes[activeScene].cameraPara2.hasChanged = true;
-                
-                // Hide all of labels
-                    d3.selectAll('.g-label')
-                        .classed("hidden", true);
-
-                moveCameraByAdjustingParameters(scenes[activeScene].cameraPara2, function () {
-                                    
-                    displayBillboards([true,false,false,false]);
-
-                    // route labels
-                        d3.selectAll('.g-label.model2')
-                            .each(function (d, i) {
-                                if (i === 0) {
-                                    d3.select(this)
-                                        .classed("hidden", false)
-                                        .style('display', 'inline')
-                                        .style('left', 688.6946548938735 + 'px')
-                                        .style('top', 397.3339768474 + 'px');
-                                } else {
-                                    d3.select(this)
-                                        .classed("hidden", true);
-                                }
-                            }
-                        );
-
-                });
+            if (!waypoints[2].hasChanged) {
+            displayBillboards(false);
             }
-        }
 
-    } else if (scroll_now >= changeViewWaypointsOffset[3] && scroll_now < changeViewWaypointsOffset[4]) {
-        //第二個模型，第二個視角
-
-        if (!scenes[activeScene].cameraPara3.hasChanged) {
-
-            scenes[activeScene].cameraPara3.hasChanged = true;
-
-            scenes[activeScene].light0.intensity = 0.2;
-
-            displayBillboards(false);
-
-            // Hide all of labels
-                d3.selectAll('.g-label')
-                    .classed("hidden", true);
-
-            moveCameraByAdjustingParameters(scenes[activeScene].cameraPara3, function () {
-
-                displayBillboards([false, true, false, false]);
-
-                d3.selectAll('.g-label.model2')
-                    .each(function (d, i) {
-                        if (i === 1) {
-                            d3.select(this)
-                                .classed("hidden", false)
-                                .style('display', 'inline')
-                                // 原來的投影位置
-                                // .style('left', 915.6750358885913 + 'px')
-                                // .style('top', 313.67419401656275 + 'px');
-                                .style('left', 920.6750358885913 + 'px')
-                                .style('top', 318.67419401656275 + 'px');
-
-                        }else if(i===2){
-
-                            d3.select(this)
-                                .classed("hidden", false)
-                                .style('display', 'inline')
-                                // 原來的投影位置
-                                // .style('left', 915.6750358885913 + 'px')
-                                // .style('top', 313.67419401656275 + 'px');
-                                .style('left', 964 + 'px')
-                                .style('top', 208 + 'px');
-
-                        } else {
-                            d3.select(this)
-                                .classed("hidden", true);
-                        }
-                    }
-                );
-
-            });
-
-        }
-
-    } else if (scroll_now >= changeViewWaypointsOffset[4] && scroll_now < changeViewWaypointsOffset[5]) {
-        //第二個模型，第三個視角
-
-        if (!scenes[activeScene].cameraPara4.hasChanged) {
-            
-            scenes[activeScene].cameraPara4.hasChanged = true;
-
-            displayBillboards(false);
-
-            // Hide all of labels
-            d3.selectAll('.g-label')
-                .classed("hidden", true);
-
-            moveCameraByAdjustingParameters(scenes[activeScene].cameraPara4, function () {
-
-                displayBillboards([false, false, true, false]);
-
-                d3.selectAll('.g-label.model2')
-                    .each(function (d, i) {
-                        if (i === 3) {
-                            d3.select(this)
-                                .classed("hidden", false)
-                                .style('display', 'inline')
-                                // 原來的投影位置
-                                // .style('left', 915.6750358885913 + 'px')
-                                // .style('top', 313.67419401656275 + 'px');
-                                .style('left', 809.4389298448883 + 'px')
-                                .style('top', 388.2740448861042 + 'px');
-
-                        } else {
-                            d3.select(this)
-                                .classed("hidden", true);
-                        }
-                    }
-                );
-
-            });
-        }
-
-
-    } else if (scroll_now >= changeViewWaypointsOffset[5] && scroll_now < changeModelPointsOffset[3]) {
-        //第二個模型，第四個視角        
-
-        if (!scenes[activeScene].cameraPara5.hasChanged) {
-            
-            scenes[activeScene].cameraPara5.hasChanged = true;
-
-            displayBillboards(false);
-
-            // Hide all of labels
-            d3.selectAll('.g-label')
-                .classed("hidden", true);
-
-            moveCameraByAdjustingParameters(scenes[activeScene].cameraPara5, function () {
-                
-                displayBillboards([false, false, false, true]);
-
-                d3.selectAll('.g-label.model2')
-                    .each(function (d, i) {
-                        if (i === 4) {
-                            d3.select(this)
-                                .classed("hidden", false)
-                                .style('display', 'inline')
-                                .style('left', 1011.2279941885878 + 'px')
-                                .style('top', 395.1615063147416 + 'px');
-
-                        } else {
-                            d3.select(this)
-                                .classed("hidden", true);
-                        }
-                    }
-                );
-
-            }); 
-        }
-
-    } else if (scroll_now >= changeViewWaypointsOffset[5] && scroll_now < changeModelPointsOffset[2]){
-
-        //回到model1
-
-        // Hide all of labels of model2
-        d3.selectAll('.g-label')
-            .classed("hidden", true);
-
-        if (!waypoints[2].hasChanged){
-            displayBillboards(false);
-        }
-            
-        changeView(waypoints[2], function () {
-
-            setTimeout(function () {
+            changeView(waypoints[2], function() {
+            setTimeout(function() {
                 //等待change view
 
                 var billboard = scenes[activeScene].billboards[2];
                 var points = billboard.animTexture.points;
                 var style = billboard.animTexture.ctxStyle;
 
-
                 displayBillboards([false, false, true, false]);
 
-                disableScroll();
+                // disableScroll();
 
-                animateTexturePlay(billboard, style, points, function () {
-                    animFrame = 1;
-                    enableScroll();
-                    scrollAnimation(changeModelPointsOffset[2], 1000);
+                animateTexturePlay(billboard, style, points, function() {
+                animFrame = 1;
+                // enableScroll();
+                scrollAnimation(changeModelPointsOffset[2], 1000);
                 });
-
             }, 1000);
-        });
+            });
+        } else if (scroll_now >= changeModelPointsOffset[4]) {
+            //最後再回到model1
 
+            d3.selectAll(".g-label").classed("hidden", true);
 
+            displayBillboards(false);
 
-        // displayBillboards([true, true, true, false]);
+            changeView(waypoints[3], function() {});
+        }
+    }
 
-        //   var billboard = scenes[activeScene].billboards[2];
-        //   var points = billboard.animTexture.points;
-        //   var style = billboard.animTexture.ctxStyle;
+    if(scenes[1] && activeScene===1){
 
-        //   disableScroll();
+        if (scroll_now >= changeViewWaypointsOffset[2] && scroll_now < changeViewWaypointsOffset[3]) {
+            //第二個模型，第一個視角
+            
+            if (scenes[activeScene].billboards[0]) {
 
-        //   animateTexturePlay(billboard, style, points, function() {
-        //     animFrame = 1;
-        //     enableScroll();
-        //     scrollAnimation(changeModelPointsOffset[2], 250);
-        //   });
+                if (!scenes[activeScene].cameraPara2.hasChanged){
 
-    } else if (scroll_now >= changeModelPointsOffset[2] && scroll_now < changeModelPointsOffset[2] + 2/3 * window.innerHeight) {
-        //第三個模型，第一個視角
+                    scenes[activeScene].cameraPara2.hasChanged = true;
+                    
+                    // Hide all of labels
+                        d3.selectAll('.g-label')
+                            .classed("hidden", true);
 
-        //定點觸發動畫
+                    moveCameraByAdjustingParameters(scenes[activeScene].cameraPara2, function () {
+                                        
+                        displayBillboards([true,false,false,false]);
 
-        if (scenes[activeScene].billboards[0]) {
-
-            if (!scenes[activeScene].cameraPara2.hasChanged) {
-
-                scenes[activeScene].cameraPara2.hasChanged = true;
-                
-                    moveCameraByAdjustingParameters(scenes[activeScene].cameraPara2, function(){
-
-                        displayBillboards([true, false]);
-
-                        // x: 1003.3493523006468, y: 359.99608925403777, z: 0.9123074554590
-
-                        // d3.selectAll('.g-label').attr("class", "g-label model3")
-                        d3.selectAll(".g-label.model3")
-                            .each(function (d, i) {
-                                if (i === 0) {
-                                    d3.select(this)
-                                        .classed("hidden", false)
-                                        .style('display', 'inline')
-                                        // 原始投影
-                                        // .style('left', 1003.3493523006468 + 'px')
-                                        // .style('top', 359.99608925403777 + 'px');
-                                        .style('left', 1031 + 'px')
-                                        .style('top', 198 + 'px');
-
-                                } else {
-                                    d3.select(this)
-                                        .classed("hidden", true);
+                        // route labels
+                            d3.selectAll('.g-label.model2')
+                                .each(function (d, i) {
+                                    if (i === 0) {
+                                        d3.select(this)
+                                            .classed("hidden", false)
+                                            .style('display', 'inline')
+                                            .style('left', 688.6946548938735 + 'px')
+                                            .style('top', 397.3339768474 + 'px');
+                                    } else {
+                                        d3.select(this)
+                                            .classed("hidden", true);
+                                    }
                                 }
-                            }
-                        );
+                            );
 
                     });
-                
-            } 
+                }
+            }
 
+        } else if (scroll_now >= changeViewWaypointsOffset[3] && scroll_now < changeViewWaypointsOffset[4]) {
+            //第二個模型，第二個視角
+
+            if (!scenes[activeScene].cameraPara3.hasChanged) {
+
+                scenes[activeScene].cameraPara3.hasChanged = true;
+
+                scenes[activeScene].light0.intensity = 0.2;
+
+                displayBillboards(false);
+
+                // Hide all of labels
+                    d3.selectAll('.g-label')
+                        .classed("hidden", true);
+
+                moveCameraByAdjustingParameters(scenes[activeScene].cameraPara3, function () {
+
+                    displayBillboards([false, true, false, false]);
+
+                    d3.selectAll('.g-label.model2')
+                        .each(function (d, i) {
+                            if (i === 1) {
+                                d3.select(this)
+                                    .classed("hidden", false)
+                                    .style('display', 'inline')
+                                    // 原來的投影位置
+                                    // .style('left', 915.6750358885913 + 'px')
+                                    // .style('top', 313.67419401656275 + 'px');
+                                    .style('left', 920.6750358885913 + 'px')
+                                    .style('top', 318.67419401656275 + 'px');
+
+                            }else if(i===2){
+
+                                d3.select(this)
+                                    .classed("hidden", false)
+                                    .style('display', 'inline')
+                                    // 原來的投影位置
+                                    // .style('left', 915.6750358885913 + 'px')
+                                    // .style('top', 313.67419401656275 + 'px');
+                                    .style('left', 964 + 'px')
+                                    .style('top', 208 + 'px');
+
+                            } else {
+                                d3.select(this)
+                                    .classed("hidden", true);
+                            }
+                        }
+                    );
+
+                });
+
+            }
+
+        } else if (scroll_now >= changeViewWaypointsOffset[4] && scroll_now < changeViewWaypointsOffset[5]) {
+            //第二個模型，第三個視角
+
+            if (!scenes[activeScene].cameraPara4.hasChanged) {
+                
+                scenes[activeScene].cameraPara4.hasChanged = true;
+
+                displayBillboards(false);
+
+                // Hide all of labels
+                d3.selectAll('.g-label')
+                    .classed("hidden", true);
+
+                moveCameraByAdjustingParameters(scenes[activeScene].cameraPara4, function () {
+
+                    displayBillboards([false, false, true, false]);
+
+                    d3.selectAll('.g-label.model2')
+                        .each(function (d, i) {
+                            if (i === 3) {
+                                d3.select(this)
+                                    .classed("hidden", false)
+                                    .style('display', 'inline')
+                                    // 原來的投影位置
+                                    // .style('left', 915.6750358885913 + 'px')
+                                    // .style('top', 313.67419401656275 + 'px');
+                                    .style('left', 809.4389298448883 + 'px')
+                                    .style('top', 388.2740448861042 + 'px');
+
+                            } else {
+                                d3.select(this)
+                                    .classed("hidden", true);
+                            }
+                        }
+                    );
+
+                });
+            }
+
+        } else if (scroll_now >= changeViewWaypointsOffset[5] && scroll_now < changeModelPointsOffset[3]) {
+            //第二個模型，第四個視角        
+
+            if (!scenes[activeScene].cameraPara5.hasChanged) {
+                
+                scenes[activeScene].cameraPara5.hasChanged = true;
+
+                displayBillboards(false);
+
+                // Hide all of labels
+                d3.selectAll('.g-label')
+                    .classed("hidden", true);
+
+                moveCameraByAdjustingParameters(scenes[activeScene].cameraPara5, function () {
+                    
+                    displayBillboards([false, false, false, true]);
+
+                    d3.selectAll('.g-label.model2')
+                        .each(function (d, i) {
+                            if (i === 4) {
+                                d3.select(this)
+                                    .classed("hidden", false)
+                                    .style('display', 'inline')
+                                    .style('left', 1011.2279941885878 + 'px')
+                                    .style('top', 395.1615063147416 + 'px');
+
+                            } else {
+                                d3.select(this)
+                                    .classed("hidden", true);
+                            }
+                        }
+                    );
+
+                }); 
+            }
         }
 
+    } 
+    
+    if(scenes[2] && activeScene===2){
 
-        //跟著scroll長線
-        // if (scenes[activeScene].billboards[0]) {
-        //     if (!scenes[activeScene].billboards[0].isVisible) {
-        //         moveCameraByAdjustingParameters(scenes[activeScene].cameraPara2,function(){
-        //             displayBillboards(true);
-        //             scenes[activeScene].cameraPara2.hasChanged = true;
-        //         });
+        if (scroll_now >= changeModelPointsOffset[2] && scroll_now < changeModelPointsOffset[2] + 2/3 * window.innerHeight) {
+            //第三個模型，第一個視角
 
-        //     }else{
+            //定點觸發動畫
 
-        //         var start = changeModelPointsOffset[2];
-        //         var middlePoint1 = changeModelPointsOffset[2] + window.innerHeight * 1/3;
-        //         var middlePoint2 = changeModelPointsOffset[2] + window.innerHeight * 2/3;
-        //         var end = changeModelPointsOffset[2] + window.innerHeight;
+            if (scenes[activeScene].billboards[0]) {
 
-        //         var billboard = scenes[activeScene].billboards[0];
+                if (!scenes[activeScene].cameraPara2.hasChanged) {
 
-        //         // start, end, billboard, points, style
-        //         // drawLineWithScroll(start, end, billboard, points, style);
+                    scenes[activeScene].cameraPara2.hasChanged = true;
+                    
+                        moveCameraByAdjustingParameters(scenes[activeScene].cameraPara2, function(){
 
-        //         if (scroll_now > start && scroll_now < middlePoint1){
+                            displayBillboards([true, false]);
 
-        //             var points = billboard.animTexture.points1;
-        //             var style = billboard.animTexture.ctxStyle1;
+                            // x: 1003.3493523006468, y: 359.99608925403777, z: 0.9123074554590
 
-        //             drawLineWithScroll(start, middlePoint1, billboard, points, style);
-        //         } 
-        //         else if (scroll_now >= middlePoint1 && scroll_now < middlePoint2) {
+                            // d3.selectAll('.g-label').attr("class", "g-label model3")
+                            d3.selectAll(".g-label.model3")
+                                .each(function (d, i) {
+                                    if (i === 0) {
+                                        d3.select(this)
+                                            .classed("hidden", false)
+                                            .style('display', 'inline')
+                                            // 原始投影
+                                            // .style('left', 1003.3493523006468 + 'px')
+                                            // .style('top', 359.99608925403777 + 'px');
+                                            .style('left', 1031 + 'px')
+                                            .style('top', 198 + 'px');
 
-        //             animFrame = 1;
-        //             var points = billboard.animTexture.points2;
-        //             var style = billboard.animTexture.ctxStyle2;
+                                    } else {
+                                        d3.select(this)
+                                            .classed("hidden", true);
+                                    }
+                                }
+                            );
 
-        //             showText(billboard, billboard.animTexture.text1);
+                        });
+                    
+                } 
 
-        //             drawLineWithScroll(middlePoint1, middlePoint2, billboard, points, style);
-        //         }
-        //         else if (scroll_now >= middlePoint2 && scroll_now < end){
+            }
 
-        //             showText(billboard, billboard.animTexture.text2);
-        //             showText(billboard, billboard.animTexture.text3);
+            //跟著scroll長線
+            // if (scenes[activeScene].billboards[0]) {
+            //     if (!scenes[activeScene].billboards[0].isVisible) {
+            //         moveCameraByAdjustingParameters(scenes[activeScene].cameraPara2,function(){
+            //             displayBillboards(true);
+            //             scenes[activeScene].cameraPara2.hasChanged = true;
+            //         });
 
-        //             if(!scenes[activeScene].cameraPara3.hasChanged){
-        //                 moveCameraByAdjustingParameters(scenes[activeScene].cameraPara3, function () {
-        //                     scenes[activeScene].cameraPara3.hasChanged = true;
-        //                 });
-        //             }
-        //             animFrame = 1;
-        //             var points = billboard.animTexture.points3;
-        //             var style = billboard.animTexture.ctxStyle3;
-        //             drawLineWithScroll(middlePoint2, end, billboard, points, style);
-        //         } 
-        //     }
-        // }
+            //     }else{
 
-    } else if (scroll_now >= changeModelPointsOffset[2] + 2 / 3 * window.innerHeight && scroll_now < changeModelPointsOffset[4]){
+            //         var start = changeModelPointsOffset[2];
+            //         var middlePoint1 = changeModelPointsOffset[2] + window.innerHeight * 1/3;
+            //         var middlePoint2 = changeModelPointsOffset[2] + window.innerHeight * 2/3;
+            //         var end = changeModelPointsOffset[2] + window.innerHeight;
 
-        //第三個模型，第二個視角
-        if (!scenes[activeScene].cameraPara3.hasChanged){
+            //         var billboard = scenes[activeScene].billboards[0];
 
-            scenes[activeScene].cameraPara3.hasChanged = true;
+            //         // start, end, billboard, points, style
+            //         // drawLineWithScroll(start, end, billboard, points, style);
 
-            d3.selectAll('.g-label')
-                .classed("hidden", true);
-                
-                //定點觸發動畫
-            moveCameraByAdjustingParameters(scenes[activeScene].cameraPara3, function () {
+            //         if (scroll_now > start && scroll_now < middlePoint1){
 
-                    displayBillboards([false, true]);
+            //             var points = billboard.animTexture.points1;
+            //             var style = billboard.animTexture.ctxStyle1;
 
-                    //  900.1022351489654, y: 414.8555291643359
+            //             drawLineWithScroll(start, middlePoint1, billboard, points, style);
+            //         } 
+            //         else if (scroll_now >= middlePoint1 && scroll_now < middlePoint2) {
+
+            //             animFrame = 1;
+            //             var points = billboard.animTexture.points2;
+            //             var style = billboard.animTexture.ctxStyle2;
+
+            //             showText(billboard, billboard.animTexture.text1);
+
+            //             drawLineWithScroll(middlePoint1, middlePoint2, billboard, points, style);
+            //         }
+            //         else if (scroll_now >= middlePoint2 && scroll_now < end){
+
+            //             showText(billboard, billboard.animTexture.text2);
+            //             showText(billboard, billboard.animTexture.text3);
+
+            //             if(!scenes[activeScene].cameraPara3.hasChanged){
+            //                 moveCameraByAdjustingParameters(scenes[activeScene].cameraPara3, function () {
+            //                     scenes[activeScene].cameraPara3.hasChanged = true;
+            //                 });
+            //             }
+            //             animFrame = 1;
+            //             var points = billboard.animTexture.points3;
+            //             var style = billboard.animTexture.ctxStyle3;
+            //             drawLineWithScroll(middlePoint2, end, billboard, points, style);
+            //         } 
+            //     }
+            // }
+
+        } else if (scroll_now >= changeModelPointsOffset[2] + 2 / 3 * window.innerHeight && scroll_now < changeModelPointsOffset[4]){
+
+            //第三個模型，第二個視角
+            if (!scenes[activeScene].cameraPara3.hasChanged){
+
+                scenes[activeScene].cameraPara3.hasChanged = true;
+
+                d3.selectAll('.g-label')
+                    .classed("hidden", true);
+                    
+                    //定點觸發動畫
+                moveCameraByAdjustingParameters(scenes[activeScene].cameraPara3, function () {
+
+                        displayBillboards([false, true]);
+
                         d3.selectAll(".g-label.model3")
                             .each(function (d, i) {
                                 if (i === 1) {
@@ -515,17 +503,10 @@ function viewChanger(){
                                 }
                             }
                         );
-            });
+                });
+            }
         }
-
-    } else if (scroll_now >= changeModelPointsOffset[4]) {
-        d3.selectAll('.g-label')
-            .classed("hidden", true);
-        
-        displayBillboards(false);
-
-        changeView(waypoints[3], function () {});
-    }
+    } 
 }
 
 function linearScaleFunc(domainArray,rangeArray){
@@ -787,6 +768,8 @@ function displayBillboards(display){
 
     var scene = scenes[activeScene];
 
+    if(!scene.billboards) return;
+
     if(Array.isArray(display)){
         // console.log(scene.billboards.length);
         for(var i=0;i<scene.billboards.length;i++){
@@ -808,15 +791,14 @@ function changeView(waypoint, callback){
     }else{
         waypoint.hasChanged = true;
 
-        // console.log('changeView');
-        disableScroll()
+        // disableScroll()
         
         var point = waypoint;
         var target = point.target;
         
         smoothSetTarget(target, moveCameraWithGhostCam(point,function(){
             scenes[activeScene].reRender = false;  
-            enableScroll();      
+            // enableScroll();      
             callback();            
             })
         );
@@ -1025,11 +1007,11 @@ function PCloadScene1(){
         light0.intensity = 0.4;
 
 
-d3.select("#btn").on("click", function() {
-  console.log("alpha:"+camera.alpha, "beta:"+camera.beta, "radius:"+camera.radius);
-  console.log("position:"+camera.position);
-  console.log("target:"+camera.target);
-});
+            d3.select("#btn").on("click", function() {
+            console.log("alpha:"+camera.alpha, "beta:"+camera.beta, "radius:"+camera.radius);
+            console.log("position:"+camera.position);
+            console.log("target:"+camera.target);
+            });
 
 
         // A ghost camera 
@@ -1336,7 +1318,9 @@ d3.select("#btn").on("click", function() {
             }
         })
 
-        var sceneIndex = scenes.push(scene) - 1;
+        // var sceneIndex = scenes.push(scene) - 1;
+        var sceneIndex = 0;
+        scenes[sceneIndex] = scene;
         scenes[sceneIndex].reRender = true; 
         scenes[sceneIndex].camera = camera;
         scenes[sceneIndex].gcamera = gcamera;
@@ -1697,7 +1681,9 @@ function PCimportScene2(){
 
     modelLoaded[1] = !modelLoaded[1];
 
-    var sceneIndex = scenes.push(scene) - 1;
+    // var sceneIndex = scenes.push(scene) - 1;
+    var sceneIndex = 1;
+    scenes[sceneIndex] = scene;
     scenes[sceneIndex].reRender = true;
     scenes[sceneIndex].camera = camera;
     scenes[sceneIndex].cameraPara2 = cameraPara2;
@@ -1837,7 +1823,9 @@ function PCimportScene3(){
     
     modelLoaded[2] = !modelLoaded[2];    
 
-    var sceneIndex = scenes.push(scene) - 1;
+    // var sceneIndex = scenes.push(scene) - 1;
+    var sceneIndex = 2;
+    scenes[sceneIndex] = scene;
     scenes[sceneIndex].reRender = true;
     scenes[sceneIndex].camera = camera;
     scenes[sceneIndex].cameraPara2 = cameraPara2;
@@ -1951,7 +1939,7 @@ function enableScroll() {
         return worldVector;
     }
 
-    canvas.addEventListener("pointerdown", positionUnproject, false);
+    // canvas.addEventListener("pointerdown", positionUnproject, false);
 
     
     

@@ -33,6 +33,25 @@ var animFrame = 1;
     // $(document).ready(function(){
     // });
 
+if(window.matchMedia("(max-width: 1200px)").matches){
+
+    //mobile 版影片 & poster
+    var cover_video = document.querySelector('video');
+    cover_video.setAttribute('src',"assets/videos/mobile/cover-video.mp4");
+
+    var cover_poster;
+
+    //填入 mobile video src
+    var mobvideos = document.getElementsByClassName('mobVideo');
+
+    [].forEach.call(mobvideos, function(el){
+        el.setAttribute("src", el.getAttribute("data-src"));
+    });
+
+    var mob_posters;
+}
+
+
 //以行動裝置與否區分讀取的是模型或影片
     if(mob){
         // MOBloadScene();

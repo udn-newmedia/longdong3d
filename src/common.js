@@ -65,32 +65,3 @@ function iOSversion() {
   }
 }
 
-    
-
-// changes video and poster with device
-
-$(document).ready(function(){
-
-    $(".rwd-2dv").each(function(index, el) {
-
-        var temp = $(this).data("src");
-        var temp2 = $(this).data("poster");
-
-        if (w < 992) {
-
-            var res = temp.replace("videos/", "videos/mobile/");
-            // var res2 = temp2.replace("image/", "image/mobile/");
-
-            $(this).attr("src", res);
-            // $(this).attr("poster", res2);
-
-        } else {
-
-            $(this).attr("src", temp);
-            // $(this).attr("poster", temp2);
-
-        }
-    });
-
-});
-

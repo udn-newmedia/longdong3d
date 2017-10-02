@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="https://udn-newmedia.github.io/udn-newmedia-css/css/style.css">
     <link rel="stylesheet" href="lib/css/nivo-slider.css">
     <link rel="stylesheet" href="lib/css/default.css">
-    <link rel="stylesheet" href="src/style.css" >
+    <link rel="stylesheet" href="src/style.css?v=3" >
 
     <!-- Babylon.js -->
     <script src="https://preview.babylonjs.com/cannon.js"></script>
@@ -27,7 +27,7 @@
     <!-- <script src="https://udn-newmedia.github.io/udn-newmedia-css/js/index.js"></script> -->
 
     <script src="src/common.js"></script>
-    <script src="src/videoctrl.js"></script>
+    <script src="src/videoctrl.js?v=1"></script>
     <script async src="lib/js/RAF.polyfill.js"></script>
 
     <!-- nivoSlider -->
@@ -64,17 +64,17 @@
 
     <!--<button id="btn" style="z-index:10000000; position:fixed; left:0; right:0;">camera</button>-->
     <div class="article">
-        <div class="video-contain">
-            <video preload="metadata" class="rwd-2dv" id="movie-1" src="assets/videos/cover-video.mp4" playsinline data-target="1" autoplay></video>
+        <div class="video-contain" style="margin-top:0; margin-bottom:0">
+            <video preload="metadata" class="rwd-2dv" id="movie-1" src="assets/videos/cover-video.mp4" playsinline data-target="1" autoplay loop></video>
             <div style="margin-top: -8px;" class="video-control">
-            <!--<div class="progress hidden-lg">
-                <div id="progress-bar-1" class="progress-bar progress-bar-striped"></div>
-            </div>-->
-            <div class="img-say-out volume-text hidden-md hidden-lg" data-target="1">點按開聲音</div>
+                <!--<div class="progress hidden-lg">
+                    <div id="progress-bar-1" class="progress-bar progress-bar-striped"></div>
+                </div>-->
+                <!--<div class="img-say-out volume-text hidden-md hidden-lg" data-target="1">點按開聲音</div>-->
                 <i class="fa fa-spinner fa-pulse video-wait" data-target="1"></i>
                 <!--<i class="fa fa-play video-play hidden-md hidden-lg" data-target="1"></i>-->
-                <i class="fa fa-volume-off volume hidden-md hidden-lg" data-target="1"></i>
-                <i class="fa fa-repeat replay hidden-md hidden-lg" data-target="1"></i>
+                <!--<i class="fa fa-volume-off volume hidden-md hidden-lg" data-target="1"></i>-->
+                <!--<i class="fa fa-repeat replay hidden-md hidden-lg" data-target="1"></i>-->
             </div>
         </div>
         <section id="model1" class="hidden-md hidden-sm hidden-xs">
@@ -92,7 +92,7 @@
         </section>
         <section class="masked">
             <div class="content container">
-                <h1 class="hidden-lg">攀岩者天堂 3D帶你遊龍洞</h1>
+                <h2 class="hidden-lg">攀岩者天堂 3D帶你遊龍洞</h2>
                 <p>2002年2月微雨的冷天，才剛到台灣兩天的Matt Robertson ，不會半句中文，卻迫不及待的從新竹獨自北上基隆，客運、火車、計程車轉換，花了7小時才抵達龍洞。</p>                
                 <!-- <p><br/></p>
                 <p>他一摸到岩壁就覺得這地方跟亞洲多數光滑的石灰岩場不一樣。《台灣龍洞攀岩》作者Matt Robertson 是美國的攀岩好手，他回憶第一次到龍洞攀爬的情形，「當時接近傍晚，天色昏暗，又下雨、颳風，沒有人知道我在那裏，爬上去很冒險，但這趟試爬，我覺得龍洞是個我一直在找尋的地方。」</p> -->
@@ -132,23 +132,23 @@
                 <p>台灣北海岸的龍洞，穿越層層疊疊的石陣，除了外圍地區有遊客戲水，越往龍洞心臟地帶前進，被清澈海水包圍的岩壁宛如世外仙境，灌木雜草從岩縫鑽出，除了野生動物外，還有攀岩者的足跡。</p>
                 <p><br/></p>
                 <p>40年來的探索，連當地居民也不清楚的峭壁地形，攀岩者們瞭若指掌，龍洞是台灣攀岩大本營，舉目所及的每一片岩壁，都是攀岩者躍躍欲試的目標，短短2公里，已開發出600多條攀爬路線。</p>
-                <p><br/></p>
-                <p>「龍洞空間多又大、地形多變，同時擁有傳統攀登與運動攀登的路線，還在海邊，台灣人真的很幸運。」15年攀岩經驗的澳洲人Stephen Parr說。龍洞3500多年前沉積，形成四陵砂岩，穩定的岩質，遠眺太平洋的濱海攀岩環境，近年大受國內外攀岩者喜愛，逐步躍升為世界知名的濱海岩場。</p>                
             </div>
             <div class="video-contain hidden-lg">
-                <video preload="metadata" class="rwd-2dv mobVideo" id="movie-2" data-src="assets/videos/mobile/mobile_video2.mp4"
-                playsinline data-target="2"></video>
+                <video preload="metadata" class="rwd-2dv mobVideo" id="movie-2" data-src="assets/videos/mobile/mobile_video2.mp4" playsinline data-target="2" autoplay muted></video>
                 <div style="margin-top: -8px;" class="video-control">
                     <div class="progress hidden-md hidden-lg">
                         <div id="progress-bar-2" class="progress-bar progress-bar-striped"></div>
                     </div>
-                    <div class="img-say-out volume-text hidden-md hidden-lg" data-target="2">點按開聲音</div>
+                    <!--<div class="img-say-out volume-text hidden-md hidden-lg" data-target="2">點按開聲音</div>-->
                     <i class="fa fa-spinner fa-pulse video-wait" data-target="2"></i>
-                    <i class="fa fa-play video-play hidden-md hidden-lg" data-target="2"></i>
-                    <i class="fa fa-volume-off volume hidden-md hidden-lg" data-target="2"></i>
+                    <!--<i class="fa fa-play video-play hidden-md hidden-lg" data-target="2"></i>-->
+                    <!--<i class="fa fa-volume-off volume hidden-md hidden-lg" data-target="2"></i>-->
                     <i class="fa fa-repeat replay hidden-md hidden-lg" data-target="2"></i>
                 </div>
-            </div> 
+            </div>
+            <div class="content container">
+                <p>「龍洞空間多又大、地形多變，同時擁有傳統攀登與運動攀登的路線，還在海邊，台灣人真的很幸運。」15年攀岩經驗的澳洲人Stephen Parr說。龍洞3500多年前沉積，形成四陵砂岩，穩定的岩質，遠眺太平洋的濱海攀岩環境，近年大受國內外攀岩者喜愛，逐步躍升為世界知名的濱海岩場。</p>
+            </div>
         </section>
         <section class="blankHalfPage hidden-xs hidden-sm hidden-md"></section>
         <section>
@@ -194,19 +194,6 @@
         </section>
         <section class="blankPage hidden-xs hidden-sm hidden-md"></section>
         <section id="model2">
-            <div class="video-contain hidden-lg">
-                <video preload="metadata" class="rwd-2dv mobVideo" id="movie-3" data-src="assets/videos/mobile/mobile_video3.mp4" playsinline data-target="3"></video>
-                <div style="margin-top: -8px;" class="video-control">
-                    <div class="progress hidden-md hidden-lg">
-                        <div id="progress-bar-3" class="progress-bar progress-bar-striped"></div>
-                    </div>
-                    <div class="img-say-out volume-text hidden-md hidden-lg" data-target="3">點按開聲音</div>
-                    <i class="fa fa-spinner fa-pulse video-wait" data-target="3"></i>
-                    <i class="fa fa-play video-play hidden-md hidden-lg" data-target="3"></i>
-                    <i class="fa fa-volume-off volume hidden-md hidden-lg" data-target="3"></i>
-                    <i class="fa fa-repeat replay hidden-md hidden-lg" data-target="3"></i>
-                </div>
-            </div>
             <div class="content container">
                 <div class="narrow-in-pc">
                     <div class="profile">
@@ -215,6 +202,24 @@
                             <h2>陳震宇<br/>黃金谷 黃金勇氣</h2>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div class="video-contain hidden-lg">
+                <video preload="metadata" class="rwd-2dv mobVideo" id="movie-3" data-src="assets/videos/mobile/mobile_video3.mp4" playsinline
+                    data-target="3" autoplay></video>
+                <div style="margin-top: -8px;" class="video-control">
+                    <div class="progress hidden-md hidden-lg">
+                        <div id="progress-bar-3" class="progress-bar progress-bar-striped"></div>
+                    </div>
+                    <!--<div class="img-say-out volume-text hidden-md hidden-lg" data-target="3">點按開聲音</div>-->
+                    <i class="fa fa-spinner fa-pulse video-wait" data-target="3"></i>
+                    <!--<i class="fa fa-play video-play hidden-md hidden-lg" data-target="3"></i>-->
+                    <!--<i class="fa fa-volume-off volume hidden-md hidden-lg" data-target="3"></i>-->
+                    <i class="fa fa-repeat replay hidden-md hidden-lg" data-target="3"></i>
+                </div>
+            </div>
+            <div class="content container">
+                <div class="narrow-in-pc">
                     <p>從這條路線，我花了3年才挑戰成功，成功之前的每一次攀爬都在墜落。</p>
                     <p><br/></p>
                     <p>向外傾斜的岩壁，且最後2公尺沒有任何可以支撐的確保點，我要在力氣耗盡前，將手腳伸到極限抓住下一個攀附點。</p>
@@ -228,15 +233,15 @@
                 <div class="narrow-in-pc">
                     <div class="video-contain">
                             <video preload="metadata" class="rwd-2dv" id="movie-4" src="assets/videos/golden-stone.mp4"
-                            playsinline data-target="4"></video>
+                            playsinline data-target="4" autoplay></video>
                             <div style="margin-top: -8px;" class="video-control">
                                 <div class="progress hidden-md hidden-lg">
                                     <div id="progress-bar-4" class="progress-bar progress-bar-striped"></div>
                                 </div>
-                                <div class="img-say-out volume-text hidden-md hidden-lg" data-target="4">點按開聲音</div>
+                                <!--<div class="img-say-out volume-text hidden-md hidden-lg" data-target="4">點按開聲音</div>-->
                                 <i class="fa fa-spinner fa-pulse video-wait" data-target="4"></i>
-                                <i class="fa fa-play video-play hidden-md hidden-lg" data-target="4"></i>
-                                <i class="fa fa-volume-off volume hidden-md hidden-lg" data-target="4"></i>
+                                <!--<i class="fa fa-play video-play hidden-md hidden-lg" data-target="4"></i>-->
+                                <!--<i class="fa fa-volume-off volume hidden-md hidden-lg" data-target="4"></i>-->
                                 <i class="fa fa-repeat replay hidden-md hidden-lg" data-target="4"></i>
                             </div>
                     </div>
@@ -267,6 +272,23 @@
                             <h2>吳美齡<br/>黃金谷 黃金浴</h2>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div class="video-contain hidden-lg">
+                <video preload="metadata" class="rwd-2dv mobVideo" id="movie-6" data-src="assets/videos/mobile/mobile_video5.mp4" playsinline data-target="6" autoplay></video>
+                <div style="margin-top: -8px;" class="video-control">
+                    <div class="progress hidden-md hidden-lg">
+                        <div id="progress-bar-6" class="progress-bar progress-bar-striped"></div>
+                    </div>
+                    <!--<div class="img-say-out volume-text hidden-md hidden-lg" data-target="6">點按開聲音</div>-->
+                    <i class="fa fa-spinner fa-pulse video-wait" data-target="6"></i>
+                    <!--<i class="fa fa-play video-play hidden-md hidden-lg" data-target="6"></i>-->
+                    <!--<i class="fa fa-volume-off volume hidden-md hidden-lg" data-target="6"></i>-->
+                    <i class="fa fa-repeat replay hidden-md hidden-lg" data-target="6"></i>
+                </div>
+            </div>
+            <div class="content container">
+                <div class="narrow-in-pc">
                     <p>攀岩就是要不斷的在上爬的過程中，找到平衡點。黃金浴是我第一條先鋒完攀的路線，剛起步就要克服一道全身暴露感極強的大天花板。</p>
                     <p><br/></p>
                     <p>想要橫越一點五米寬的天花板，必須靠全身肌肉的幫忙，動到的不只是手臂與雙腳，也要靠腹部的力量讓懸空的腳擺盪，勾到岩壁上，再單槓式上拉，才能成功上到另外一片岩面。</p>
@@ -284,33 +306,20 @@
                 </div>
             </div>
             <div class="video-contain">
-                <video preload="metadata" class="rwd-2dv" id="movie-5" src="assets/videos/wu.mp4" playsinline data-target="5"></video>
+                <video preload="metadata" class="rwd-2dv" id="movie-5" src="assets/videos/wu.mp4" playsinline data-target="5" autoplay></video>
                 <div style="margin-top: -8px;" class="video-control">
                 <div class="progress hidden-md hidden-lg">
                     <div id="progress-bar-5" class="progress-bar progress-bar-striped"></div>
                 </div>
-                <div class="img-say-out volume-text hidden-md hidden-lg" data-target="5">點按開聲音</div>
+                <!--<div class="img-say-out volume-text hidden-md hidden-lg" data-target="5">點按開聲音</div>-->
                     <i class="fa fa-spinner fa-pulse video-wait" data-target="5"></i>
-                    <i class="fa fa-play video-play hidden-md hidden-lg" data-target="5"></i>
-                    <i class="fa fa-volume-off volume hidden-md hidden-lg" data-target="5"></i>
+                    <!--<i class="fa fa-play video-play hidden-md hidden-lg" data-target="5"></i>-->
+                    <!--<i class="fa fa-volume-off volume hidden-md hidden-lg" data-target="5"></i>-->
                     <i class="fa fa-repeat replay hidden-md hidden-lg" data-target="5"></i>
                 </div>
             </div>
         </section>
         <section id="backTolongdong" class="blankPage hidden-xs hidden-sm hidden-md"></section>
-        <div class="video-contain hidden-lg">
-            <video preload="metadata" class="rwd-2dv mobVideo" id="movie-6" data-src="assets/videos/mobile/mobile_video5.mp4" playsinline data-target="6"></video>
-            <div style="margin-top: -8px;" class="video-control">
-                <div class="progress hidden-md hidden-lg">
-                    <div id="progress-bar-6" class="progress-bar progress-bar-striped"></div>
-                </div>
-                <div class="img-say-out volume-text hidden-md hidden-lg" data-target="6">點按開聲音</div>
-                <i class="fa fa-spinner fa-pulse video-wait" data-target="6"></i>
-                <i class="fa fa-play video-play hidden-md hidden-lg" data-target="6"></i>
-                <i class="fa fa-volume-off volume hidden-md hidden-lg" data-target="6"></i>
-                <i class="fa fa-repeat replay hidden-md hidden-lg" data-target="6"></i>
-            </div>
-        </div>
         <section id="model3">
             <div class="content container">
                 <div class="narrow-in-pc">
@@ -320,6 +329,23 @@
                             <h2>林倍璁<br/>後門 大家的福利</h2>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div class="video-contain hidden-lg">
+                <video preload="metadata" class="rwd-2dv mobVideo" id="movie-7" data-src="assets/videos/mobile/mobile_video5.mp4" playsinline data-target="7" autoplay></video>
+                <div style="margin-top: -8px;" class="video-control">
+                    <div class="progress hidden-md hidden-lg">
+                        <div id="progress-bar-7" class="progress-bar progress-bar-striped"></div>
+                    </div>
+                    <!--<div class="img-say-out volume-text hidden-md hidden-lg" data-target="7">點按開聲音</div>-->
+                    <i class="fa fa-spinner fa-pulse video-wait" data-target="7"></i>
+                    <!--<i class="fa fa-play video-play hidden-md hidden-lg" data-target="7"></i>-->
+                    <!--<i class="fa fa-volume-off volume hidden-md hidden-lg" data-target="7"></i>-->
+                    <i class="fa fa-repeat replay hidden-md hidden-lg" data-target="7"></i>
+                </div>
+            </div>
+            <div class="content container">
+                <div class="narrow-in-pc">
                     <p>「力量、技巧、恐懼」這是攀岩的三大練習項目，善用身體、四肢的力量，攀岩不是一直使用手臂去拉出身體的重量，而是讓雙腳扮演承重的角色，手引導方向，並練習隨時找到重心的技巧。</p>
                     <p><br/></p>
                     <p>最難的還是「恐懼」，十個攀岩九個怕，但要練習的並不是克服恐懼，而是學會跟恐懼相處，了解自己的力量和極限。</p>
@@ -373,25 +399,25 @@
         </section>
         <section>
             <div class="share-block container">
-            <div class="fb-like-block">
-                <div class="fb-like" data-href="./index.html" data-layout="button_count" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
-            </div>
-            <div class="line-block">
-                <img class="line-share" style="position:relative;" src="//media.line.me/img/button/zh-hant/84x20.png" width="86" height="22" alt="LINE分享給朋友">
-            </div>
-            <div class="logo-block">
-                <div class="udn-logo">
-                    <a href="https://udn.com/news/index" target="_blank">
-                        <img class="lazyload" data-src="https://udn.com/upf/newmedia/image/udn-logo.jpg">
-                    </a>
+                <div class="fb-like-block">
+                    <div class="fb-like" data-href="./index.html" data-layout="button_count" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
                 </div>
-                <div class="nmd-logo">
-                    <a href="https://udn.com/upf/newmedia/udn_newmedia/index.html" target="_blank">
-                        <img class="lazyload" data-src="https://udn.com/upf/newmedia/image/nmd-logo.png">
-                    </a>
+                <div class="line-block">
+                    <img class="line-share" style="position:relative;" src="//media.line.me/img/button/zh-hant/84x20.png" width="86" height="22" alt="LINE分享給朋友">
+                </div>
+                <div class="logo-block">
+                    <div class="udn-logo">
+                        <a href="https://udn.com/news/index" target="_blank">
+                            <img class="lazyload" data-src="https://udn.com/upf/newmedia/image/udn-logo.jpg">
+                        </a>
+                    </div>
+                    <div class="nmd-logo">
+                        <a href="https://udn.com/upf/newmedia/udn_newmedia/index.html" target="_blank">
+                            <img class="lazyload" data-src="https://udn.com/upf/newmedia/image/nmd-logo.png">
+                        </a>
+                    </div>
                 </div>
             </div>
-        </div>
             <div class="container" id="editor">
                 <div class="editor">採訪：魏妤庭</div>
                 <div class="editor">影音、攝影：王騰毅、許正宏</div>
@@ -440,7 +466,7 @@
             </footer>
         </section>
     </div>
-    <script src="./src/index.js?v=3"></script>
+    <script src="./src/index.js?v=5"></script>
 </body>
 
 </html>

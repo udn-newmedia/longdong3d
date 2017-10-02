@@ -11,6 +11,7 @@ $(document).ready(function () {
 //video controller
     function moviePlay(id) {
         $("#movie-" + id).get(0).play();
+
         if (progress[id - 1] == null) {
             progress[id - 1] = setInterval(function () {
                 var curTime = $("#movie-" + id).get(0).currentTime;
@@ -78,7 +79,9 @@ $(document).ready(function () {
     })
 
     $('video').click(function () {
+
         var tar = $(this).data('target')
+
         if ($(this).get(0).paused == true) {
             moviePlay(tar);
             if ($(this).get(0).muted == true) {
@@ -138,10 +141,16 @@ $(document).ready(function () {
     }
 
     $(window).on('scroll', function () {
+
         scroll_now = $(window).scrollTop();
+
         var movie1 = scroll_now - $("#movie-1").offset().top + h;
         var movie2 = scroll_now - $("#movie-2").offset().top + h;
         var movie3 = scroll_now - $("#movie-3").offset().top + h;
+        var movie4 = scroll_now - $("#movie-4").offset().top + h;
+        var movie5 = scroll_now - $("#movie-5").offset().top + h;
+        var movie6 = scroll_now - $("#movie-6").offset().top + h;
+        var movie7 = scroll_now - $("#movie-7").offset().top + h;
 
 
         if (movie1 > h / 3 && movie1 < h + 200) {
@@ -155,6 +164,7 @@ $(document).ready(function () {
         }
 
         if (movie2 > h / 3 && movie2 < h + 200) {
+
             if ($("#movie-2").get(0).paused == true) {
                 moviePlay(2);
             }
@@ -173,5 +183,47 @@ $(document).ready(function () {
                 moviePause(3);
             }
         }
+
+        if (movie4 > h / 3 && movie4 < h + 200) {
+          if ($("#movie-4").get(0).paused == true) {
+            moviePlay(4);
+          }
+        } else {
+          if ($("#movie-4").get(0).paused == false) {
+            moviePause(4);
+          }
+        }
+
+        if (movie5 > h / 3 && movie5 < h + 200) {
+          if ($("#movie-5").get(0).paused == true) {
+            moviePlay(5);
+          }
+        } else {
+          if ($("#movie-5").get(0).paused == false) {
+            moviePause(5);
+          }
+        }
+
+        if (movie6 > h / 3 && movie6 < h + 200) {
+          if ($("#movie-6").get(0).paused == true) {
+            moviePlay(6);
+          }
+        } else {
+          if ($("#movie-6").get(0).paused == false) {
+            moviePause(6);
+          }
+        }
+
+        if (movie7 > h / 3 && movie7 < h + 200) {
+          if ($("#movie-7").get(0).paused == true) {
+            moviePlay(7);
+          }
+        } else {
+          if ($("#movie-7").get(0).paused == false) {
+            moviePause(7);
+          }
+        }
+
+
     });
 });

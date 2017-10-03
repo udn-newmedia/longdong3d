@@ -182,11 +182,23 @@ function viewChanger(){
         } else if (scroll_now >= changeViewWaypointsOffset[0] && scroll_now < changeViewWaypointsOffset[0] * 1.1) {
             //第一個模型，第一個視角
 
-            changeView(waypoints[0], function() {
-                displayBillboards([true, true, false, false]);
-            });
+            // changeView(waypoints[0], function() {
+            //     displayBillboards([true, true, false, false]);
+            // });
         
-            // moveCameraByAdjustingParameters = function(newPara, callback)
+            if (!scenes[activeScene].cameraPara2.hasChanged){
+                scenes[activeScene].cameraPara2.hasChanged = true;
+
+                smoothSetTarget(waypoints[0].target,
+
+                    moveCameraByAdjustingParameters(scenes[activeScene].cameraPara2, function(){
+                        setTimeout(function(){
+                            displayBillboards([true, true, false, false]);
+                        },2000);
+                    })
+
+                );
+            }
 
         } else if (scroll_now >= changeViewWaypointsOffset[1] && scroll_now < changeViewWaypointsOffset[1] * 1.1) {
             //第一個模型，第二個視角
@@ -208,6 +220,7 @@ function viewChanger(){
                 scrollAnimation(changeModelPointsOffset[1], 1000);
                 });
             }, 3000);
+
             });
         } else if (scroll_now >= changeViewWaypointsOffset[5] && scroll_now < changeModelPointsOffset[2]) {
             //回到model1
@@ -1072,6 +1085,13 @@ function PCloadScene1(){
             });
 
 
+        var cameraPara2 = {
+            alpha: -0.30704116429369893,
+            beta: 1.599146220141052,
+            radius: 4.918235945541222,
+            hasChanged: false
+        }
+
         // A ghost camera 
         var gcamera = new BABYLON.ArcRotateCamera("gCamera", camAlpha, camBeta*1.2, camRadius, new BABYLON.Vector3(0, 2, 0), scene);
         // camera.attachControl(canvas, false);
@@ -1100,11 +1120,10 @@ function PCloadScene1(){
             }
 
             var target1 = {
-                x:-0.5368022323307808,
-                y:3.1582593282740987,
-                z:-3.2359311833169815
+                x:-0.5017282171123618,
+                y:2.245075264096751,
+                z:-3.2235591258424314
             }
-
 
             // var waypoint2 = {
             //     x:3.6829458901717187,
@@ -1120,18 +1139,16 @@ function PCloadScene1(){
 
 
             var waypoint2 = {
-                x:3.406793964105668,
-                y:3.5808766076303797,
-                z:7.401485541143823
+                x:3.5131214711122722,
+                y:3.1145026697778673,
+                z:5.951122694775158
             }
 
             var target2 = {
-                x:-0.35483521177839483,
-                y:2.7347614769670594,
-                z:0.09762864939919792
+                x:0,
+                y:2,
+                z:0
             }
-
-
 
             var waypoint3 = {
                 x: 6.878846228549867,
@@ -1373,7 +1390,7 @@ function PCloadScene1(){
                 stopRotating = (scroll_now <= stopRotatingPointOffset)?false:true;
             }
 
-            stopRotating = true;
+            // stopRotating = true;
 
 
             if (scenes[sceneIndex].reRender && !stopRotating){
@@ -1406,6 +1423,8 @@ function PCloadScene1(){
         scenes[sceneIndex].reRender = true; 
         scenes[sceneIndex].camera = camera;
         scenes[sceneIndex].gcamera = gcamera;
+        scenes[sceneIndex].cameraPara2 = cameraPara2;
+
 
         scenes[sceneIndex].billboards = [];
         scenes[sceneIndex].billboards.push(billboard1);

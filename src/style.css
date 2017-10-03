@@ -27,13 +27,6 @@ p,h2,h6 {
     /* z-index: 99; */
 }
 
-
-@media screen and (min-width: 1200px){
-    .video-contain {
-        margin-top: 0;
-    }
-}
-
  .g-labels {
      text-shadow: 0 0 2px rgba(0, 0, 0, 0.8);
  }
@@ -100,7 +93,7 @@ section:last-child {
 }
 
 div.narrow-in-pc{
-    width: 50%;
+    width: 40%;
     margin-left:0;
 }
 
@@ -149,8 +142,8 @@ img.fullscreen {
 }
 
 .theme-default .nivo-directionNav a{
-    width: 60px;
-    height: 60px;
+    width: 120px;
+    height: 120px;
     opacity: 1;
 }
 

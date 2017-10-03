@@ -12,8 +12,8 @@ var waypoints = [];
 
 var canvas;
 
-d3.select("#indicator").style('opacity',0);
-d3.select('#head').style('opacity',0);
+// d3.select("#indicator").style('opacity',0);
+// d3.select('#head').style('opacity',0);
 // d3.select(".article").style('opacity',0);
 
 
@@ -32,6 +32,7 @@ var animFrame = 1;
 //jquery
     // $(document).ready(function(){
     // });
+
 
 if(window.matchMedia("(max-width: 1200px)").matches){
 
@@ -59,43 +60,53 @@ if(window.matchMedia("(max-width: 1200px)").matches){
         // window.addEventListener('scroll', MOBonScroll);
 
     }else{
-
-        var canvasNode = document.createElement("CANVAS");
-        var canvas = document.getElementById("g-graphic").appendChild(canvasNode);
-        var engine = new BABYLON.Engine(canvas, true);
-
-
-        // var scene = loadScene1();
-
-        // engine.runRenderLoop(function() {
-        //   if (scenes[activeScene]) {
-        //     scenes[activeScene].renderLoop();
-        //   }
-        // });
+           //nivoSlider
+           $(window).on("load", function() {
+             $("#slider").nivoSlider({
+               effect: "fade",
+               pauseTime: 1500,
+               startSlide: 0,
+               pauseOnHover: false,
+               manualAdvance: false
+             });
+           });
 
 
-        PCloadScene1();
+           var canvasNode = document.createElement("CANVAS");
+           var canvas = document
+             .getElementById("g-graphic")
+             .appendChild(canvasNode);
+           var engine = new BABYLON.Engine(canvas, true);
 
-        videoControllFunction();
+           // var scene = loadScene1();
 
-        // scroll event
-        window.addEventListener('scroll', function(){
-            if(!ticking){
-                requestAnimationFrame(onScroll);
-                ticking = true;
-            }
-        });
+           // engine.runRenderLoop(function() {
+           //   if (scenes[activeScene]) {
+           //     scenes[activeScene].renderLoop();
+           //   }
+           // });
 
-        // Resize
-        window.addEventListener("resize", function () {
-            engine.resize();
-        });
-        
-        engine.runRenderLoop(function(){
-            RenderManager()
-        });
+           PCloadScene1();
 
-    }
+           videoControllFunction();
+
+           // scroll event
+           window.addEventListener("scroll", function() {
+             if (!ticking) {
+               requestAnimationFrame(onScroll);
+               ticking = true;
+             }
+           });
+
+           // Resize
+           window.addEventListener("resize", function() {
+             engine.resize();
+           });
+
+           engine.runRenderLoop(function() {
+             RenderManager();
+           });
+         }
 
 function onScroll(){
 
@@ -172,12 +183,15 @@ function viewChanger(){
             //第一個模型，第一個視角
 
             changeView(waypoints[0], function() {
-            displayBillboards([true, true, false, false]);
+                displayBillboards([true, true, false, false]);
             });
+        
+            // moveCameraByAdjustingParameters = function(newPara, callback)
+
         } else if (scroll_now >= changeViewWaypointsOffset[1] && scroll_now < changeViewWaypointsOffset[1] * 1.1) {
             //第一個模型，第二個視角
             changeView(waypoints[1], function() {
-            displayBillboards([true, true, false, true]);
+            displayBillboards([false, false, false, true]);
 
             setTimeout(function() {
                 //等待change view
@@ -222,7 +236,7 @@ function viewChanger(){
                 // enableScroll();
                 scrollAnimation(changeModelPointsOffset[2], 1000);
                 });
-            }, 1000);
+            }, 2000);
             });
         } else if (scroll_now >= changeModelPointsOffset[4]) {
             //最後再回到model1
@@ -683,7 +697,7 @@ function setSectionOffset() {
     //model 
         var model1 = document.getElementById("model1");
         var model2 = document.getElementById("model2");
-        var model2_4 = document.getElementById("model2-4");
+        var model2_4 = document.getElementById("movie-5");
         var model3 = document.getElementById('model3');
 
         var backTolongdong = document.getElementById('backTolongdong');
@@ -693,8 +707,7 @@ function setSectionOffset() {
         changeModelPointsOffset[0] = model1.getBoundingClientRect().top + window.pageYOffset;
         changeModelPointsOffset[1] = model2.getBoundingClientRect().top + window.pageYOffset;
         changeModelPointsOffset[2] = model3.getBoundingClientRect().top + window.pageYOffset;
-        // changeModelPointsOffset[3] = backTolongdong.getBoundingClientRect().top + window.pageYOffset;
-        changeModelPointsOffset[3] = model2_4.getBoundingClientRect().bottom + window.pageYOffset;
+        changeModelPointsOffset[3] = model2_4.getBoundingClientRect().top + window.pageYOffset;
         changeModelPointsOffset[4] = backTolongdongFinall.getBoundingClientRect().top + window.pageYOffset;
 
     //waypoints
@@ -836,7 +849,6 @@ function changeView(waypoint, callback){
             callback();            
             })
         );
-
     }
 
 }
@@ -867,7 +879,13 @@ var moveCameraWithGhostCam = function (obj, callback) {
     var gcamera = scenes[activeScene].gcamera;
 
     // gcamera.setPosition(obj.position);
+
+    // gcamera.setTarget(new BABYLON.Vector3(obj.target.x, obj.target.y, obj.target.z));
     gcamera.setPosition(obj);
+
+    // console.log('gcamera position:'+gcamera.position);
+    // console.log("gcamera target:" + gcamera.target);
+    // console.log("before:"+camera.position);
 
     var radiusAnimation = new BABYLON.Animation("camRadius", "radius", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
     var alphaAnimation = new BABYLON.Animation("camAlpha", "alpha", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
@@ -905,7 +923,13 @@ var moveCameraWithGhostCam = function (obj, callback) {
     camera.animations.push(betaAnimation);
     camera.animations.push(radiusAnimation);
 
-    scene.beginAnimation(camera, 0, 100, false, 2, callback);
+    scene.beginAnimation(camera, 0, 100, false, 2, function(){
+        
+        console.log('position:'+camera.position);
+        console.log("target:" + camera.target);
+
+        callback();
+    });
 }
 
 var moveCameraByAdjustingParameters = function(newPara, callback){
@@ -967,10 +991,10 @@ var moveCamera = function (obj, callback) {
 
     var key = [{
         frame: 0,
-        value: obj.position
+        value: camera.position
     }, {
         frame: 100,
-        value: obj.position
+        value: obj
     }];
 
     positionAnimation.setKeys(key);
@@ -1056,37 +1080,58 @@ function PCloadScene1(){
         gcamera.lowerAlphaLimit = -1.1;
 
         // 加上waypoints & target
-            // var waypoint1 = scene.getMeshByName("waypoint1");
-            // var target1 = scene.getMeshByName("target1");
-            // var waypoint2 = scene.getMeshByName("waypoint2");
 
-            // waypoint1.isVisible = false;
-            // target1.isVisible = false;
-            // waypoint2.isVisible = false;
+            // var waypoint1 = {
+            //     x:6.878846228549867,
+            //     y:5.624442667001714,
+            //     z:2.785135595239103
+            // }
+
+            // var target1 = {
+            //     x:0,
+            //     y:2,
+            //     z:0
+            // }
 
             var waypoint1 = {
-                x:6.878846228549867,
-                y:5.624442667001714,
-                z:2.785135595239103
+                x:7.869865170059671,
+                y:2.8102596860838513,
+                z:-3.3957462464530046
             }
 
             var target1 = {
-                x:0,
-                y:2,
-                z:0
+                x:-0.5368022323307808,
+                y:3.1582593282740987,
+                z:-3.2359311833169815
             }
 
+
+            // var waypoint2 = {
+            //     x:3.6829458901717187,
+            //     y:3.369587763632281,
+            //     z:6.051473963140251
+            // }
+
+            // var target2 = {
+            //     x:-0.968912836726127,
+            //     y:1.1287283044234226,
+            //     z:1.311103877323937
+            // }
+
+
             var waypoint2 = {
-                x:3.6829458901717187,
-                y:3.369587763632281,
-                z:6.051473963140251
+                x:3.406793964105668,
+                y:3.5808766076303797,
+                z:7.401485541143823
             }
 
             var target2 = {
-                x:-0.968912836726127,
-                y:1.1287283044234226,
-                z:1.311103877323937
+                x:-0.35483521177839483,
+                y:2.7347614769670594,
+                z:0.09762864939919792
             }
+
+
 
             var waypoint3 = {
                 x: 6.878846228549867,
@@ -1191,11 +1236,11 @@ function PCloadScene1(){
             // var font = "bold 40px Microsoft JhengHei";
             // var color = "yellow"
 
-            var text3 = "造山運動形成";
+            var text3 = "造山運動";
             // var x = 10;
             // var y1 = 10 + 70;
 
-            var text4 = "地層傾斜、結理及斷層";
+            var text4 = "形成傾斜地層與節理";
             // var y2 = 10 + 70 + 70;
 
             var context2 = boardTexture2._context;
@@ -1327,6 +1372,9 @@ function PCloadScene1(){
             if(stopRotatingPointOffset){
                 stopRotating = (scroll_now <= stopRotatingPointOffset)?false:true;
             }
+
+            stopRotating = true;
+
 
             if (scenes[sceneIndex].reRender && !stopRotating){
 

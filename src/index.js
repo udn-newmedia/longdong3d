@@ -204,7 +204,7 @@ function SceneManager() {
 
     modelLoader();
     viewChanger();
-    // setCanvasOpacityWithSection();
+    setCanvasOpacityWithSection();
 }
 
 //轉換視角 & billboards控制(包含在billboard上畫線)
@@ -833,30 +833,38 @@ function setCanvasOpacityWithSection() {
 
     //第一個換模型點的透明度轉換
 
-    // if (window.pageYOffset >= changeModelPointsOffset[1] * 0.9 && window.pageYOffset < changeModelPointsOffset[1]) {
+    if (window.pageYOffset >= changeModelPointsOffset[1] * 0.95 && window.pageYOffset < changeModelPointsOffset[1]) {
 
-    //     canvas.style.opacity = 1 - ((window.pageYOffset - changeModelPointsOffset[1] * 0.9) / (changeModelPointsOffset[1] - changeModelPointsOffset[1] * 0.9));
+        canvas.style.opacity = 1 - ((window.pageYOffset - changeModelPointsOffset[1] * 0.95) / (changeModelPointsOffset[1] - changeModelPointsOffset[1] * 0.95));
 
-    // } else if (window.pageYOffset >= changeModelPointsOffset[1] && window.pageYOffset < changeModelPointsOffset[1] * 1.1) {
+    } 
+    
+    else if (window.pageYOffset >= changeModelPointsOffset[1] && window.pageYOffset < changeModelPointsOffset[1] * 1.05) {
 
-    //     canvas.style.opacity = (window.pageYOffset - changeModelPointsOffset[1]) / (changeModelPointsOffset[1] * 1.1 - changeModelPointsOffset[1]);
+        canvas.style.opacity = (window.pageYOffset - changeModelPointsOffset[1]) / (changeModelPointsOffset[1] * 1.05 - changeModelPointsOffset[1]);
 
-    // } else if (window.pageYOffset >= changeModelPointsOffset[1]){
+    } 
+    
+    else if (window.pageYOffset >= changeModelPointsOffset[1] * 1.05){
 
-    //     canvas.style.opacity = 1;
+        canvas.style.opacity = 1;
 
-    // }
+    }
 
     //第二個換模型點的透明度轉換
-    if (window.pageYOffset >= changeModelPointsOffset[2] * 0.9 && window.pageYOffset < changeModelPointsOffset[2]) {
+    if (window.pageYOffset >= changeModelPointsOffset[2] * 0.95 && window.pageYOffset < changeModelPointsOffset[2]) {
 
-        canvas.style.opacity = 1 - ((window.pageYOffset - changeModelPointsOffset[2] * 0.9) / (changeModelPointsOffset[2] - changeModelPointsOffset[2] * 0.9));
+        canvas.style.opacity = 1 - ((window.pageYOffset - changeModelPointsOffset[2] * 0.95) / (changeModelPointsOffset[2] - changeModelPointsOffset[2] * 0.95));
 
-    } else if (window.pageYOffset >= changeModelPointsOffset[2] && window.pageYOffset < changeModelPointsOffset[2] * 1.1) {
+    } 
+    
+    else if (window.pageYOffset >= changeModelPointsOffset[2] && window.pageYOffset < changeModelPointsOffset[2] * 1.05) {
 
-        canvas.style.opacity = (window.pageYOffset - changeModelPointsOffset[2]) / (changeModelPointsOffset[2] * 1.1 - changeModelPointsOffset[2]);
+        canvas.style.opacity = (window.pageYOffset - changeModelPointsOffset[2]) / (changeModelPointsOffset[2] * 1.05 - changeModelPointsOffset[2]);
 
-    } else if (window.pageYOffset >= changeModelPointsOffset[2] * 1.1) {
+    } 
+    
+    else if (window.pageYOffset >= changeModelPointsOffset[2] * 1.05) {
 
         canvas.style.opacity = 1;
 
@@ -1147,12 +1155,20 @@ function PCloadScene1(){
             });
 
 
+        // var cameraPara2 = {
+        //     alpha: -0.30704116429369893,
+        //     beta: 1.599146220141052,
+        //     radius: 4.918235945541222,
+        //     hasChanged: false
+        // }
+
         var cameraPara2 = {
-            alpha: -0.30704116429369893,
-            beta: 1.599146220141052,
+            alpha: -0.035397155561961866,
+            beta: 1.6039559893175195,
             radius: 4.918235945541222,
             hasChanged: false
         }
+
 
         // A ghost camera 
         var gcamera = new BABYLON.ArcRotateCamera("gCamera", camAlpha, camBeta*1.2, camRadius, new BABYLON.Vector3(0, 2, 0), scene);
@@ -1164,28 +1180,29 @@ function PCloadScene1(){
         // 加上waypoints & target
 
             // var waypoint1 = {
-            //     x:6.878846228549867,
-            //     y:5.624442667001714,
-            //     z:2.785135595239103
+            //     x:7.869865170059671,
+            //     y:2.8102596860838513,
+            //     z:-3.3957462464530046
             // }
 
             // var target1 = {
-            //     x:0,
-            //     y:2,
-            //     z:0
+            //     x:-0.5017282171123618,
+            //     y:2.245075264096751,
+            //     z:-3.2235591258424314
             // }
 
             var waypoint1 = {
-                x:7.869865170059671,
-                y:2.8102596860838513,
-                z:-3.3957462464530046
+                x:4.356770584721195,
+                y:2.4610283946563616,
+                z:-4.449836653593455
             }
 
             var target1 = {
-                x:-0.5017282171123618,
-                y:2.245075264096751,
-                z:-3.2235591258424314
+                x:-0.5556824951778252,
+                y:2.624085553041055,
+                z:-4.27587712696757
             }
+
 
             // var waypoint2 = {
             //     x:3.6829458901717187,

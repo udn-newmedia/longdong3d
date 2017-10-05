@@ -64,7 +64,7 @@ if(window.matchMedia("(max-width: 1200px)").matches){
            $(window).on("load", function() {
              $("#slider").nivoSlider({
                effect: "fade",
-               pauseTime: 1500,
+               pauseTime: 2000,
                startSlide: 0,
                pauseOnHover: false,
                manualAdvance: false
@@ -192,6 +192,7 @@ function viewChanger(){
                 smoothSetTarget(waypoints[0].target,
 
                     moveCameraByAdjustingParameters(scenes[activeScene].cameraPara2, function(){
+
                         setTimeout(function(){
                             displayBillboards([true, true, false, false]);
                         },2000);
@@ -217,7 +218,11 @@ function viewChanger(){
                 animateTexturePlay(billboard, style, points, function() {
                 animFrame = 1;
                 // enableScroll();
-                scrollAnimation(changeModelPointsOffset[1], 1000);
+
+                zoom_in_effect(10,
+                    scrollAnimation(changeModelPointsOffset[1], 1000)
+                )
+
                 });
             }, 3000);
 
@@ -247,7 +252,10 @@ function viewChanger(){
                 animateTexturePlay(billboard, style, points, function() {
                 animFrame = 1;
                 // enableScroll();
-                scrollAnimation(changeModelPointsOffset[2], 1000);
+
+                    zoom_in_effect(20,
+                        scrollAnimation(changeModelPointsOffset[2], 1000)
+                    )
                 });
             }, 2000);
             });
@@ -938,8 +946,8 @@ var moveCameraWithGhostCam = function (obj, callback) {
 
     scene.beginAnimation(camera, 0, 100, false, 2, function(){
         
-        console.log('position:'+camera.position);
-        console.log("target:" + camera.target);
+        // console.log('position:'+camera.position);
+        // console.log("target:" + camera.target);
 
         callback();
     });
@@ -1150,17 +1158,33 @@ function PCloadScene1(){
                 z:0
             }
 
+
+
+            // var waypoint3 = {
+            //     x: 6.878846228549867,
+            //     y: 5.624442667001714,
+            //     z: 2.785135595239103
+            // }
+
+            // var target3 = {
+            //     x: 0,
+            //     y: 2,
+            //     z: 0
+            // }
+
+
             var waypoint3 = {
-                x: 6.878846228549867,
-                y: 5.624442667001714,
-                z: 2.785135595239103
+                x: 8.456247766015208,
+                y: 4.396386762879213,
+                z: -0.33063065358427535
             }
 
             var target3 = {
-                x: 0,
-                y: 2,
-                z: 0
+                x: 0.5750734529079948,
+                y: 2.696798018254207,
+                z: -2.0802502363811968
             }
+
 
             var waypoint4 = {
                 x: 6.878846228549867,
@@ -1949,6 +1973,49 @@ function PCimportScene3(){
     
     return scene;
 }
+
+function zoom_in_effect(variation, callback){
+    var zoominAnimation = new BABYLON.Animation("zoomIn", "radius", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
+
+    var camera = scenes[activeScene].activeCamera;
+
+    var keys1 = [{
+        frame: 0,
+        value: camera.radius
+    }, {
+        frame: 100,
+        value: camera.radius-variation
+    }];
+
+    zoominAnimation.setKeys(keys1);
+
+    // Empty the animation array
+    camera.animations.splice(0, camera.animations.length);
+
+    camera.animations.push(zoominAnimation);
+    scenes[activeScene].beginAnimation(camera, 0, 100, false, 1, callback);
+}
+
+function zoom_out_effect(callback){
+    var zoomoutAnimation = new BABYLON.Animation("zoomIn", "radius", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
+
+    var keys2 = [{
+        frame: 0,
+        value: camera.radius
+    }, {
+        frame: 100,
+        value: camera.radius + 5
+    }];
+
+    zoomoutAnimation.setKeys(keys2);
+
+    // Empty the animation array
+    camera.animations.splice(0, camera.animations.length);
+
+    camera.animations.push(zoomoutAnimation);                
+    scene.beginAnimation(camera, 0, 100, false, 1, callback);
+}
+
 
 //disable scrolling
 

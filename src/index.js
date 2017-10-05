@@ -384,22 +384,16 @@ function viewChanger(){
                                 d3.select(this)
                                     .classed("hidden", false)
                                     .style('display', 'inline')
-                                    // 原來的投影位置
-                                    // .style('left', 915.6750358885913 + 'px')
-                                    // .style('top', 313.67419401656275 + 'px');
-                                    .style('left', 920.6750358885913 + 'px')
-                                    .style('top', 318.67419401656275 + 'px');
+                                    // .style('left', 920.6750358885913 + 'px')
+                                    // .style('top', 318.67419401656275 + 'px');
 
                             }else if(i===2){
 
                                 d3.select(this)
                                     .classed("hidden", false)
                                     .style('display', 'inline')
-                                    // 原來的投影位置
-                                    // .style('left', 915.6750358885913 + 'px')
-                                    // .style('top', 313.67419401656275 + 'px');
-                                    .style('left', 964 + 'px')
-                                    .style('top', 208 + 'px');
+                                    // .style('left', 964 + 'px')
+                                    // .style('top', 208 + 'px');
 
                             } else {
                                 d3.select(this)
@@ -435,11 +429,8 @@ function viewChanger(){
                                 d3.select(this)
                                     .classed("hidden", false)
                                     .style('display', 'inline')
-                                    // 原來的投影位置
-                                    // .style('left', 915.6750358885913 + 'px')
-                                    // .style('top', 313.67419401656275 + 'px');
-                                    .style('left', 809.4389298448883 + 'px')
-                                    .style('top', 388.2740448861042 + 'px');
+                                    // .style('left', 809.4389298448883 + 'px')
+                                    // .style('top', 388.2740448861042 + 'px');
 
                             } else {
                                 d3.select(this)
@@ -474,8 +465,8 @@ function viewChanger(){
                                 d3.select(this)
                                     .classed("hidden", false)
                                     .style('display', 'inline')
-                                    .style('left', 1011.2279941885878 + 'px')
-                                    .style('top', 395.1615063147416 + 'px');
+                                    // .style('left', 1011.2279941885878 + 'px')
+                                    // .style('top', 395.1615063147416 + 'px');
 
                             } else {
                                 d3.select(this)
@@ -1900,13 +1891,49 @@ function PCimportScene2(){
 
     scenes[sceneIndex].renderLoop = function () {
 
-        var board1 = vectorProject(scenes[1].billboards[0].position); //{x: 809.4389298448883, y: 388.2740448861042, z: 0.7097805578331373}
+        // setting labels
+        var board1 = vectorProject(scenes[1].billboards[0].position);
+        var board2 = vectorProject(scenes[1].billboards[1].position);
+        var board3 = vectorProject(scenes[1].billboards[2].position);
+        var board4 = vectorProject(scenes[1].billboards[3].position);
+
 
         d3.selectAll('.g-label.model2.board1')
             .each(function(d,i){
                 d3.select(this)
                     .style('left', board1.x+'px')
                     .style('top', board1.y+'px');
+            });
+
+
+        d3.selectAll('.g-label.model2.board2')
+            .each(function(d,i){
+
+                if(i===0){
+                    d3.select(this)
+                        .style('left', board2.x+'px')
+                        .style('top', board2.y+'px');
+                }else if(i===1){
+                    d3.select(this)
+                        .style('left', board2.x*1.05 +'px')
+                        .style('top', board2.y*0.6+'px');                    
+                }
+            });
+
+        d3.selectAll('.g-label.model2.board3')
+            .each(function(d,i){
+
+                d3.select(this)
+                    .style('left', board3.x+'px')
+                    .style('top', board3.y+'px');
+
+            });
+
+        d3.selectAll('.g-label.model2.board4')
+            .each(function(d,i){
+                d3.select(this)
+                    .style('left', board4.x+'px')
+                    .style('top', board4.y+'px');
             });
 
         this.render();

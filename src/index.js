@@ -9,12 +9,13 @@ var movies = [];
 var scroll_now = 0;
 var changeViewWaypointsOffset = [];
 var waypoints = [];
+var liteVersion = false;
 
 var canvas;
 
 // d3.select("#indicator").style('opacity',0);
 // d3.select('#head').style('opacity',0);
-// d3.select(".article").style('opacity',0);
+// d3.select("#article").style('opacity',0);
 
 
 //labels for model2
@@ -34,6 +35,7 @@ var animFrame = 1;
     // });
 
 
+//mobile版load 影片代替
 if(window.matchMedia("(max-width: 1200px)").matches){
 
     //mobile 版影片 & poster
@@ -55,6 +57,12 @@ if(window.matchMedia("(max-width: 1200px)").matches){
 
 //以行動裝置與否區分讀取的是模型或影片
     if(mob){
+        d3.select("#article").style("display", "block");
+
+        document.getElementById("movie-1").play();
+
+        videoHandler();
+
         // MOBloadScene();
 
         // window.addEventListener('scroll', MOBonScroll);
@@ -78,17 +86,47 @@ if(window.matchMedia("(max-width: 1200px)").matches){
              .appendChild(canvasNode);
            var engine = new BABYLON.Engine(canvas, true);
 
-           // var scene = loadScene1();
 
-           // engine.runRenderLoop(function() {
-           //   if (scenes[activeScene]) {
-           //     scenes[activeScene].renderLoop();
-           //   }
-           // });
 
-           PCloadScene1();
+           document.getElementById("hd").addEventListener("click", function(){
 
-           videoControllFunction();
+                liteVersion = false;
+
+                d3.select("#startPage").style("display", "none");
+                d3.select("#article").style("display","block");
+
+                document.getElementById('movie-1').play();
+
+                PCloadScene1();
+
+            });
+
+
+           document.getElementById("lite").addEventListener("click", function(){
+
+                liteVersion = true;
+
+                d3.select("#startPage").style("display", "none");
+                d3.select("#article").style("display","block");
+
+                d3.select(".lite").style("display","block");
+
+                document.getElementById('movie-1').play();
+
+                //填入 mobile video src
+                var litevideos = document.getElementsByClassName("liteVideo");
+
+                [].forEach.call(litevideos, function(el){
+                    el.setAttribute("src", el.getAttribute("data-src"));
+                });
+
+            });
+
+
+//lite版第一個模型用影片代替 (替換影片src)
+
+
+            videoHandler();
 
            // scroll event
            window.addEventListener("scroll", function() {
@@ -172,14 +210,19 @@ function SceneManager() {
 //轉換視角 & billboards控制(包含在billboard上畫線)
 function viewChanger(){
 
-    if (scenes[0] && activeScene === 0) {
+    if (!liteVersion && activeScene === 0 && scenes[activeScene]) {
 
         //開頭旋轉隱藏billboards
         if (scroll_now < stopRotatingPointOffset){
 
+            d3.selectAll(".g-label").classed("hidden", true);
+
             displayBillboards(false);
 
         } else if (scroll_now >= changeViewWaypointsOffset[0] && scroll_now < changeViewWaypointsOffset[0] * 1.1) {
+
+            d3.selectAll(".g-label").classed("hidden", true);
+
             //第一個模型，第一個視角
 
             // changeView(waypoints[0], function() {
@@ -202,6 +245,9 @@ function viewChanger(){
             }
 
         } else if (scroll_now >= changeViewWaypointsOffset[1] && scroll_now < changeViewWaypointsOffset[1] * 1.1) {
+
+            d3.selectAll(".g-label").classed("hidden", true);
+
             //第一個模型，第二個視角
             changeView(waypoints[1], function() {
             displayBillboards([false, false, false, true]);
@@ -219,7 +265,7 @@ function viewChanger(){
                 animFrame = 1;
                 // enableScroll();
 
-                zoom_in_effect(10,
+                zoom_in_effect(5,
                     scrollAnimation(changeModelPointsOffset[1], 1000)
                 )
 
@@ -253,7 +299,7 @@ function viewChanger(){
                 animFrame = 1;
                 // enableScroll();
 
-                    zoom_in_effect(20,
+                    zoom_in_effect(5,
                         scrollAnimation(changeModelPointsOffset[2], 1000)
                     )
                 });
@@ -270,7 +316,7 @@ function viewChanger(){
         }
     }
 
-    if(scenes[1] && activeScene===1){
+    if(activeScene===1 && scenes[activeScene]){
 
         if (scroll_now >= changeViewWaypointsOffset[2] && scroll_now < changeViewWaypointsOffset[3]) {
             //第二個模型，第一個視角
@@ -440,7 +486,7 @@ function viewChanger(){
 
     } 
     
-    if(scenes[2] && activeScene===2){
+    if(activeScene===2 && scenes[activeScene]){
 
         if (scroll_now >= changeModelPointsOffset[2] && scroll_now < changeModelPointsOffset[2] + 2/3 * window.innerHeight) {
             //第三個模型，第一個視角
@@ -647,39 +693,47 @@ function drawLineWithScroll(start,end,billboard,points,style) {
 }
 
 //只要有video在播，就停止render
-function videoControllFunction(){
+function videoHandler() {
 
-    var movie1 = document.getElementsByTagName('video')[0];
-    var movie3 = document.getElementById('movie-3');
-    movies.push(movie1);
-    movies.push(movie3);
+  var movie1 = document.getElementsByTagName("video")[0];
 
-    movies[0].addEventListener("play",function(){
-        engine.stopRenderLoop();
+  movies.push(movie1);
+
+  if(mob){
+
+        //開頭影片結束下拉
+    movies[0].addEventListener("ended", function() {
+
+      var articleStart = document.getElementById("first_paragraph");
+      var startOffset = articleStart.getBoundingClientRect().top + window.pageYOffset;
+
+      scrollAnimation(startOffset, 500);
     });
 
-    movies[0].addEventListener("pause",function(){
-        engine.runRenderLoop(function(){
-            RenderManager();
-        });
+
+  } else {
+
+    movies[0].addEventListener("play", function() {
+      engine.stopRenderLoop();
     });
 
-    movies[0].addEventListener('ended', function(){
-        var modelStart = document.getElementById('model1');
-        var startOffset = modelStart.getBoundingClientRect().top + window.pageYOffset;
-
-        scrollAnimation(startOffset, 500);
+    movies[0].addEventListener("pause", function() {
+      engine.runRenderLoop(function() {
+        RenderManager();
+      });
     });
 
-    // movies[1].addEventListener("play", function () {
-    //     engine.stopRenderLoop();
-    // });
+    //開頭影片結束下拉
+    movies[0].addEventListener("ended", function() {
 
-    // movies[1].addEventListener("pause", function () {
-    //     engine.runRenderLoop(function () {
-    //         RenderManager();
-    //     });
-    // });
+      var modelStart = document.getElementById("model1");
+      var startOffset = modelStart.getBoundingClientRect().top + window.pageYOffset;
+
+      scrollAnimation(startOffset, 500);
+    });
+
+  }
+
 }
 
 function modelLoader() {

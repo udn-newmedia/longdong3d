@@ -10,6 +10,9 @@ $(document).ready(function () {
 
 //video controller
     function moviePlay(id) {
+
+        $('.fa-spinner[data-target="' + id + '"]').css("opacity", 0);
+
         $("#movie-" + id).get(0).play();
 
         if (progress[id - 1] == null) {
@@ -82,18 +85,38 @@ $(document).ready(function () {
 
         var tar = $(this).data('target')
 
-        if ($(this).get(0).paused == true) {
-            moviePlay(tar);
+        if(tar===1){
             if ($(this).get(0).muted == true) {
                 $(this).get(0).muted = false;
-                $('.volume[data-target="' + tar + '"]').removeClass('fa-volume-off').addClass('fa-volume-up')
-                $('.volume-text[data-target="' + tar + '"]').text('點按關聲音');
+                $('.volume[data-target="' + tar + '"]')
+                .removeClass("fa-volume-off")
+                .addClass("fa-volume-up");
+
+                $('.volume-text[data-target="' + tar + '"]').text("點按關聲音");
+            }else {
+                $(this).get(0).muted = true;
+                $('.volume[data-target="' + tar + '"]')
+                  .addClass("fa-volume-off")
+                  .removeClass("fa-volume-up");
+
+                $('.volume-text[data-target="' + tar + '"]').text("點按開聲音");                
+            }            
+        }else{
+            if ($(this).get(0).paused == true) {
+                moviePlay(tar);
+                if ($(this).get(0).muted == true) {
+                    $(this).get(0).muted = false;
+                    $('.volume[data-target="' + tar + '"]').removeClass('fa-volume-off').addClass('fa-volume-up')
+                    $('.volume-text[data-target="' + tar + '"]').text('點按關聲音');
+                }
             }
+            else {
+                $(this).get(0).pause();
+                moviePause(tar);
+            }
+
         }
-        else {
-            $(this).get(0).pause();
-            moviePause(tar);
-        }
+
         // ga("send", {
         //     "hitType": "event",
         //     "eventCategory": "movie click",
@@ -145,6 +168,7 @@ $(document).ready(function () {
         scroll_now = $(window).scrollTop();
 
         var movie1 = scroll_now - $("#movie-1").offset().top + h;
+        var movie1_1 = scroll_now - $("#movie-8").offset().top + h;
         var movie2 = scroll_now - $("#movie-2").offset().top + h;
         var movie3 = scroll_now - $("#movie-3").offset().top + h;
         var movie4 = scroll_now - $("#movie-4").offset().top + h;
@@ -161,6 +185,16 @@ $(document).ready(function () {
             if ($("#movie-1").get(0).paused == false) {
                 moviePause(1);
             }
+        }
+
+        if (movie1_1 > h / 3 && movie1_1 < h + 200) {
+          if ($("#movie-8").get(0).paused == true) {
+            moviePlay(8);
+          }
+        } else {
+          if ($("#movie-8").get(0).paused == false) {
+            moviePause(8);
+          }
         }
 
         if (movie2 > h / 3 && movie2 < h + 200) {

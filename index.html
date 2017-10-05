@@ -62,9 +62,25 @@
     </div>
 
     <!--<button id="btn" style="z-index:10000000; position:fixed; left:0; right:0;">camera</button>-->
-    <div class="article">
+    <div id="startPage">
+        <div class="container">
+            <p>請選擇適合您的3D閱讀版本。</p>
+            <div class="options">
+                <div id="hd" class="option">
+                    <img src="assets/images/hd_view.png" alt="">
+                    <button>完整體驗</button>
+                </div>
+                <div id="lite" class="option">
+                    <img src="assets/images/lite_view.png" alt="">
+                    <button>輕量閱讀</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="article">
         <div class="video-contain" style="margin-top:0; margin-bottom:0">
-            <video preload="metadata" class="rwd-2dv" id="movie-1" src="assets/videos/cover-video.mp4" playsinline data-target="1" autoplay loop></video>
+            <video preload="metadata" class="rwd-2dv" id="movie-1" src="assets/videos/cover-video.mp4" playsinline data-target="1"></video>
             <div style="margin-top: -8px;" class="video-control">
                 <!--<div class="progress hidden-lg">
                     <div id="progress-bar-1" class="progress-bar progress-bar-striped"></div>
@@ -89,7 +105,7 @@
                 </div>
             </div>
         </section>
-        <section class="masked">
+        <section id="first_paragraph" class="masked">
             <div class="content container">
                 <h2 class="hidden-lg">攀岩者天堂 3D帶你遊龍洞</h2>
                 <p>2002年2月微雨的冷天，才剛到台灣兩天的Matt Robertson ，不會半句中文，卻迫不及待的從新竹獨自北上基隆，客運、火車、計程車轉換，花了7小時才抵達龍洞。</p>                
@@ -131,6 +147,19 @@
                     <p><br/></p>
                     <p>40年來的探索，連當地居民也不清楚的峭壁地形，攀岩者們瞭若指掌，龍洞是台灣攀岩大本營，舉目所及的每一片岩壁，都是攀岩者躍躍欲試的目標，短短2公里，已開發出600多條攀爬路線。</p>
                 </div>
+                <div class="video-contain lite">
+                    <video preload="metadata" class="rwd-2dv liteVideo" id="movie-8" data-src="assets/videos/mobile/mobile_video2.mp4" playsinline data-target="2" muted></video>
+                    <div style="margin-top: -8px;" class="video-control">
+                        <div class="progress hidden-md hidden-lg">
+                            <div id="progress-bar-8" class="progress-bar progress-bar-striped"></div>
+                        </div>
+                        <div class="img-say-out volume-text hidden-md hidden-lg" data-target="2">點按開聲音</div>
+                        <i class="fa fa-spinner fa-pulse video-wait" data-target="2"></i>
+                        <!--<i class="fa fa-play video-play hidden-md hidden-lg" data-target="2"></i>-->
+                        <i class="fa fa-volume-off volume hidden-md hidden-lg" data-target="2"></i>
+                        <i class="fa fa-repeat replay hidden-md hidden-lg" data-target="2"></i>
+                    </div>
+                </div>
             </div>
             <div class="video-contain hidden-lg">
                 <video preload="metadata" class="rwd-2dv mobVideo" id="movie-2" data-src="assets/videos/mobile/mobile_video2.mp4" playsinline data-target="2" autoplay muted></video>
@@ -138,10 +167,10 @@
                     <div class="progress hidden-md hidden-lg">
                         <div id="progress-bar-2" class="progress-bar progress-bar-striped"></div>
                     </div>
-                    <div class="img-say-out volume-text hidden-md hidden-lg" data-target="2">點按開聲音</div>
+                    <!--<div class="img-say-out volume-text hidden-md hidden-lg" data-target="2">點按開聲音</div>-->
                     <i class="fa fa-spinner fa-pulse video-wait" data-target="2"></i>
                     <!--<i class="fa fa-play video-play hidden-md hidden-lg" data-target="2"></i>-->
-                    <i class="fa fa-volume-off volume hidden-md hidden-lg" data-target="2"></i>
+                    <!--<i class="fa fa-volume-off volume hidden-md hidden-lg" data-target="2"></i>-->
                     <i class="fa fa-repeat replay hidden-md hidden-lg" data-target="2"></i>
                 </div>
             </div>
@@ -151,7 +180,7 @@
                 </div>
             </div>
         </section>
-        <section class="blankHalfPage hidden-xs hidden-sm hidden-md"></section>
+        <section class="blankHalfPage hidden-xs hidden-sm hidden-md hidden-lite"></section>
         <section>
             <div class="img-contain hidden-xs hidden-sm">
                 <div class="slider-wrapper theme-default">
@@ -195,7 +224,7 @@
                 </div>
             </div>
         </section>
-        <section class="blankPage hidden-xs hidden-sm hidden-md"></section>
+        <section class="blankPage hidden-xs hidden-sm hidden-md hidden-lite"></section>
         <section id="model2">
             <div class="content container">
                 <div class="narrow-in-pc">
@@ -214,10 +243,10 @@
                     <div class="progress hidden-md hidden-lg">
                         <div id="progress-bar-3" class="progress-bar progress-bar-striped"></div>
                     </div>
-                    <div class="img-say-out volume-text hidden-md hidden-lg" data-target="3">點按開聲音</div>
+                    <!--<div class="img-say-out volume-text hidden-md hidden-lg" data-target="3">點按開聲音</div>-->
                     <i class="fa fa-spinner fa-pulse video-wait" data-target="3"></i>
                     <!--<i class="fa fa-play video-play hidden-md hidden-lg" data-target="3"></i>-->
-                    <i class="fa fa-volume-off volume hidden-md hidden-lg" data-target="3"></i>
+                    <!--<i class="fa fa-volume-off volume hidden-md hidden-lg" data-target="3"></i>-->
                     <i class="fa fa-repeat replay hidden-md hidden-lg" data-target="3"></i>
                 </div>
             </div>
@@ -258,12 +287,13 @@
                     <p>上攀一次，墜落一次，到最後我已經習慣了。幾十次的失敗，那些位置要做什麼動作、怎麼有效地串聯動作，到最後近乎本能反射。成功的那一次，我事前沒有預設一定要成功，心中只想著下一個動作，一回神人就到頂端。</p>
                     <p><br/></p>
                     <p>後來我理解了：想要爬上去，最重要的是放鬆。</p>                        
-                </div>
-                <div class="img-contain">
-                    <picture>
-                        <source srcset="./assets/images/img_3_m.jpg" media="(max-width:1199px)">
-                        <img class="lazyload" data-src="./assets/images/img_3.jpg">
-                    </picture>
+                    <div class="img-contain">
+                        <picture>
+                            <source srcset="./assets/images/img_3_m.jpg" media="(max-width:1199px)">
+                            <!--<img class="lazyload" data-src="./assets/images/img_3.jpg">-->
+                            <img class="lazyload" data-src="./assets/images/img_3_m.jpg">
+                        </picture>
+                    </div>
                 </div>
             </div>
         </section>
@@ -285,10 +315,10 @@
                     <div class="progress hidden-md hidden-lg">
                         <div id="progress-bar-6" class="progress-bar progress-bar-striped"></div>
                     </div>
-                    <div class="img-say-out volume-text hidden-md hidden-lg" data-target="6">點按開聲音</div>
+                    <!--<div class="img-say-out volume-text hidden-md hidden-lg" data-target="6">點按開聲音</div>-->
                     <i class="fa fa-spinner fa-pulse video-wait" data-target="6"></i>
                     <!--<i class="fa fa-play video-play hidden-md hidden-lg" data-target="6"></i>-->
-                    <i class="fa fa-volume-off volume hidden-md hidden-lg" data-target="6"></i>
+                    <!--<i class="fa fa-volume-off volume hidden-md hidden-lg" data-target="6"></i>-->
                     <i class="fa fa-repeat replay hidden-md hidden-lg" data-target="6"></i>
                 </div>
             </div>
@@ -342,10 +372,10 @@
                     <div class="progress hidden-md hidden-lg">
                         <div id="progress-bar-7" class="progress-bar progress-bar-striped"></div>
                     </div>
-                    <div class="img-say-out volume-text hidden-md hidden-lg" data-target="7">點按開聲音</div>
+                    <!--<div class="img-say-out volume-text hidden-md hidden-lg" data-target="7">點按開聲音</div>-->
                     <i class="fa fa-spinner fa-pulse video-wait" data-target="7"></i>
                     <!--<i class="fa fa-play video-play hidden-md hidden-lg" data-target="7"></i>-->
-                    <i class="fa fa-volume-off volume hidden-md hidden-lg" data-target="7"></i>
+                    <!--<i class="fa fa-volume-off volume hidden-md hidden-lg" data-target="7"></i>-->
                     <i class="fa fa-repeat replay hidden-md hidden-lg" data-target="7"></i>
                 </div>
             </div>

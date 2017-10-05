@@ -34,6 +34,10 @@ var animFrame = 1;
     // $(document).ready(function(){
     // });
 
+if(window.innerWidth/window.innerHeight<16/9){
+   d3.select('#movie-1').style("object-fit",'contain');
+}
+
 
 //mobile版load 影片代替
 if(window.matchMedia("(max-width: 1200px)").matches){
@@ -341,9 +345,9 @@ function viewChanger(){
                                     if (i === 0) {
                                         d3.select(this)
                                             .classed("hidden", false)
-                                            .style('display', 'inline')
-                                            .style('left', 688.6946548938735 + 'px')
-                                            .style('top', 397.3339768474 + 'px');
+                                            .style('display', 'inline');
+                                            // .style('left', 688.6946548938735 + 'px')
+                                            // .style('top', 397.3339768474 + 'px');
                                     } else {
                                         d3.select(this)
                                             .classed("hidden", true);
@@ -1874,7 +1878,6 @@ function PCimportScene2(){
         //         return "route #" + 2 + '-' + (i + 1);
         //     });
 
-
         scenes[sceneIndex].billboards = [];
         scenes[sceneIndex].billboards.push(billboard1);
         scenes[sceneIndex].billboards.push(billboard2);
@@ -1897,7 +1900,14 @@ function PCimportScene2(){
 
     scenes[sceneIndex].renderLoop = function () {
 
-        // vectorProject(scenes[1].billboards[0].labels[0]); //{x: 809.4389298448883, y: 388.2740448861042, z: 0.7097805578331373}
+        var board1 = vectorProject(scenes[1].billboards[0].position); //{x: 809.4389298448883, y: 388.2740448861042, z: 0.7097805578331373}
+
+        d3.selectAll('.g-label.model2.board1')
+            .each(function(d,i){
+                d3.select(this)
+                    .style('left', board1.x+'px')
+                    .style('top', board1.y+'px');
+            });
 
         this.render();
     }

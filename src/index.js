@@ -283,31 +283,33 @@ function viewChanger(){
             // Hide all of labels of model2
             d3.selectAll(".g-label").classed("hidden", true);
 
+            //waypoints放模型1的第三個視角
             if (!waypoints[2].hasChanged) {
-            displayBillboards(false);
+                displayBillboards(false);
             }
 
             changeView(waypoints[2], function() {
-            setTimeout(function() {
-                //等待change view
+                setTimeout(function() {
+                    //等待change view
 
-                var billboard = scenes[activeScene].billboards[2];
-                var points = billboard.animTexture.points;
-                var style = billboard.animTexture.ctxStyle;
+                    var billboard = scenes[activeScene].billboards[2];
+                    var points = billboard.animTexture.points;
+                    var style = billboard.animTexture.ctxStyle;
 
-                displayBillboards([false, false, true, false]);
+                    displayBillboards([false, false, true, false]);
 
-                // disableScroll();
 
-                animateTexturePlay(billboard, style, points, function() {
-                animFrame = 1;
-                // enableScroll();
+                    // disableScroll();
 
-                    zoom_in_effect(5,
-                        scrollAnimation(changeModelPointsOffset[2], 1000)
-                    )
-                });
-            }, 2000);
+                    animateTexturePlay(billboard, style, points, function() {
+                    animFrame = 1;
+                    // enableScroll();
+
+                        zoom_in_effect(5,
+                            scrollAnimation(changeModelPointsOffset[2], 1000)
+                        )
+                    });
+                }, 2000);
             });
         } else if (scroll_now >= changeModelPointsOffset[4]) {
             //最後再回到model1
@@ -2074,7 +2076,26 @@ function PCimportScene3(){
 
     scenes[sceneIndex].renderLoop = function () {
 
-        // vectorProject(scenes[2].billboards[1].labels[0]); 
+    // setting labels
+        var board1 = vectorProject(scenes[2].billboards[0].position);
+        var board2 = vectorProject(scenes[2].billboards[1].position);
+
+        d3.selectAll('.g-label.model3.board1')
+            .each(function(d,i){
+                d3.select(this)
+                    .style('left', board1.x+'px')
+                    .style('top', board1.y+'px');
+            });
+
+
+        d3.selectAll('.g-label.model3.board2')
+            .each(function(d,i){
+                d3.select(this)
+                    .style('left', board2.x+'px')
+                    .style('top', board2.y+'px');
+            });
+
+
 
         this.render();
     }    
@@ -2226,7 +2247,7 @@ function enableScroll() {
             scene.getTransformMatrix(),
             camera.viewport.toGlobal(renderWidth, renderHeight));
             
-        console.log(p);
+        // console.log(p);
 
         return {x:p.x,y:p.y};
     }

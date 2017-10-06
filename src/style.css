@@ -35,7 +35,7 @@ p,h2,h6 {
      position: fixed;
      display: none;
      font: 500 14px/1.4em "Microsoft JhengHei";
-     color: yellow;
+     color: #fff;
  }
 
 .hidden {

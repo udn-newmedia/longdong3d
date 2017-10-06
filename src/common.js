@@ -65,3 +65,11 @@ function iOSversion() {
   }
 }
 
+function detectSafari(){
+
+  var isSafari = /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor);
+
+  return isSafari;
+}
+
+

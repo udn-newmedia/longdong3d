@@ -10,6 +10,7 @@ var scroll_now = 0;
 var changeViewWaypointsOffset = [];
 var waypoints = [];
 var liteVersion = false;
+var safari = (detectSafari())?true:false;
 
 var canvas;
 
@@ -1478,7 +1479,10 @@ function PCloadScene1(){
         scene.registerBeforeRender(function(){
 
             // 封面的旋轉
-            if(stopRotatingPointOffset){
+            if(safari){
+                stopRotating = true;
+            }
+            else if(stopRotatingPointOffset){
                 stopRotating = (scroll_now <= stopRotatingPointOffset)?false:true;
             }
 

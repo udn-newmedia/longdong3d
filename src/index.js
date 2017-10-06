@@ -824,50 +824,87 @@ function whichModel() {
     }
 }
 
+var opacityZero = false;
+
 function setCanvasOpacityWithSection() {
 
     var canvas_style = window.getComputedStyle(canvas),
         canvas_opacity = canvas_style.getPropertyValue('opacity');
 
-    //第一個換模型點的透明度轉換
+    //自動轉場
 
-    if (window.pageYOffset >= changeModelPointsOffset[1] * 0.95 && window.pageYOffset < changeModelPointsOffset[1]) {
-
-        canvas.style.opacity = 1 - ((window.pageYOffset - changeModelPointsOffset[1] * 0.95) / (changeModelPointsOffset[1] - changeModelPointsOffset[1] * 0.95));
-
-    } 
-    
-    else if (window.pageYOffset >= changeModelPointsOffset[1] && window.pageYOffset < changeModelPointsOffset[1] * 1.05) {
-
-        canvas.style.opacity = (window.pageYOffset - changeModelPointsOffset[1]) / (changeModelPointsOffset[1] * 1.05 - changeModelPointsOffset[1]);
-
-    } 
-    
-    else if (window.pageYOffset >= changeModelPointsOffset[1] * 1.05){
-
+    if (window.pageYOffset >= changeModelPointsOffset[1] * 0.99 && window.pageYOffset < changeModelPointsOffset[1]) {
+      if (!opacityZero) {
+        canvas.style.opacity = 0;
+        opacityZero = true;
+        //   console.log("1:" + opacityZero);
+      }
+    } else if (window.pageYOffset >= changeModelPointsOffset[1] && window.pageYOffset < changeModelPointsOffset[2] * 0.99) {
+      if (opacityZero) {
         canvas.style.opacity = 1;
-
+        opacityZero = false;
+        //   console.log("2:"+ opacityZero);
+      }
+    } else if (window.pageYOffset >= changeModelPointsOffset[2] * 0.99 && window.pageYOffset < changeModelPointsOffset[2]) {
+      if (!opacityZero) {
+        canvas.style.opacity = 0;
+        opacityZero = true;
+        // console.log("3:" + opacityZero);
+      }
+    } else if (window.pageYOffset >= changeModelPointsOffset[2] && window.pageYOffset < changeModelPointsOffset[2] * 1.01) {
+      if (opacityZero) {
+        canvas.style.opacity = 1;
+        opacityZero = false;
+        // console.log("4:" + opacityZero);  
+      }
+    } else if(window.pageYOffset > changeModelPointsOffset[2] * 1.01){
+        if (!opacityZero) {
+            opacityZero = !opacityZero;
+            // console.log("5:" + opacityZero);
+        }
     }
 
-    //第二個換模型點的透明度轉換
-    if (window.pageYOffset >= changeModelPointsOffset[2] * 0.95 && window.pageYOffset < changeModelPointsOffset[2]) {
 
-        canvas.style.opacity = 1 - ((window.pageYOffset - changeModelPointsOffset[2] * 0.95) / (changeModelPointsOffset[2] - changeModelPointsOffset[2] * 0.95));
-
-    } 
+    //搭配滾動轉場
     
-    else if (window.pageYOffset >= changeModelPointsOffset[2] && window.pageYOffset < changeModelPointsOffset[2] * 1.05) {
+    // //第一個換模型點的透明度轉換
 
-        canvas.style.opacity = (window.pageYOffset - changeModelPointsOffset[2]) / (changeModelPointsOffset[2] * 1.05 - changeModelPointsOffset[2]);
+    // if (window.pageYOffset >= changeModelPointsOffset[1] * 0.95 && window.pageYOffset < changeModelPointsOffset[1]) {
 
-    } 
+    //     canvas.style.opacity = 1 - ((window.pageYOffset - changeModelPointsOffset[1] * 0.95) / (changeModelPointsOffset[1] - changeModelPointsOffset[1] * 0.95));
+
+    // } 
     
-    else if (window.pageYOffset >= changeModelPointsOffset[2] * 1.05) {
+    // else if (window.pageYOffset >= changeModelPointsOffset[1] && window.pageYOffset < changeModelPointsOffset[1] * 1.05) {
 
-        canvas.style.opacity = 1;
+    //     canvas.style.opacity = (window.pageYOffset - changeModelPointsOffset[1]) / (changeModelPointsOffset[1] * 1.05 - changeModelPointsOffset[1]);
 
-    }
+    // } 
+    
+    // else if (window.pageYOffset >= changeModelPointsOffset[1] * 1.05){
 
+    //     canvas.style.opacity = 1;
+
+    // }
+
+    // //第二個換模型點的透明度轉換
+    // if (window.pageYOffset >= changeModelPointsOffset[2] * 0.95 && window.pageYOffset < changeModelPointsOffset[2]) {
+
+    //     canvas.style.opacity = 1 - ((window.pageYOffset - changeModelPointsOffset[2] * 0.95) / (changeModelPointsOffset[2] - changeModelPointsOffset[2] * 0.95));
+
+    // } 
+    
+    // else if (window.pageYOffset >= changeModelPointsOffset[2] && window.pageYOffset < changeModelPointsOffset[2] * 1.05) {
+
+    //     canvas.style.opacity = (window.pageYOffset - changeModelPointsOffset[2]) / (changeModelPointsOffset[2] * 1.05 - changeModelPointsOffset[2]);
+
+    // } 
+    
+    // else if (window.pageYOffset >= changeModelPointsOffset[2] * 1.05) {
+
+    //     canvas.style.opacity = 1;
+
+    // }
 
 }
 

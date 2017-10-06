@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <!-- Babylon.js -->
+    <script src="https://preview.babylonjs.com/cannon.js"></script>
+    <script src="http://www.babylonjs.com/hand.minified-1.2.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babylonjs/2.5.0/babylon.js"></script>
+     <!-- <script src="https://cdn.babylonjs.com/babylon.js"></script> -->
+
+    <style>
+    
+        canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+    </style>
+</head>
+<body>
+    <button id="btn" style="z-index:10000000; position:fixed; left:0; right:0; width: 5%; height: 5%;" onclick="myFunction()">LOG</button>
+
+    <div id="g-graphic"></div>
+
+    <script>
+        var canvasNode = document.createElement("CANVAS");
+        var canvas = document.getElementById("g-graphic").appendChild(canvasNode);
+        var engine = new BABYLON.Engine(canvas, true);
+        var scene = new BABYLON.Scene(engine);
+
+        var camAlpha = 0.2;
+        var camBeta = Math.PI / 2;
+        var camRadius = 20;
+
+        var camera = new BABYLON.ArcRotateCamera("Camera2", camAlpha, camBeta, camRadius, new BABYLON.Vector3.Zero(), scene);
+        camera.attachControl(canvas, false);
+        camera.checkCollisions = true;
+
+        var light0 = new BABYLON.PointLight("Omni", new BABYLON.Vector3.Zero(), scene);
+        light0.parent = camera; //light follows camera
+        light0.intensity = 0.4;
+        scene.light0 = light0;
+
+        var light = new BABYLON.HemisphericLight("hemi2", new BABYLON.Vector3(0, 1, 0), scene);
+
+
+        var materialStone;
+
+        BABYLON.SceneLoader.ImportMesh("", "assets/golden-stone/", "golden-stone.babylon", scene, function (newMeshes) {
+
+            newMeshes[0].position = new BABYLON.Vector3(0, 0, 7);
+            newMeshes[0].rotation = new BABYLON.Vector3(-Math.PI/2*1.1, Math.PI/2, Math.PI);
+
+            materialStone = new BABYLON.StandardMaterial("texture1", scene);
+            materialStone.diffuseTexture = new BABYLON.Texture("assets/golden-stone/golden-stone.png", scene);
+            materialStone.diffuseTexture.hasAlpha = true;
+
+            // materialStone.diffuseTexture.uOffset = 0.15429999999999933;
+            // materialStone.diffuseTexture.vOffset = 0.05; //vertical offset 0f 10%
+
+            // materialStone.diffuseTexture.uAng = Math.PI;
+            // materialStone.diffuseTexture.vAng = Math.PI;
+
+            materialStone.diffuseTexture.wAng = Math.PI / 2;
+
+            // materialStone.diffuseTexture.uScale = 1.2;        
+            // materialStone.diffuseTexture.vScale = 0.9;
+
+            materialStone.diffuseTexture.wrapU = BABYLON.Texture.CLAMP_ADDRESSMODE;
+            materialStone.diffuseTexture.wrapV = BABYLON.Texture.CLAMP_ADDRESSMODE;
+
+            newMeshes[0].material = materialStone;
+
+            //用動畫來找參數
+            scene.beforeRender = function () {
+                // materialStone.diffuseTexture.wAng += .0001;
+
+                // materialStone.diffuseTexture.uOffset += 0.0005;
+
+                // materialStone.diffuseTexture.vScale += 0.001;
+            };
+
+        });
+
+
+        engine.runRenderLoop(function(){
+            scene.render();
+        })
+
+        function myFunction(){
+            // console.log(materialStone.diffuseTexture.wAng);
+            // console.log(materialStone.diffuseTexture.uOffset);
+            // console.log(materialStone.diffuseTexture.uScale);
+
+        }
+
+    </script>
+</body>
+</html>

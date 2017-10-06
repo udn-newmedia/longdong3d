@@ -243,6 +243,7 @@ function viewChanger(){
 
                         setTimeout(function(){
                             displayBillboards([true, true, false, false]);
+
                         },2000);
                     })
 
@@ -251,38 +252,57 @@ function viewChanger(){
 
         } else if (scroll_now >= changeViewWaypointsOffset[1] && scroll_now < changeViewWaypointsOffset[1] * 1.1) {
 
-            d3.selectAll(".g-label").classed("hidden", true);
+            // d3.selectAll(".g-label").classed("hidden", true);
 
             //第一個模型，第二個視角
             changeView(waypoints[1], function() {
-            displayBillboards([false, false, false, true]);
 
-            setTimeout(function() {
-                //等待change view
+                displayBillboards([false, false, false, true]);
 
-                var billboard = scenes[activeScene].billboards[3];
-                var points = billboard.animTexture.points;
-                var style = billboard.animTexture.ctxStyle;
+                d3.selectAll('.g-label.model1')
+                    .each(function (d, i) {
+                        if (i === 0) {
+                            d3.select(this)
+                                .classed("hidden", false)
+                                .style('display', 'inline');
+                        } else {
+                            d3.select(this)
+                                .classed("hidden", true);
+                        }
+                    }
+                );
 
-                // disableScroll();
 
-                animateTexturePlay(billboard, style, points, function() {
-                animFrame = 1;
-                // enableScroll();
+                setTimeout(function() {
+                    //等待change view
 
-                zoom_in_effect(5,
-                    scrollAnimation(changeModelPointsOffset[1], 1000)
-                )
+                    var billboard = scenes[activeScene].billboards[3];
+                    var points = billboard.animTexture.points;
+                    var style = billboard.animTexture.ctxStyle;
 
-                });
-            }, 3000);
+                    disableScroll();
+
+                    animateTexturePlay(billboard, style, points, function() {
+                        animFrame = 1;
+                        enableScroll();
+
+
+                        zoom_in_effect(3, function(){
+
+                                scrollAnimation(changeModelPointsOffset[1], 1000);
+                                d3.selectAll(".g-label.model1").classed("hidden", true);
+                            }
+                        )
+
+                    });
+                }, 3000);
 
             });
         } else if (scroll_now >= changeViewWaypointsOffset[5] && scroll_now < changeModelPointsOffset[2]) {
             //回到model1
 
             // Hide all of labels of model2
-            d3.selectAll(".g-label").classed("hidden", true);
+            d3.selectAll(".g-label.model2").classed("hidden", true);
 
             //waypoints放模型1的第三個視角
             if (!waypoints[2].hasChanged) {
@@ -299,15 +319,29 @@ function viewChanger(){
 
                     displayBillboards([false, false, true, false]);
 
+                    d3.selectAll('.g-label.model1')
+                        .each(function (d, i) {
+                            if (i === 1) {
+                                d3.select(this)
+                                    .classed("hidden", false)
+                                    .style('display', 'inline');
+                            } else {
+                                d3.select(this)
+                                    .classed("hidden", true);
+                            }
+                        }
+                    );
 
-                    // disableScroll();
+                    disableScroll();
 
                     animateTexturePlay(billboard, style, points, function() {
                     animFrame = 1;
-                    // enableScroll();
+                    enableScroll();
 
-                        zoom_in_effect(5,
-                            scrollAnimation(changeModelPointsOffset[2], 1000)
+                        zoom_in_effect(5,function(){
+                                scrollAnimation(changeModelPointsOffset[2], 1000)
+                                d3.selectAll(".g-label.model1, .g-label.model2").classed("hidden", true);
+                            }
                         )
                     });
                 }, 2000);
@@ -349,8 +383,6 @@ function viewChanger(){
                                         d3.select(this)
                                             .classed("hidden", false)
                                             .style('display', 'inline');
-                                            // .style('left', 688.6946548938735 + 'px')
-                                            // .style('top', 397.3339768474 + 'px');
                                     } else {
                                         d3.select(this)
                                             .classed("hidden", true);
@@ -468,9 +500,6 @@ function viewChanger(){
                                 d3.select(this)
                                     .classed("hidden", false)
                                     .style('display', 'inline')
-                                    // .style('left', 1011.2279941885878 + 'px')
-                                    // .style('top', 395.1615063147416 + 'px');
-
                             } else {
                                 d3.select(this)
                                     .classed("hidden", true);
@@ -1241,19 +1270,29 @@ function PCloadScene1(){
             }
 
 
+            // var waypoint2 = {
+            //     x:3.6829458901717187,
+            //     y:3.369587763632281,
+            //     z:6.051473963140251
+            // }
+
+            // var target2 = {
+            //     x:-0.968912836726127,
+            //     y:1.1287283044234226,
+            //     z:1.311103877323937
+            // }
+
             var waypoint2 = {
-                x:3.6829458901717187,
-                y:3.369587763632281,
-                z:6.051473963140251
+                x:5.300019122080537,
+                y:2.738131456593628,
+                z:6.622483851753247
             }
 
             var target2 = {
-                x:-0.968912836726127,
-                y:1.1287283044234226,
-                z:1.311103877323937
+                x:0.18728063710686293,
+                y:1.867918001514161,
+                z:0.8039345225502077
             }
-
-
 
 
             // var waypoint3 = {
@@ -1513,7 +1552,7 @@ function PCloadScene1(){
                 stopRotating = (scroll_now <= stopRotatingPointOffset)?false:true;
             }
 
-            stopRotating = true;
+            // stopRotating = true;
 
 
             if (scenes[sceneIndex].reRender && !stopRotating){
@@ -1556,7 +1595,29 @@ function PCloadScene1(){
         scenes[sceneIndex].billboards.push(billboard4);
 
         scenes[sceneIndex].renderLoop = function () {
-                this.render();
+            
+            // setting labels
+            var board3 = vectorProject(scenes[0].billboards[2].position);
+            var board4 = vectorProject(scenes[0].billboards[3].position);
+
+
+            d3.selectAll(".g-label.model1.board3")
+                .each(function(d,i){
+                    d3.select(this)
+                        .style('left', board3.x+'px')
+                        .style('top', board3.y+'px');
+                });
+
+
+            d3.selectAll('.g-label.model1.board4')
+                .each(function(d,i){
+                    d3.select(this)
+                        .style('left', board4.x+'px')
+                        .style('top', board4.y+'px');
+                });
+
+
+            this.render();
         }
 
     });
@@ -1736,6 +1797,7 @@ function PCimportScene2_multi(){
     var sceneIndex = scenes.push(scene) - 1;
     scenes[sceneIndex].reRender = true;
     scenes[sceneIndex].renderLoop = function () {
+
         this.render();
     }
 
@@ -1965,7 +2027,7 @@ function PCimportScene2(){
         d3.selectAll('.g-label.model2.board4')
             .each(function(d,i){
                 d3.select(this)
-                    .style('left', board4.x+'px')
+                    .style('left', board4.x*0.8+'px')
                     .style('top', board4.y+'px');
             });
 

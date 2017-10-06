@@ -1117,11 +1117,14 @@ function MOBloadScene(){
 
 function PCloadScene1(){
 
-    // console.log('load1');
-
-    BABYLON.SceneLoader.ShowLoadingScreen = false;
+    // BABYLON.SceneLoader.ShowLoadingScreen = false;
+	var loadingScreen = new MyLoadingScreen("loading...");
+    engine.loadingScreen = loadingScreen;
+    engine.displayLoadingUI();
 
     BABYLON.SceneLoader.Load("assets/longdong/", "north-3D-new-09-final_edited.babylon", engine, function (scene) {
+
+        engine.hideLoadingUI();
 
         scene.clearColor = new BABYLON.Color3.FromHexString("#28253a");
 
@@ -2148,6 +2151,23 @@ function zoom_out_effect(callback){
     camera.animations.push(zoomoutAnimation);                
     scene.beginAnimation(camera, 0, 100, false, 1, callback);
 }
+
+
+function MyLoadingScreen(text) {
+  //init the loader
+  this.loadingUIText = text;
+}
+
+MyLoadingScreen.prototype.displayLoadingUI = function() {
+    //   alert(this.loadingUIText);
+    d3.select("#waiting").style("display","block");
+};
+
+MyLoadingScreen.prototype.hideLoadingUI = function() {
+    //   alert("Loaded!");
+    d3.select("#waiting").style("display", "none");
+};
+
 
 
 //disable scrolling

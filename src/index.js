@@ -270,7 +270,7 @@ function viewChanger(){
 
         } else if (scroll_now >= changeViewWaypointsOffset[1] && scroll_now < changeViewWaypointsOffset[1] * 1.1) {
 
-            // d3.selectAll(".g-label").classed("hidden", true);
+            d3.selectAll(".g-label").classed("hidden", true);
 
             //第一個模型，第二個視角
             changeView(waypoints[1], function() {
@@ -320,7 +320,7 @@ function viewChanger(){
             //回到model1
 
             // Hide all of labels of model2
-            d3.selectAll(".g-label.model2").classed("hidden", true);
+            d3.selectAll(".g-label").classed("hidden", true);
 
             //waypoints放模型1的第三個視角
             if (!waypoints[2].hasChanged) {
@@ -373,9 +373,25 @@ function viewChanger(){
 
             changeView(waypoints[3], function() {});
         }
+
+    } else if(liteVersion && activeScene===0){
+
+            d3.selectAll('.g-label').classed("hidden", true);
+
+            if(d3.select("#g-graphic").style("opacity")==='1'){
+                console.log('abc')
+                d3.select("#g-graphic").style("opacity",0);
+            }
     }
 
+
     if(activeScene===1 && scenes[activeScene]){
+
+
+        if (d3.select("#g-graphic").style("opacity") === '0') {
+            d3.select("#g-graphic").style("opacity", 1);
+        }
+
 
         if (scroll_now >= changeViewWaypointsOffset[2] && scroll_now < changeViewWaypointsOffset[3]) {
             //第二個模型，第一個視角
@@ -532,6 +548,10 @@ function viewChanger(){
     } 
     
     if(activeScene===2 && scenes[activeScene]){
+        
+        if (d3.select("#g-graphic").style("opacity") === "0") {
+          d3.select("#g-graphic").style("opacity", 1);
+        }
 
         if (scroll_now >= changeModelPointsOffset[2] && scroll_now < changeModelPointsOffset[2] + 2/3 * window.innerHeight) {
             //第三個模型，第一個視角
@@ -543,6 +563,8 @@ function viewChanger(){
                 if (!scenes[activeScene].cameraPara2.hasChanged) {
 
                     scenes[activeScene].cameraPara2.hasChanged = true;
+
+                    d3.selectAll('.g-label').classed("hidden", true);
                     
                         moveCameraByAdjustingParameters(scenes[activeScene].cameraPara2, function(){
 
@@ -836,7 +858,7 @@ function setSectionOffset() {
         changeViewWaypointsOffset[0] = changeViewWaypoint1.getBoundingClientRect().top + window.pageYOffset;
 
         var changeViewWaypoint2 = document.getElementsByTagName("section")[5];
-        changeViewWaypointsOffset[1] = changeViewWaypoint2.getBoundingClientRect().top + window.innerHeight + window.pageYOffset;        
+        changeViewWaypointsOffset[1] = changeViewWaypoint2.getBoundingClientRect().top + window.pageYOffset;        
 
         //model2
         var changeViewWaypoint3 = document.getElementById("model2-1");
@@ -888,8 +910,13 @@ function setCanvasOpacityWithSection() {
         canvas_opacity = canvas_style.getPropertyValue('opacity');
 
     //自動轉場
+    if(window.pageYOffset < changeModelPointsOffset[1] * 0.99){
+        if(opacityZero){
+            canvas.style.opacity = 1;
+            opacityZero = false;
+        }
 
-    if (window.pageYOffset >= changeModelPointsOffset[1] * 0.99 && window.pageYOffset < changeModelPointsOffset[1]) {
+    } else if (window.pageYOffset >= changeModelPointsOffset[1] * 0.99 && window.pageYOffset < changeModelPointsOffset[1]) {
       if (!opacityZero) {
         canvas.style.opacity = 0;
         opacityZero = true;
@@ -897,7 +924,6 @@ function setCanvasOpacityWithSection() {
       }
     } else if (window.pageYOffset >= changeModelPointsOffset[1] && window.pageYOffset < changeModelPointsOffset[2] * 0.99) {
       if (opacityZero) {
-
         canvas.style.opacity = 1;
         opacityZero = false;
         //   console.log("2:"+ opacityZero);

@@ -117,45 +117,45 @@ $(document).ready(function () {
 
         }
 
-        // ga("send", {
-        //     "hitType": "event",
-        //     "eventCategory": "movie click",
-        //     "eventAction": "click",
-        //     "eventLabel": "[" + platform + "] [" + title + "] [movie " + tar + " click]"
-        // });
+        ga("send", {
+            "hitType": "event",
+            "eventCategory": "movie click",
+            "eventAction": "click",
+            "eventLabel": "[" + platform + "] [" + title + "] [movie " + tar + " click]"
+        });
     });
 
     $('.replay').click(function () {
         var tar = $(this).data('target')
         movieReplay(tar)
-        // ga("send", {
-        //     "hitType": "event",
-        //     "eventCategory": "movie replay",
-        //     "eventAction": "click",
-        //     "eventLabel": "[" + platform + "] [" + title + "] [movie " + tar + " replay]"
-        // });
+        ga("send", {
+            "hitType": "event",
+            "eventCategory": "movie replay",
+            "eventAction": "click",
+            "eventLabel": "[" + platform + "] [" + title + "] [movie " + tar + " replay]"
+        });
     })
 
     $('.volume').click(function () {
         var tar = $(this).data('target');
         movieVolume(tar);
-        // ga("send", {
-        //     "hitType": "event",
-        //     "eventCategory": "movie volume",
-        //     "eventAction": "click",
-        //     "eventLabel": "[" + platform + "] [" + title + "] [movie " + tar + " volume]"
-        // });
+        ga("send", {
+            "hitType": "event",
+            "eventCategory": "movie volume",
+            "eventAction": "click",
+            "eventLabel": "[" + platform + "] [" + title + "] [movie " + tar + " volume]"
+        });
     });
 
     $('.volume-text').click(function () {
         var tar = $(this).data('target');
         movieVolume(tar);
-        // ga("send", {
-        //     "hitType": "event",
-        //     "eventCategory": "movie volume text",
-        //     "eventAction": "click",
-        //     "eventLabel": "[" + platform + "] [" + title + "] [movie " + tar + " volume text]"
-        // });
+        ga("send", {
+            "hitType": "event",
+            "eventCategory": "movie volume text",
+            "eventAction": "click",
+            "eventLabel": "[" + platform + "] [" + title + "] [movie " + tar + " volume text]"
+        });
     });
 
     //行動版預設靜音

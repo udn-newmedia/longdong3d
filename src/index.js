@@ -8,6 +8,7 @@ var stopRotatingPointOffset;
 var movies = [];
 var scroll_now = 0;
 var changeViewWaypointsOffset = [];
+var model1PosterOffset = [];
 var waypoints = [];
 var liteVersion = false;
 var safari = (detectSafari())?true:false;
@@ -115,6 +116,8 @@ if(window.matchMedia("(max-width: 1200px)").matches){
                 d3.select("#article").style("display","block");
 
                 d3.select(".lite").style("display","block");
+                d3.selectAll(".normal-in-lite").classed("narrow-in-pc", false);
+                d3.selectAll(".bg_before_model").style("display", "block");
 
                 document.getElementById('movie-1').play();
 
@@ -210,6 +213,21 @@ function SceneManager() {
     modelLoader();
     viewChanger();
     setCanvasOpacityWithSection();
+
+    if(liteVersion){
+        setModel1Poster();
+    }
+}
+
+function setModel1Poster(){
+    
+    if (window.pageYOffset >= model1PosterOffset[0] && window.pageYOffset < changeModelPointsOffset[1]) {
+      d3.select("#bg_before_model2").style("opacity", "1");
+    } else if (window.pageYOffset >= model1PosterOffset[1] && window.pageYOffset < changeModelPointsOffset[2]){
+      d3.select("#bg_before_model3").style("opacity", "1");
+    } else {
+      d3.selectAll(".bg_before_model").style("opacity", "0");
+    }
 }
 
 //轉換視角 & billboards控制(包含在billboard上畫線)
@@ -836,6 +854,15 @@ function setSectionOffset() {
     //other points
         var stopRotatingPoint = document.getElementsByTagName("section")[1];
         stopRotatingPointOffset = stopRotatingPoint.getBoundingClientRect().top + window.pageYOffset;
+
+        if(liteVersion){
+            var model1_bg_for_model2 = document.getElementById("nivoPics");
+            model1PosterOffset[0] = model1_bg_for_model2.getBoundingClientRect().top + window.pageYOffset;
+
+            var model1_bg_for_model3 = document.getElementById("movie-5");
+            model1PosterOffset[1] = model1_bg_for_model3.getBoundingClientRect().top + window.pageYOffset;
+        }
+
 }
 
 function whichModel() {
@@ -870,12 +897,14 @@ function setCanvasOpacityWithSection() {
       }
     } else if (window.pageYOffset >= changeModelPointsOffset[1] && window.pageYOffset < changeModelPointsOffset[2] * 0.99) {
       if (opacityZero) {
+
         canvas.style.opacity = 1;
         opacityZero = false;
         //   console.log("2:"+ opacityZero);
       }
     } else if (window.pageYOffset >= changeModelPointsOffset[2] * 0.99 && window.pageYOffset < changeModelPointsOffset[2]) {
       if (!opacityZero) {
+
         canvas.style.opacity = 0;
         opacityZero = true;
         // console.log("3:" + opacityZero);

@@ -1,5 +1,9 @@
 var w = window.innerWidth;
 
+var scroll_now;
+var read_progress = 10;
+var isMob = detectmob();
+var platform = isMob == true ? "Mob" : "PC";
 
 function detectmob() { 
 	 if( navigator.userAgent.match(/Android/i)
@@ -72,4 +76,99 @@ function detectSafari(){
   return isSafari;
 }
 
+$(document).ready(function() {
+  var h = $(window).height();
+  var total_height = $("body").height() - h;
+  var title = $("title").text();
+
+  $("a").click(function() {
+    ga("send", {
+      hitType: "event",
+      eventCategory: "超連結點擊",
+      eventAction: "click",
+      eventLabel:
+        "[" + platform + "] [" + title + "] [" + $(this).attr("href") + "]"
+    });
+  });
+
+  $("#scroll-down").click(function() {
+    ga("send", {
+      hitType: "event",
+      eventCategory: "ham bar",
+      eventAction: "click",
+      eventLabel: "[" + platform + "] [" + title + "] [scroll down]"
+    });
+  });
+
+  $(".line-share").click(function(e) {
+    ga("send", {
+      hitType: "event",
+      eventCategory: "Line Share",
+      eventAction: "click",
+      eventLabel: "[" + platform + "] [" + title + "] [line share]"
+    });
+  });
+
+  $("#menu>.fa").click(function() {
+    ga("send", {
+      hitType: "event",
+      eventCategory: "ham open/close",
+      eventAction: "click",
+      eventLabel: "[" + platform + "] [" + title + "] [ham open/close]"
+    });
+  });
+
+  $(".hbutton").click(function() {
+    ga("send", {
+      hitType: "event",
+      eventCategory: "ham bar",
+      eventAction: "click",
+      eventLabel:
+        "[" + platform + "] [" + title + "] [ham click" + $(this).text() + "]"
+    });
+  });
+
+  $(".line-share").click(function(e) {
+    ga("send", {
+      hitType: "event",
+      eventCategory: "Line Share",
+      eventAction: "click",
+      eventLabel: "[" + platform + "] [" + title + "] [line share]"
+    });
+  });
+
+  // $(window).scroll(function() {
+  //   scroll_now = $(window).scrollTop();
+
+  //   var cur_scroll = scroll_now / total_height * 100;
+
+  //   for (; read_progress <= Math.floor(cur_scroll); read_progress += 10) {
+  //     // console.log(read_progress + "%");
+
+  //     ga("send", {
+  //       hitType: "event",
+  //       eventCategory: "read",
+  //       eventAction: "scroll",
+  //       eventLabel:
+  //         "[" +
+  //         platform +
+  //         "] [" +
+  //         title +
+  //         "] [page read " +
+  //         read_progress +
+  //         "%]"
+  //     });
+  //   }
+  // });
+
+  $(".line-share").click(function(e) {
+    if (detectmob()) {
+      //手機
+      window.location.href = "//line.me/R/msg/text/?" + title + "%0D%0A%0D%0A" + $('meta[property="og:description"]').attr("content") + "%0D%0A%0D%0A" + window.location.href;
+    } else {
+      window.open("https://lineit.line.me/share/ui?url=" + window.location.href);
+    }
+  });
+  
+}); 
 

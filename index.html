@@ -35,7 +35,7 @@
 
     <!-- Babylon.js -->
     <script src="https://preview.babylonjs.com/cannon.js"></script>
-    <script src="http://www.babylonjs.com/hand.minified-1.2.js"></script>
+    <script src="https://www.babylonjs.com/hand.minified-1.2.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babylonjs/2.5.0/babylon.js"></script>
      <!-- <script src="https://cdn.babylonjs.com/babylon.js"></script> -->
     
@@ -163,8 +163,8 @@
         </div>
     </div>
 
-    <img class="lazyload bg_before_model" data-src="./assets/images/img_4.jpg" alt="" id="bg_before_model2">
-    <img class="lazyload bg_before_model" data-src="./assets/images/img_5.jpg" alt="" id="bg_before_model3">
+    <img class="lazyload bg_before_model" data-src="./assets/images/lite_gd.jpg" alt="" id="bg_before_model2">
+    <img class="lazyload bg_before_model" data-src="./assets/images/lite_bk.jpg" alt="" id="bg_before_model3">
 
     <div class="g-labels">
         <div class="g-label model1 board4">黃金谷</div>
@@ -212,6 +212,14 @@
             </div>
         </div>
         <section id="model1" class="hidden-md hidden-sm hidden-xs">
+
+            <div class="video-contain lite" style="background:black; width:100%; height:100%; margin: 0 auto; z-index: -1;">
+                <video preload="metadata" class="rwd-2dv liteVideo" id="movie-9" data-src="assets/videos/lite-cover.mp4" playsinline data-target="9" style="width:100%; height:100vh;  object-fit: cover; position: absolute;"></video>
+                <div style="margin-top: -8px;" class="video-control">
+                    <i class="fa fa-spinner fa-pulse video-wait" data-target="9"></i>
+                </div>
+            </div>
+            
             <div class="_title">
                 <h1>攀岩者天堂 3D帶你遊龍洞</h1>
                 <div id="share-block-top" class="share-block container">
@@ -224,7 +232,7 @@
                 </div>
             </div>
         </section>
-        <section id="first_paragraph" class="masked">
+        <section id="first_paragraph" class="masked" style="margin-top:10%;">
             <div class="content container">
                 <div id="share-block-top" class="share-block container hidden-lg">
                     <div class="fb-like-block">
@@ -636,7 +644,8 @@
             </footer>
         </section>
     </div>
-    <script src="./src/index.js"></script>
+    <script src="./src/index.js?v=1"></script>
+    <!--<script src="./src/index.newModel.js"></script>-->
 </body>
 
 </html>

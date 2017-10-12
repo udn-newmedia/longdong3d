@@ -168,6 +168,7 @@ $(document).ready(function () {
         scroll_now = $(window).scrollTop();
 
         var movie1 = scroll_now - $("#movie-1").offset().top + h;
+        var movie1_2 = scroll_now - $("#movie-9").offset().top + h;
         var movie1_1 = scroll_now - $("#movie-8").offset().top + h;
         var movie2 = scroll_now - $("#movie-2").offset().top + h;
         var movie3 = scroll_now - $("#movie-3").offset().top + h;
@@ -185,6 +186,16 @@ $(document).ready(function () {
             if ($("#movie-1").get(0).paused == false) {
                 moviePause(1);
             }
+        }
+
+        if (movie1_2 > h / 3 && movie1_2 < h + 200) {
+          if ($("#movie-9").get(0).paused == true) {
+            moviePlay(9);
+          }
+        } else {
+          if ($("#movie-9").get(0).paused == false) {
+            moviePause(9);
+          }
         }
 
         if (movie1_1 > h / 3 && movie1_1 < h + 200) {

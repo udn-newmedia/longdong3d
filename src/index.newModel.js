@@ -1919,39 +1919,10 @@ function PCimportScene2(){
     // console.log('import2');
 
     // The first parameter can be used to specify which mesh to import. Here we import all meshes
-    BABYLON.SceneLoader.ImportMesh("", "./assets/golden-stone/", "golden-stone.babylon", scene, function (newMeshes) {
-        // newMeshes[0].position = BABYLON.Vector3.Zero();
-        // newMeshes[0].position = new BABYLON.Vector3(0.5,2,-3);
+    BABYLON.SceneLoader.ImportMesh("", "./assets/golden-stone/new/", "golden-stone.babylon", scene, function (newMeshes) {
 
         newMeshes[0].position = new BABYLON.Vector3(0, 0, 7);
         newMeshes[0].rotation = new BABYLON.Vector3(-Math.PI/2*1.1, Math.PI/2, Math.PI);
-
-        var materialStone = new BABYLON.StandardMaterial("texture1", scene);
-        materialStone.diffuseTexture = new BABYLON.Texture("./assets/golden-stone/golden-stone.png", scene);
-        materialStone.diffuseTexture.hasAlpha = true;
-
-        // materialStone.diffuseTexture.uOffset = 0.05;
-        // materialStone.diffuseTexture.vOffset = 0.05; //vertical offset 0f 10%
-
-        // materialStone.diffuseTexture.uAng = Math.PI;
-        // materialStone.diffuseTexture.vAng = Math.PI;
-        materialStone.diffuseTexture.wAng = Math.PI / 2;
-
-        // materialStone.diffuseTexture.uScale = 1.2;        
-        // materialStone.diffuseTexture.vScale = 0.9;
-
-        materialStone.diffuseTexture.wrapU = BABYLON.Texture.CLAMP_ADDRESSMODE;
-        materialStone.diffuseTexture.wrapV = BABYLON.Texture.CLAMP_ADDRESSMODE;
-
-        newMeshes[0].material = materialStone;
-
-        // var boardTexture1 = new BABYLON.DynamicTexture("dynamic texture5", 512, scene, true);
-        // boardTexture1.hasAlpha = true; //必須要clearColor沒被定義
-
-        // var dynamicMaterial1 = new BABYLON.StandardMaterial('mat5', scene);
-        // dynamicMaterial1.diffuseTexture = boardTexture1;
-        // dynamicMaterial1.specularColor = new BABYLON.Color3(0, 0, 0);
-        // dynamicMaterial1.backFaceCulling = true;
 
     //billboards
         // for route1

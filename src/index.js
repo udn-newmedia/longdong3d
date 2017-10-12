@@ -90,6 +90,9 @@ if(window.matchMedia("(max-width: 1200px)").matches){
            var canvas = document
              .getElementById("g-graphic")
              .appendChild(canvasNode);
+           canvas.width = 1920;
+           canvas.height = 989;
+
            var engine = new BABYLON.Engine(canvas, true);
 
 
@@ -379,7 +382,6 @@ function viewChanger(){
             d3.selectAll('.g-label').classed("hidden", true);
 
             if(d3.select("#g-graphic").style("opacity")==='1'){
-                console.log('abc')
                 d3.select("#g-graphic").style("opacity",0);
             }
     }
@@ -666,7 +668,11 @@ function viewChanger(){
                     //定點觸發動畫
                 moveCameraByAdjustingParameters(scenes[activeScene].cameraPara3, function () {
 
-                        displayBillboards([false, true]);
+                        displayBillboards([false, false]);
+
+                        setTimeout(function(){
+                            displayBillboards([false, true]);
+                        },300)
 
                         d3.selectAll(".g-label.model3")
                             .each(function (d, i) {
@@ -1878,7 +1884,7 @@ function PCimportScene2(){
 
     var cameraPara2 = {
         alpha: camAlpha * 5.5,
-        beta: camBeta * 1.1,
+        beta: camBeta * 1.2,
         radius: camRadius * 0.7,
         hasChanged: false
     }
@@ -1894,17 +1900,10 @@ function PCimportScene2(){
 
     var cameraPara4 = {
         alpha: camAlpha * 5.5,
-        beta: camBeta * 1.1,
+        beta: camBeta * 1.2,
         radius: camRadius * 0.7,
         hasChanged: false
     }
-
-    // var cameraPara5 = {
-    //     alpha: camAlpha * 3,
-    //     beta: camBeta * 0.825,
-    //     radius: camRadius * 0.825,
-    //     hasChanged: false
-    // }    
 
     var cameraPara5 = {
         alpha: camAlpha * 3,
@@ -1916,47 +1915,18 @@ function PCimportScene2(){
 
     var light = new BABYLON.HemisphericLight("hemi2", new BABYLON.Vector3(0, 1, 0), scene);
 
-    // console.log('import2');
-
     // The first parameter can be used to specify which mesh to import. Here we import all meshes
-    BABYLON.SceneLoader.ImportMesh("", "./assets/golden-stone/", "golden-stone.babylon", scene, function (newMeshes) {
-        // newMeshes[0].position = BABYLON.Vector3.Zero();
-        // newMeshes[0].position = new BABYLON.Vector3(0.5,2,-3);
+    BABYLON.SceneLoader.ImportMesh("", "./assets/golden-stone/new/", "golden-stone.babylon", scene, function (newMeshes) {
 
-        newMeshes[0].position = new BABYLON.Vector3(0, 0, 7);
+        newMeshes[0].position = new BABYLON.Vector3(5, -6, 7);
         newMeshes[0].rotation = new BABYLON.Vector3(-Math.PI/2*1.1, Math.PI/2, Math.PI);
-
-        var materialStone = new BABYLON.StandardMaterial("texture1", scene);
-        materialStone.diffuseTexture = new BABYLON.Texture("./assets/golden-stone/golden-stone.png", scene);
-        materialStone.diffuseTexture.hasAlpha = true;
-
-        // materialStone.diffuseTexture.uOffset = 0.05;
-        // materialStone.diffuseTexture.vOffset = 0.05; //vertical offset 0f 10%
-
-        // materialStone.diffuseTexture.uAng = Math.PI;
-        // materialStone.diffuseTexture.vAng = Math.PI;
-        materialStone.diffuseTexture.wAng = Math.PI / 2;
-
-        // materialStone.diffuseTexture.uScale = 1.2;        
-        // materialStone.diffuseTexture.vScale = 0.9;
-
-        materialStone.diffuseTexture.wrapU = BABYLON.Texture.CLAMP_ADDRESSMODE;
-        materialStone.diffuseTexture.wrapV = BABYLON.Texture.CLAMP_ADDRESSMODE;
-
-        newMeshes[0].material = materialStone;
-
-        // var boardTexture1 = new BABYLON.DynamicTexture("dynamic texture5", 512, scene, true);
-        // boardTexture1.hasAlpha = true; //必須要clearColor沒被定義
-
-        // var dynamicMaterial1 = new BABYLON.StandardMaterial('mat5', scene);
-        // dynamicMaterial1.diffuseTexture = boardTexture1;
-        // dynamicMaterial1.specularColor = new BABYLON.Color3(0, 0, 0);
-        // dynamicMaterial1.backFaceCulling = true;
 
     //billboards
         // for route1
-        var billboard1 = BABYLON.Mesh.CreatePlane('board5', 1.8, scene);
-        billboard1.position = new BABYLON.Vector3(newMeshes[0].position.x + 4, newMeshes[0].position.y - 2, newMeshes[0].position.z + 1.5);
+        // var billboard1 = BABYLON.Mesh.CreatePlane('board5', 1.8, scene);
+        var billboard1 = BABYLON.Mesh.CreatePlane("board5", 1.3, scene);
+
+        billboard1.position = new BABYLON.Vector3(newMeshes[0].position.x - 2.5, newMeshes[0].position.y + 2.3, newMeshes[0].position.z + 1.5);
 
         var route1 = new BABYLON.StandardMaterial("route1", scene);
         route1.diffuseTexture = new BABYLON.Texture("./assets/golden-stone/golden-stone-route1.png", scene);
@@ -1974,8 +1944,11 @@ function PCimportScene2(){
         // billboard1.animTexture = boardTexture1;
 
         // for route2
-        var billboard2 = BABYLON.Mesh.CreatePlane('board6', 4, scene);
-        billboard2.position = new BABYLON.Vector3(newMeshes[0].position.x + 4.5, newMeshes[0].position.y + 1.8, newMeshes[0].position.z - 0.2);
+        var billboard2 = BABYLON.Mesh.CreatePlane('board6', 3, scene);
+
+        // billboard2.position = new BABYLON.Vector3(newMeshes[0].position.x - 2.5, newMeshes[0].position.y + 7, newMeshes[0].position.z - 0.2);
+        billboard2.position = new BABYLON.Vector3(newMeshes[0].position.x - 2.5, newMeshes[0].position.y + 6.3, newMeshes[0].position.z - 0.2);
+
 
         var route2 = new BABYLON.StandardMaterial("route2", scene);
         route2.diffuseTexture = new BABYLON.Texture("./assets/golden-stone/golden-stone-route2.png", scene);
@@ -1987,8 +1960,12 @@ function PCimportScene2(){
         billboard2.material = route2;
 
         // for route3
-        var billboard3 = BABYLON.Mesh.CreatePlane('board7', 1.6, scene);
-        billboard3.position = new BABYLON.Vector3(newMeshes[0].position.x + 4, newMeshes[0].position.y - 2, newMeshes[0].position.z + 2.6);
+        // var billboard3 = BABYLON.Mesh.CreatePlane('board7', 1.6, scene);
+        var billboard3 = BABYLON.Mesh.CreatePlane("board7", 1.3, scene);
+
+        // billboard3.position = new BABYLON.Vector3(newMeshes[0].position.x + 4, newMeshes[0].position.y - 2, newMeshes[0].position.z + 2.6);
+        billboard3.position = new BABYLON.Vector3(newMeshes[0].position.x - 2.5, newMeshes[0].position.y + 2.5, newMeshes[0].position.z + 2.6);
+
 
         var route3 = new BABYLON.StandardMaterial("route3", scene);
         route3.diffuseTexture = new BABYLON.Texture("./assets/golden-stone/golden-stone-route3.png", scene);
@@ -2000,8 +1977,10 @@ function PCimportScene2(){
         billboard3.material = route3;
 
         // for route4
-        var billboard4 = BABYLON.Mesh.CreatePlane('board8', 5.5, scene);
-        billboard4.position = new BABYLON.Vector3(newMeshes[0].position.x + 4, newMeshes[0].position.y + 1.2, newMeshes[0].position.z + 1);
+        // var billboard4 = BABYLON.Mesh.CreatePlane('board8', 5.5, scene);
+        var billboard4 = BABYLON.Mesh.CreatePlane("board8", 4, scene);
+
+        billboard4.position = new BABYLON.Vector3(newMeshes[0].position.x - 1, newMeshes[0].position.y + 6.4, newMeshes[0].position.z + 1);
 
         var route4 = new BABYLON.StandardMaterial("route4", scene);
         route4.diffuseTexture = new BABYLON.Texture("./assets/golden-stone/golden-stone-route4.png", scene);
@@ -2011,13 +1990,6 @@ function PCimportScene2(){
         billboard4.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
         billboard4.isVisible = false;
         billboard4.material = route4;
-
-    // labels
-
-        // d3.selectAll('.g-label').attr("class", "g-label model2")
-        //     .attr('data-name', function (d, i) {
-        //         return "route #" + 2 + '-' + (i + 1);
-        //     });
 
         scenes[sceneIndex].billboards = [];
         scenes[sceneIndex].billboards.push(billboard1);
@@ -2065,8 +2037,8 @@ function PCimportScene2(){
                         .style('top', board2.y+'px');
                 }else if(i===1){
                     d3.select(this)
-                        .style('left', board2.x*1.05 +'px')
-                        .style('top', board2.y*0.6+'px');                    
+                        .style('left', board2.x*1.03 +'px')
+                        .style('top', board2.y*0.8+'px');                    
                 }
             });
 
@@ -2074,7 +2046,7 @@ function PCimportScene2(){
             .each(function(d,i){
 
                 d3.select(this)
-                    .style('left', board3.x+'px')
+                    .style('left', board3.x*0.8+'px')
                     .style('top', board3.y+'px');
 
             });
@@ -2082,7 +2054,7 @@ function PCimportScene2(){
         d3.selectAll('.g-label.model2.board4')
             .each(function(d,i){
                 d3.select(this)
-                    .style('left', board4.x*0.8+'px')
+                    .style('left', board4.x*0.85+'px')
                     .style('top', board4.y+'px');
             });
 
@@ -2109,77 +2081,61 @@ function PCimportScene3(){
 
     var light0 = new BABYLON.PointLight("Omni", new BABYLON.Vector3.Zero(), scene);
     light0.parent = camera; //light follows camera
-    light0.intensity = 0.2;
+    light0.intensity = 0.9;
     scene.light0 = light0;
+
+    // var cameraPara2 = {
+    //     alpha: camAlpha,
+    //     beta: camBeta * 0.95,
+    //     radius: camRadius * 0.05,
+    //     hasChanged: false
+    // }
 
     var cameraPara2 = {
         alpha: camAlpha,
         beta: camBeta * 0.95,
-        radius: camRadius * 0.05,
+        radius: camRadius * 0.6,
         hasChanged: false
     }
 
+    // var cameraPara3 = {
+    //     alpha: camAlpha * 1.1,
+    //     // beta: camBeta * 1.3,
+    //     beta: camBeta * 1.25,
+    //     // radius: camRadius * 0.3,
+    //     radius: camRadius * 0.00001,
+    //     hasChanged: false
+    // }
+
     var cameraPara3 = {
         alpha: camAlpha * 1.1,
-        // beta: camBeta * 1.3,
         beta: camBeta * 1.25,
-        // radius: camRadius * 0.3,
-        radius: camRadius * 0.00001,
-
+        radius: camRadius * 0.3,
         hasChanged: false
     }
 
     var light = new BABYLON.HemisphericLight("hemi3", new BABYLON.Vector3(0, 1, 0), scene);
 
-
     // The first parameter can be used to specify which mesh to import. Here we import all meshes
-    BABYLON.SceneLoader.ImportMesh("", "./assets/backdoor/", "backdoor.babylon", scene, function (newMeshes) {
+    BABYLON.SceneLoader.ImportMesh("1", "./assets/backdoor/new/", "backdoor.babylon", scene, function (newMeshes) {
 
         newMeshes[0].position = BABYLON.Vector3.Zero();
         
         var wall = scene.getMeshByName("1");
-        var ground = scene.getMeshByName("2");
+        // var ground = scene.getMeshByName("2");
 
-        wall.position = new BABYLON.Vector3(10, 2, 15);
-        ground.position = new BABYLON.Vector3(wall.position.x+0.3, wall.position.y, wall.position.z+3);
-
-        var materialStone = new BABYLON.StandardMaterial("texture2", scene);
-        materialStone.diffuseTexture = new BABYLON.Texture("./assets/backdoor/backdoor.png", scene);
-        materialStone.diffuseTexture.hasAlpha = true;
-    
-        // materialStone.diffuseTexture.vOffset = -0.05; //vertical offset 0f 10%
-        materialStone.diffuseTexture.uOffset = -0.4;
-    
-        materialStone.diffuseTexture.wrapU = BABYLON.Texture.CLAMP_ADDRESSMODE;
-        materialStone.diffuseTexture.wrapV = BABYLON.Texture.CLAMP_ADDRESSMODE;
-    
-        // materialStone.diffuseTexture.uAng = -Math.PI * 0.01;
-        // materialStone.diffuseTexture.vAng = Math.PI * 1.1;
-        materialStone.diffuseTexture.vAng = 3.555555;
-        materialStone.diffuseTexture.wAng = Math.PI / 2;
-    
-        // materialStone.bumpTexture = new BABYLON.Texture("assets/NormalMap.jpg",scene);
-    
-        var materialGround = new BABYLON.StandardMaterial("texture2-2", scene);
-        materialGround.diffuseTexture = new BABYLON.Texture("./assets/backdoor/ground.png", scene);
-        // materialGround.diffuseTexture.hasAlpha = true;
-
-        wall.material = materialStone;
-        ground.material = materialStone;
-
-        //用動畫來找參數
-        // scene.beforeRender = function () {
-        //     materialStone.diffuseTexture.wAng += .001;
-        //     // outputplaneTexture.uOffset += .001;
-    
-        //     // console.log(materialStone.diffuseTexture.wAng);
-        // };
+        // wall.position = new BABYLON.Vector3(10, 2, 15);
+        wall.position = new BABYLON.Vector3(3, -7.5, -3);
+        // ground.position = new BABYLON.Vector3(wall.position.x+0.3, wall.position.y, wall.position.z);
 
     //billboards
-
         // for route1
-        var billboard1 = BABYLON.Mesh.CreatePlane('board9', 7.5, scene);
-        billboard1.position = new BABYLON.Vector3(wall.position.x - 4.4, wall.position.y -3.6 , wall.position.z -4);
+        // var billboard1 = BABYLON.Mesh.CreatePlane('board9', 7.5, scene);
+        var billboard1 = BABYLON.Mesh.CreatePlane("board9", 4.5, scene);
+
+        // billboard1.position = new BABYLON.Vector3(wall.position.x + 0.5, wall.position.y + 6.5, wall.position.z+11);
+        billboard1.position = new BABYLON.Vector3(wall.position.x - 0.5, wall.position.y + 5.5, wall.position.z + 9);
+
 
         var route1 = new BABYLON.StandardMaterial("route5", scene);
         route1.diffuseTexture = new BABYLON.Texture("./assets/backdoor/backdoor-route1.png", scene);
@@ -2191,8 +2147,12 @@ function PCimportScene3(){
         billboard1.material = route1;
 
         // for route2
-        var billboard2 = BABYLON.Mesh.CreatePlane('board10', 6, scene);
-        billboard2.position = new BABYLON.Vector3(wall.position.x - 4.5, wall.position.y + 0.8 , wall.position.z -5);
+        // var billboard2 = BABYLON.Mesh.CreatePlane("board10", 4.5, scene);
+        var billboard2 = BABYLON.Mesh.CreatePlane("board10", 4, scene);
+        
+        // billboard2.position = new BABYLON.Vector3(wall.position.x - 4.5, wall.position.y + 0.8 , wall.position.z -5);
+        billboard2.position = new BABYLON.Vector3(wall.position.x +0.5 , wall.position.y + 8.5, wall.position.z+10);
+
 
         var route2 = new BABYLON.StandardMaterial("route11", scene);
         route2.diffuseTexture = new BABYLON.Texture("./assets/backdoor/backdoor-route2.png", scene);
@@ -2239,7 +2199,7 @@ function PCimportScene3(){
         d3.selectAll('.g-label.model3.board2')
             .each(function(d,i){
                 d3.select(this)
-                    .style('left', board2.x+'px')
+                    .style('left', board2.x * 0.9+'px')
                     .style('top', board2.y+'px');
             });
 

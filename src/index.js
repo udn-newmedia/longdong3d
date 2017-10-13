@@ -13,6 +13,9 @@ var waypoints = [];
 var liteVersion = false;
 var safari = (detectSafari())?true:false;
 
+var read_progress = 10;
+var total_height;
+
 var canvas;
 
 // d3.select("#indicator").style('opacity',0);
@@ -33,10 +36,11 @@ labels.each(function () {
 var animFrame = 1;
 
 //jquery
+
     // $(document).ready(function(){
     // });
 
-if(window.innerWidth/window.innerHeight<16/9){
+if(window.innerWidth/window.innerHeight<16/9 && !mob){
    d3.select('#movie-1').style("object-fit",'contain');
 }
 
@@ -104,6 +108,8 @@ if(window.matchMedia("(max-width: 1200px)").matches){
                 d3.select("#startPage").style("display", "none");
                 d3.select("#article").style("display","block");
 
+                total_height = document.querySelector("#article").getBoundingClientRect().bottom;
+
                 document.getElementById('movie-1').play();
 
                 PCloadScene1();
@@ -117,6 +123,8 @@ if(window.matchMedia("(max-width: 1200px)").matches){
 
                 d3.select("#startPage").style("display", "none");
                 d3.select("#article").style("display","block");
+
+                total_height = document.querySelector("#article").getBoundingClientRect().bottom;
 
                 d3.select(".lite").style("display","block");
                 d3.selectAll(".normal-in-lite").classed("narrow-in-pc", false);
@@ -158,6 +166,30 @@ if(window.matchMedia("(max-width: 1200px)").matches){
          }
 
 function onScroll(){
+
+    // GA
+    var cur_scroll = scroll_now / total_height * 100;
+
+    for (; read_progress <= Math.floor(cur_scroll); read_progress += 10) {
+
+        if(read_progress <=100){
+            // console.log(read_progress + "%");
+                  ga("send", {
+                    hitType: "event",
+                    eventCategory: "read",
+                    eventAction: "scroll",
+                    eventLabel:
+                      "[" +
+                      platform +
+                      "] [" +
+                      document.title +
+                      "] [page read " +
+                      read_progress +
+                      "%]"
+                  });
+        }
+    }
+
 
     setSectionOffset();
 
@@ -1613,7 +1645,7 @@ function PCloadScene1(){
                 stopRotating = (scroll_now <= stopRotatingPointOffset)?false:true;
             }
 
-            // stopRotating = true;
+            stopRotating = true;
 
 
             if (scenes[sceneIndex].reRender && !stopRotating){

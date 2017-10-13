@@ -1,3 +1,5 @@
+var mob = detectmob() ? true : false;
+
 $(document).ready(function () {
     var scroll_now;
     var progress = [];
@@ -85,37 +87,40 @@ $(document).ready(function () {
 
         var tar = $(this).data('target')
 
-        if(tar===1){
+        // if (tar === 1 && mob) {
+        //   if ($(this).get(0).muted == true) {
+        //     $(this).get(0).muted = false;
+        //     $('.volume[data-target="' + tar + '"]')
+        //       .removeClass("fa-volume-off")
+        //       .addClass("fa-volume-up");
+
+        //     $('.volume-text[data-target="' + tar + '"]').text("點按關聲音");
+        //   } else {
+        //     $(this).get(0).muted = true;
+        //     $('.volume[data-target="' + tar + '"]')
+        //       .addClass("fa-volume-off")
+        //       .removeClass("fa-volume-up");
+
+        //     $('.volume-text[data-target="' + tar + '"]').text("點按開聲音");
+        //   }
+        // } else {
+
+          if ($(this).get(0).paused == true) {
+            moviePlay(tar);
             if ($(this).get(0).muted == true) {
-                $(this).get(0).muted = false;
-                $('.volume[data-target="' + tar + '"]')
+              $(this).get(0).muted = false;
+              $('.volume[data-target="' + tar + '"]')
                 .removeClass("fa-volume-off")
                 .addClass("fa-volume-up");
-
-                $('.volume-text[data-target="' + tar + '"]').text("點按關聲音");
-            }else {
-                $(this).get(0).muted = true;
-                $('.volume[data-target="' + tar + '"]')
-                  .addClass("fa-volume-off")
-                  .removeClass("fa-volume-up");
-
-                $('.volume-text[data-target="' + tar + '"]').text("點按開聲音");                
-            }            
-        }else{
-            if ($(this).get(0).paused == true) {
-                moviePlay(tar);
-                if ($(this).get(0).muted == true) {
-                    $(this).get(0).muted = false;
-                    $('.volume[data-target="' + tar + '"]').removeClass('fa-volume-off').addClass('fa-volume-up')
-                    $('.volume-text[data-target="' + tar + '"]').text('點按關聲音');
-                }
+              $('.volume-text[data-target="' + tar + '"]').text("點按關聲音");
             }
-            else {
-                $(this).get(0).pause();
-                moviePause(tar);
-            }
-
-        }
+          } else {
+            $(this)
+              .get(0)
+              .pause();
+            moviePause(tar);
+          }
+        // }
 
         ga("send", {
             "hitType": "event",

@@ -228,3 +228,33 @@ img.fullscreen {
     z-index: 0;
     object-fit: cover;
 }
+
+@media screen and (min-width: 1200px){
+    #cover-video{
+        background:black; 
+        width:100%; 
+        height:100%; 
+        margin: 0 auto; 
+        margin-top: 50px;
+    }
+
+    #cover-video video{
+        width:100%; 
+        height: 100vh; 
+        object-fit: cover;
+    }
+}
+
+@media screen and (max-width: 1199px){
+
+    #cover-video{
+        background:black; 
+        width:100%; 
+        margin: 0 auto;
+    }
+
+    #cover-video video{
+        width:100%; 
+    }
+
+}

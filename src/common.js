@@ -143,22 +143,24 @@ $(document).ready(function() {
   //   var cur_scroll = scroll_now / total_height * 100;
 
   //   for (; read_progress <= Math.floor(cur_scroll); read_progress += 10) {
-  //     // console.log(read_progress + "%");
+  //     console.log(read_progress + "%");
 
-  //     ga("send", {
-  //       hitType: "event",
-  //       eventCategory: "read",
-  //       eventAction: "scroll",
-  //       eventLabel:
-  //         "[" +
-  //         platform +
-  //         "] [" +
-  //         title +
-  //         "] [page read " +
-  //         read_progress +
-  //         "%]"
-  //     });
+  //     // ga("send", {
+  //     //   hitType: "event",
+  //     //   eventCategory: "read",
+  //     //   eventAction: "scroll",
+  //     //   eventLabel:
+  //     //     "[" +
+  //     //     platform +
+  //     //     "] [" +
+  //     //     title +
+  //     //     "] [page read " +
+  //     //     read_progress +
+  //     //     "%]"
+  //     // });
+
   //   }
+
   // });
 
   $(".line-share").click(function(e) {

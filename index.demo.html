@@ -4,37 +4,159 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>龍洞3D</title>
+    <!-- for Facebook -->
+    <meta property="og:title" content="攀岩者天堂 3D帶你遊龍洞" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://udn.com/upf/newmedia/2017_data/rockclimb_longdong3d/index.html" />
+    <meta property="og:image" content="" />
+    <meta property="og:site_name" content="聯合報" />
+    <meta property="article:author" content="https://www.facebook.com/udnplus">
+    <meta property="article:publisher" content="https://www.facebook.com/udnplus">
+    <meta property="og:description" content="" />
+
+    <meta property="fb:admins" content="671188086">
+    <meta property="fb:app_id" content="1010324812347164">
+
+    <!-- for Google -->
+    <meta name="description" content="" />
+    <meta name="copyright" content="聯合報" />
+    <meta name="application-name" content="攀岩者天堂 3D帶你遊龍洞" />
+
+    <title>攀岩者天堂 3D帶你遊龍洞</title>
+
     <link rel="stylesheet" href="https://udn.com/upf/newmedia/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://udn.com/upf/newmedia/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://udn-newmedia.github.io/udn-newmedia-css/css/style.css">
     <link rel="stylesheet" href="lib/css/nivo-slider.css">
-    <link rel="stylesheet" href="lib/css/default.css">
-    <link rel="stylesheet" href="src/style.css" >
+    <!--<link rel="stylesheet" href="lib/css/default.css">-->
+    <link rel="stylesheet" href="src/style.css?v=3" >
 
     <!-- Babylon.js -->
-    <script src="http://www.babylonjs.com/hand.minified-1.2.js"></script>
+    <script src="https://preview.babylonjs.com/cannon.js"></script>
+    <script src="https://www.babylonjs.com/hand.minified-1.2.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babylonjs/2.5.0/babylon.js"></script>
+     <!-- <script src="https://cdn.babylonjs.com/babylon.js"></script> -->
+    
     <!-- newmedia -->
-    <script src="https://udn.com/upf/newmedia/js/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script defer src="https://udn.com/upf/newmedia/js/bootstrap.min.js"></script>
     <script defer src="https://udn.com/upf/newmedia/js/lazysizes.min.js"></script>
-    <!-- <script src="https://udn-newmedia.github.io/udn-newmedia-css/js/index.js"></script> -->
 
-    <script src="src/videoctrl.js"></script>
+    <script src="src/common.js?v=1"></script>
+    <script src="src/videoctrl.js?v=2"></script>
     <script async src="lib/js/RAF.polyfill.js"></script>
 
     <!-- nivoSlider -->
     <script defer src="lib/js/jquery.nivo.slider.js"></script>
-    <script defer src="src/nivo-slider.js"></script>    
 
     <!-- d3v4 -->
     <script src="https://d3js.org/d3.v4.min.js"></script>
 
+
+    <!-- Facebook Pixel Code -->
+    <script defer>
+        !function (f, b, e, v, n, t, s) {
+            if (f.fbq) return; n = f.fbq = function () {
+                n.callMethod ?
+                    n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+            }; if (!f._fbq) f._fbq = n;
+            n.push = n; n.loaded = !0; n.version = '2.0'; n.queue = []; t = b.createElement(e); t.async = !0;
+            t.src = v; s = b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s)
+        }(window,
+            document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '1624500254526892'); // Insert your pixel ID here.
+        fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1624500254526892&ev=PageView&noscript=1"
+        /></noscript>
+    <!-- DO NOT MODIFY -->
+    <!-- End Facebook Pixel Code -->
+
+
+    <!-- ours google analytic -->
+    <script defer>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+        ga('create', 'UA-83853620-2', 'auto');
+        ga('create', 'UA-19660006-1', 'auto', { 'name': 'udn' });
+        ga('create', 'UA-44955675-22', 'auto', { 'name': 'theme' });
+        ga('send', 'pageview');
+        ga('udn.send', 'pageview');
+        ga('theme.send', 'pageview');
+        ga('udn.send', 'event', '圖表看時事', 'view', '圖解新聞');
+    </script>
+
+    <!-- udn comScore Tag -->
+    <script defer>
+        var _comscore = _comscore || [];
+        _comscore.push({ c1: "2", c2: "7390954" });
+        (function () {
+            var s = document.createElement("script"), el = document.getElementsByTagName("script")[0]; s.async = true;
+            s.src = (document.location.protocol == "https:" ? "https://sb" : "http://b") + ".scorecardresearch.com/beacon.js";
+            el.parentNode.insertBefore(s, el);
+        })();
+    </script>
+    <noscript>
+        <img src="http://b.scorecardresearch.com/p?c1=2&c2=7390954&cv=2.0&cj=1" />
+    </noscript>
+
+    <!-- udn Alexa Certify Javascript -->
+    <script defer type="text/javascript">
+        _atrk_opts = { atrk_acct: "aw0Di1a4ZP00aY", domain: "udn.com", dynamic: true };
+        (function () { var as = document.createElement('script'); as.type = 'text/javascript'; as.async = true; as.src = "https://d31qbv1cthcecs.cloudfront.net/atrk.js"; var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(as, s); })();
+    </script>
+    <noscript><img src="https://d5nxst8fruw4z.cloudfront.net/atrk.gif?account=aw0Di1a4ZP00aY" style="display:none" height="1" width="1"
+        /></noscript>
+
+    <!-- Begin etu Tag -->
+    <script defer id="etu-recommender" type="text/javascript">
+        // sLogin=GetCkValue("udnmember");
+        var erUrlPrefix = 'https://rec.udn.com/';
+        var _qevents = _qevents || [];
+        _qevents.push({
+            group: 'udn',
+            cid: 'udn_soft',
+            act: 'view',
+            cat: ['news', 'cms', '', '', ''],
+            uid: '',
+            bid: '',
+            pid: '',
+            page: 'ARTICLE',
+            Rank_cat: '10',
+            Rank_pid: '10',
+            title: document.title,
+            tag: [],
+            referral: document.referrer
+        });
+        (function () {
+            var er = document.createElement('script');
+            er.type = 'text/javascript';
+            er.async = true;
+            er.src = erUrlPrefix + 'er.js?' + (new Date().getTime());
+            var currentJs = document.getElementById('etu-recommender');
+            currentJs.parentNode.insertBefore(er, currentJs);
+        })();
+    </script>
+
 </head>
 
 <body>
+    <div id="fb-root"></div>
+    <script>
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = "//connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v2.10&appId=1604349459593233";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script>
     <div id="indicator">
         <div id="indicator-bar"></div>
     </div>
@@ -44,84 +166,175 @@
         </div>
     </div>
 
-    <div id="g-graphic"></div>
+    <div id="g-graphic" class="hidden-mobile">
+        <div id="waiting" style="display: none; position: absolute; left: 50%; top: 50%; transform: translateX(-50%) translateY(-50%); text-align: center;">
+            <i class="fa fa-spinner fa-pulse model-wait" style="color: #FFB93E; font-size: 60px;"></i>
+            <h2 style="margin: 0 auto; color: white;">載入中...</h3>
+        </div>
+    </div>
 
-    <!-- <div class="g-label model2-1" style="position:fixed; left:913px; top: 339px; z-index:2; color:yellow; opacity:0;">翻越2組小天花板地形</div>
-    <div class="g-label model2-2" style="position:fixed; left:1107px; top: 367px; z-index:2; color:yellow; opacity:0;">大角度攀爬<br>手跟腳都延伸到極致</div>
-    <div class="g-label model2-3" style="position:fixed; left:1070px; top: 175px; z-index:2; color:yellow; opacity:0;">無確保的2公尺<br>極容易大幅度墜落</div>
-    <div class="g-label model2-4" style="position:fixed; left:981px; top: 398px; z-index:2; color:yellow; opacity:0;">最難的是翻過天花板地形<br>我練了3個月單槓才成功</div>
-    <div class="g-label model2-5" style="position:fixed; left:1134px; top: 271px; z-index:2; color:yellow; opacity:0;">這是條傳攀路線<br>每次都能設計不同爬法</div> -->
+    <img class="lazyload bg_before_model" data-src="./assets/images/lite_gd.jpg" alt="" id="bg_before_model2">
+    <img class="lazyload bg_before_model" data-src="./assets/images/lite_bk.jpg" alt="" id="bg_before_model3">
 
+    <!--<div class="g-labels">
+        <div class="g-label model1 board4">黃金谷</div>
+        <div class="g-label model1 board3">後門</div>
+
+        <div class="g-label model2 board1">翻越2組小天花板地形</div>
+        <div class="g-label model2 board2">大角度攀爬<br>手跟腳都延伸到極致</div>
+        <div class="g-label model2 board2">無確保的2公尺<br>極容易大幅度墜落</div>
+        <div class="g-label model2 board3">最難的是翻過天花板地形<br>我練了3個月單槓才成功</div>
+        <div class="g-label model2 board4">這是條傳攀路線<br>每次都能設計不同爬法</div>
+
+        <div class="g-label model3 board1">最易墜落的凹槽段</div>
+        <div class="g-label model3 board2">大平面攀爬<br>需要力量與技巧</div>
+    </div>-->
 
     <!--<button id="btn" style="z-index:10000000; position:fixed; left:0; right:0;">camera</button>-->
-
-    <div class="article">
-        <section id="model1">
-            <h1>龍洞攀岩3D</h1>
-            <div id="share-block-top" class="share-block container">
-                <div class="fb-like-block">
-                    <div class="fb-like" data-href="./index.html" data-layout="button_count" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
+    <div id="startPage">
+        <div class="container">
+            <p>請選擇適合您的3D閱讀版本。</p>
+            <div class="options">
+                <div id="hd" class="option">
+                    <img src="assets/images/hd_view.png" alt="">
+                    <button>完整體驗</button>
                 </div>
-                <div class="line-block">
-                    <img class="line-share" style="position:relative;" src="//media.line.me/img/button/zh-hant/84x20.png" width="86" height="22" alt="LINE分享給朋友">
+                <div id="lite" class="option">
+                    <img src="assets/images/lite_view.png" alt="">
+                    <button>輕量閱讀</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="article">
+        <div class="video-contain" id="cover-video">
+            <video preload="metadata" class="rwd-2dv" id="movie-1" src="assets/videos/cover-video.mp4" playsinline data-target="1"></video>
+            <div style="margin-top: -8px;" class="video-control">
+                <!--<div class="progress hidden-lg">
+                    <div id="progress-bar-1" class="progress-bar progress-bar-striped"></div>
+                </div>-->
+                <div class="img-say-out volume-text hidden-md hidden-lg" data-target="1">點按開聲音</div>
+                <i class="fa fa-spinner fa-pulse video-wait" data-target="1"></i>
+                <!--<i class="fa fa-play video-play hidden-md hidden-lg" data-target="1"></i>-->
+                <i class="fa fa-volume-off volume hidden-md hidden-lg" data-target="1"></i>
+                <!--<i class="fa fa-repeat replay hidden-md hidden-lg" data-target="1"></i>-->
+            </div>
+        </div>
+        <section id="model1" class="hidden-md hidden-sm hidden-xs">
+
+            <div class="video-contain lite" style="background:black; width:100%; height:100%; margin: 0 auto; z-index: -1;">
+                <video preload="metadata" class="rwd-2dv liteVideo" id="movie-9" data-src="assets/videos/lite-cover.mp4" playsinline data-target="9" style="width:100%; height:100vh;  object-fit: cover; position: absolute;"></video>
+                <div style="margin-top: -8px;" class="video-control">
+                    <i class="fa fa-spinner fa-pulse video-wait" data-target="9"></i>
+                </div>
+            </div>
+            
+            <div class="_title">
+                <h1>攀岩者天堂 3D帶你遊龍洞</h1>
+                <div id="share-block-top" class="share-block container">
+                    <div class="fb-like-block">
+                        <div class="fb-like" data-href="./index.html" data-layout="button_count" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
+                    </div>
+                    <div class="line-block">
+                        <img class="line-share" style="position:relative;" src="//media.line.me/img/button/zh-hant/84x20.png" width="86" height="22" alt="LINE分享給朋友">
+                    </div>
                 </div>
             </div>
         </section>
-        <section>
+        <section id="first_paragraph" class="masked" style="margin-top:10%;">
             <div class="content container">
+                <div id="share-block-top" class="share-block container hidden-lg">
+                    <div class="fb-like-block">
+                        <div class="fb-like" data-href="./index.html" data-layout="button_count" data-action="like" data-size="small" data-show-faces="true"
+                            data-share="true"></div>
+                    </div>
+                    <div class="line-block">
+                        <img class="line-share" style="position:relative;" src="//media.line.me/img/button/zh-hant/84x20.png" width="86" height="22"
+                            alt="LINE分享給朋友">
+                    </div>
+                </div>
+                <h2 class="hidden-lg">攀岩者天堂 3D帶你遊龍洞</h2>
                 <p>2002年2月微雨的冷天，才剛到台灣兩天的Matt Robertson ，不會半句中文，卻迫不及待的從新竹獨自北上基隆，客運、火車、計程車轉換，花了7小時才抵達龍洞。</p>                
-                <p><br/></p>
-                <p>他一摸到岩壁就覺得這地方跟亞洲多數光滑的石灰岩場不一樣。《台灣龍洞攀岩》作者Matt Robertson 是美國的攀岩好手，他回憶第一次到龍洞攀爬的情形，「當時接近傍晚，天色昏暗，又下雨、颳風，沒有人知道我在那裏，爬上去很冒險，但這趟試爬，我覺得龍洞是個我一直在找尋的地方。」</p>
+                <div class="quote-contain">
+                    <div class="quote-text">他一摸到岩壁，就覺得這地方跟亞洲多數光滑的石灰岩場很不一樣。</div>
+                    <!-- <div class="quote-ref">─ 更生少年關懷協會主任 陳彥君</div> -->
+                </div>
+            </div>
 
-            </div>
-            <div class="img-contain container">
-                <picture>
-                    <source srcset="./assets/images/img_2_m.jpg" media="(max-width:1199px)">
-                    <img class="lazyload" data-src="./assets/images/img_2.jpg">
-                </picture>
-            </div>
-            <div class="content container">
-                <p>龍洞的岩壁品質良好且磨擦力十足，Matt放下包包試爬，他在龍洞第一條試爬路線，直到今天依舊是造訪龍洞地質必爬的熱身選項。</p>
-                <p><br/></p>
-                <p>攀岩帶給Matt探索異地的滿足感，每次為了造訪一個新的攀岩場，在陌生的國家旅行，克服一切麻煩抵達人跡罕至的地點，是非常享受的過程。那是一種面對未知的勇氣，你不知道前方情況，也無法預測是否有驚喜在眼前，「找到一些當地人也不知道的秘密基地，就像是尋寶，有時有趣，有時覺得痛苦。」</p>
-            </div>
             <div class="img-contain container">
                 <picture>
                     <source srcset="./assets/images/img_1_m.jpg" media="(max-width:1199px)">
                     <img class="lazyload" data-src="./assets/images/img_1.jpg">
                 </picture>
+                <div class="img-say">視野遼闊又面海，是Matt喜歡龍洞的原因之一。資料來源：Matt Robertson</div>
+            </div>
+
+            <div class="content container">
+                <p>龍洞的岩壁品質良好且磨擦力十足，Matt放下包包試爬，他在龍洞第一條試爬路線，直到今天依舊是造訪龍洞地質必爬的熱身選項。</p>
+                <p><br/></p>
+                <p>攀岩帶給Matt探索異地的滿足感，每次為了造訪一個新的攀岩場，在陌生的國家旅行，克服一切麻煩抵達人跡罕至的地點，是非常享受的過程。那是一種面對未知的勇氣，你不知道前方情況，也無法預測是否有驚喜在眼前，「找到一些當地人也不知道的秘密基地，就像是尋寶，有時有趣，有時覺得痛苦。」</p>
+            </div>
+
+            <div class="img-contain container">
+                <picture>
+                    <source srcset="./assets/images/img_0_m.jpg" media="(max-width:1199px)">
+                    <img class="lazyload" data-src="./assets/images/img_0.jpg">
+                </picture>
+                <div class="img-say">Matt冬天也常到龍洞攀岩。資料來源：Matt Robertson</div>
             </div>
             <div class="content container">
-                <p>當他爬到視野遼闊的高處，「我看到有確保點在岩壁上，相信這是台灣人的攀岩場。」第一次相遇後，他每週回到龍洞攀岩，隨著時間累積，一步一腳印的探索這個岩場。Matt發現這個岩場極為特別，但是這裡的人並不理解它的真實面貌。</p>
+                <p>當他爬到視野遼闊的高處，「我看到有確保點在岩壁上，相信這是台灣人的攀岩場。」第一次相遇後，他每週回到龍洞攀岩，隨著時間累積，一步一腳印的探索這個岩場，Matt發現這個岩場比想像中的更特別，但是這裡的人並不理解它的真實面貌。</p>
                 <p><br/></p>
-                <p>我一直在找好的傳攀的場地，龍洞就是一個很棒的地方。當我聽到台灣人說龍洞是個只適合運動攀登的場地時，激起了我想將龍洞真實面貌介紹給大家的動力。」2012年他與好友陳震宇共同編寫《台灣龍洞攀岩》一書，更建立龍洞攀岩網站，網站信箱經常收到外國攀岩者的詢問，越來越多外國攀岩者特地為了龍洞到台灣。</p>
+                <p>我一直在找好的傳統攀登場地，龍洞就是一個很棒的地方。當我聽到台灣人說龍洞是個只適合運動攀登的場地時，激起了我想將龍洞真實面貌介紹給大家的動力。」2012年他與好友陳震宇共同編寫<a href="http://climbstone.com/chinese/index.html" target="_blank">《台灣龍洞攀岩》</a>一書，更建立龍洞攀岩網站，網站信箱經常收到外國攀岩者的詢問，越來越多外國攀岩者特地為了龍洞到台灣。附註：傳統攀登為攀岩者自行在岩縫中放置確保(安全)點，可自主決定路線。而運動攀登為遵循固定的確保點攀登。</p>
             </div>
-            <div class="video-contain">
-                <video preload="metadata" class="rwd-2dv" id="movie-1" src="https://udn.com/upf/newmedia/2017_data/hk_handover_20/video/video1.mp4" playsinline data-target="1"></video>
+        </section>
+        <section>
+            <div class="content container">
+                <h2>少見的臨海混合岩場 外國人朝聖</h2>
+                <div class="narrow-in-pc normal-in-lite">
+                    <p>台灣北海岸的龍洞，穿越層層疊疊的石陣，除了外圍地區有遊客戲水，越往龍洞心臟地帶前進，被清澈海水包圍的岩壁宛如世外仙境，灌木雜草從岩縫鑽出，除了野生動物外，還有攀岩者的足跡。</p>
+                    <p><br/></p>
+                    <p>40年來的探索，連當地居民也不清楚的峭壁地形，攀岩者們瞭若指掌，龍洞是台灣攀岩大本營，舉目所及的每一片岩壁，都是攀岩者躍躍欲試的目標，短短2公里，已開發出600多條攀爬路線。</p>
+                </div>
+                <div class="video-contain lite">
+                    <video preload="metadata" class="rwd-2dv liteVideo" id="movie-8" data-src="assets/videos/mobile/mobile_video2.mp4" playsinline data-target="2" muted></video>
+                    <div style="margin-top: -8px;" class="video-control">
+                        <div class="progress hidden-md hidden-lg">
+                            <div id="progress-bar-8" class="progress-bar progress-bar-striped"></div>
+                        </div>
+                        <div class="img-say-out volume-text hidden-md hidden-lg" data-target="2">點按開聲音</div>
+                        <i class="fa fa-spinner fa-pulse video-wait" data-target="2"></i>
+                        <!--<i class="fa fa-play video-play hidden-md hidden-lg" data-target="2"></i>-->
+                        <i class="fa fa-volume-off volume hidden-md hidden-lg" data-target="2"></i>
+                        <i class="fa fa-repeat replay hidden-md hidden-lg" data-target="2"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="video-contain hidden-lg">
+                <video preload="metadata" class="rwd-2dv mobVideo" id="movie-2" data-src="assets/videos/mobile/mobile_video2.mp4" playsinline data-target="2" autoplay muted></video>
                 <div style="margin-top: -8px;" class="video-control">
-                <div class="progress hidden-md hidden-lg">
-                    <div id="progress-bar-1" class="progress-bar progress-bar-striped"></div>
-                </div>
-                <div class="img-say-out volume-text hidden-md hidden-lg" data-target="1">點按開聲音</div>
-                    <i class="fa fa-spinner fa-pulse video-wait" data-target="1"></i>
-                    <i class="fa fa-play video-play hidden-md hidden-lg" data-target="1"></i>
-                    <i class="fa fa-volume-off volume hidden-md hidden-lg" data-target="1"></i>
-                    <i class="fa fa-repeat replay hidden-md hidden-lg" data-target="1"></i>
+                    <div class="progress hidden-md hidden-lg">
+                        <div id="progress-bar-2" class="progress-bar progress-bar-striped"></div>
+                    </div>
+                    <!--<div class="img-say-out volume-text hidden-md hidden-lg" data-target="2">點按開聲音</div>-->
+                    <i class="fa fa-spinner fa-pulse video-wait" data-target="2"></i>
+                    <!--<i class="fa fa-play video-play hidden-md hidden-lg" data-target="2"></i>-->
+                    <!--<i class="fa fa-volume-off volume hidden-md hidden-lg" data-target="2"></i>-->
+                    <i class="fa fa-repeat replay hidden-md hidden-lg" data-target="2"></i>
                 </div>
             </div>
-        </section>
-        <section>
             <div class="content container">
-                <h2>少見的臨海混合岩場，外國人朝聖</h2>
-                <p>台灣北海岸的龍洞，穿越層層疊疊的石陣，除了外圍地區有遊客戲水，越往龍洞心臟地帶前進，被清澈海水包圍的岩壁宛如世外仙境，灌木雜草從岩縫鑽出，除了野生動物外，還有攀岩者的足跡。</p>
-                <p><br/></p>
-                <p>40年來的探索，連當地居民也不清楚的峭壁地形，攀岩者們瞭若指掌，龍洞是台灣攀岩大本營，舉目所及的每一片岩壁，都是攀岩者躍躍欲試的目標，短短2公里，已開發出600多條攀爬路線。</p>
-                <p><br/></p>
-                <p>「龍洞空間多又大、地形多變，同時擁有傳統攀登與運動攀登的路線，還在海邊，台灣人真的很幸運。」15年攀岩經驗的澳洲人Stephen Parr說。龍洞3500多年前沉積，形成四陵砂岩，穩定的岩質，遠眺太平洋的濱海攀岩環境，近年大受國內外攀岩者喜愛，逐步躍升為世界知名的濱海岩場。</p>                
+                <div class="narrow-in-pc normal-in-lite">
+                    <p><br></p>
+                    <p>「龍洞空間多又大、地形多變，同時擁有傳統攀登與運動攀登的路線，還在海邊，台灣人真的很幸運。」15年攀岩經驗的澳洲人Stephen Parr說。龍洞3500多年前沉積，形成四陵砂岩，穩定的岩質，遠眺太平洋的濱海攀岩環境，近年大受國內外攀岩者喜愛，逐步躍升為世界知名的濱海岩場。</p>
+                    <p><br></p>
+                    <p>美景之外，攀岩者們的熱情也成了一道風景，「在龍洞，無論你們熟不熟，其他攀岩者都願意主動告訴你怎麼做，這在國外不可能發生。」回想在國外攀岩的經驗，有15年攀岩經驗的吳美齡點出「熱情」是台灣攀岩社群的特色，一起攀岩的夥伴是啦啦隊，「你在岩壁上快撐不下去時，聽到地面上的人對你大喊：可以的！加油！因為他們的鼓勵，許多難關這樣就撐過去了。」吳美齡笑著說自己的攀岩技術是大家鼓勵出來的成果。</p>
+                </div>
             </div>
         </section>
-        <section class="blankHalfPage"></section>
-        <section>
+        <section class="blankHalfPage hidden-xs hidden-sm hidden-md hidden-lite"></section>
+        <section id="nivoPics">
             <div class="img-contain hidden-xs hidden-sm">
                 <div class="slider-wrapper theme-default">
                     <div id="slider" class="nivoSlider">
@@ -153,21 +366,44 @@
         </section>
         <section>
             <div class="content container">
-                <p>美景之外，攀岩者們的熱情也成了一道風景，「在龍洞，無論你們熟不熟，其他攀岩者都願意主動告訴你怎麼做，這在國外不可能發生。」回想在國外攀岩的經驗，有15年攀岩經驗的吳美齡點出「熱情」是台灣攀岩社群的特色，一起攀岩的夥伴是啦啦隊，「你在岩壁上快撐不下去時，聽到地面上的人對你大喊：可以的！加油！因為他們的鼓勵，許多難關這樣就撐過去了。」吳美齡笑著說自己的攀岩技術是大家鼓勵出來的成果。</p>
-                <p><br/></p>
-                <h2>攀岩的人生課</h2>
-                <p><br></p>
-                <p>從底部攀到頂部，沒有標準答案，「同一條路線，每個人抓的手點腳點不太一樣，攀岩平衡感與手腳協調非常重要，但人人的風格都不同。」正職是美術老師的吳美齡，喜歡觀察攀岩者在岩壁上的動作，有人輕盈的彷彿是「岩壁上的舞者」，手與腳的搭配協調性絕佳，有些人像是在牆上打太極，有些人像在跟牆壁打架，有些人是問題解決者，安靜的思考眼前的難題。</p>
-                <p><br/></p>
-                <p>攀岩者眼前的那面牆，就是一道道待解的謎，每個人解謎需要的時間不同，答案也不盡相同。有些路線簡單一下就破關，有些路線複雜難解，往往耗上數月至數年的時間，才挑戰成功。</p>
+                <div class="narrow-in-pc">
+                    <h2>攀岩的人生課</h2>
+                    <p><br></p>
+                    <p>從底部攀到頂部，沒有標準答案，「同一條路線，每個人抓的手點腳點不太一樣，攀岩平衡感與手腳協調非常重要，但人人的風格都不同。」正職是美術老師的吳美齡，喜歡觀察攀岩者在岩壁上的動作，有人輕盈的彷彿是「岩壁上的舞者」，手與腳的搭配協調性絕佳，有些人像是在牆上打太極，有些人像在跟牆壁打架，有些人是問題解決者，安靜的思考眼前的難題。</p>
+                    <p><br/></p>
+                    <p>攀岩者眼前的那面牆，就是一道道待解的謎，每個人解謎需要的時間不同，答案也不盡相同。有些路線簡單一下就破關，有些路線複雜難解，往往耗上數月至數年的時間，才挑戰成功。</p>
+                </div>
             </div>
         </section>
-        <section class="blankPage"></section>
+        <section class="blankPage hidden-xs hidden-sm hidden-md hidden-lite"></section>
         <section id="model2">
             <div class="content container">
                 <div class="narrow-in-pc">
-                    <h2>陳震宇<br/>黃金谷 黃金勇氣</h2>
-                    <p>從這條路線，我花了3年才挑戰成功，成功之前的每一次攀爬都在墜落。</p>
+                    <div class="profile" id="model2-1">
+                        <img data-src="assets/images/chen.png" alt="" class="lazyload">
+                        <div class="subtitle">
+                            <h2>陳震宇<br/>放輕鬆是成功關鍵</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="video-contain hidden-lg">
+                <video preload="metadata" class="rwd-2dv mobVideo" id="movie-3" data-src="assets/videos/mobile/mobile_video3.mp4" playsinline
+                    data-target="3" autoplay></video>
+                <div style="margin-top: -8px;" class="video-control">
+                    <div class="progress hidden-md hidden-lg">
+                        <div id="progress-bar-3" class="progress-bar progress-bar-striped"></div>
+                    </div>
+                    <!--<div class="img-say-out volume-text hidden-md hidden-lg" data-target="3">點按開聲音</div>-->
+                    <i class="fa fa-spinner fa-pulse video-wait" data-target="3"></i>
+                    <!--<i class="fa fa-play video-play hidden-md hidden-lg" data-target="3"></i>-->
+                    <!--<i class="fa fa-volume-off volume hidden-md hidden-lg" data-target="3"></i>-->
+                    <i class="fa fa-repeat replay hidden-md hidden-lg" data-target="3"></i>
+                </div>
+            </div>
+            <div class="content container">
+                <div class="narrow-in-pc">
+                    <p>「黃金勇氣」這條路線，我花了3年才挑戰成功，成功之前的每一次攀爬都在墜落。</p>
                     <p><br/></p>
                     <p>向外傾斜的岩壁，且最後2公尺沒有任何可以支撐的確保點，我要在力氣耗盡前，將手腳伸到極限抓住下一個攀附點。</p>
                     <p><br/></p>
@@ -175,45 +411,70 @@
                 </div>
             </div>
         </section>
-        <section id="model2-1">
+        <section  id="model2-2" class="blankPage hidden-xs hidden-sm hidden-md"></section>
+        <section>
             <div class="content container">
                 <div class="narrow-in-pc">
                     <div class="video-contain">
-                            <video preload="metadata" class="rwd-2dv" id="movie-2" src="assets/videos/golden-stone.mp4"
-                            playsinline data-target="2"></video>
+                            <video preload="metadata" class="rwd-2dv" id="movie-4" src="assets/videos/golden-stone.mp4"
+                            playsinline data-target="4"></video>
                             <div style="margin-top: -8px;" class="video-control">
                                 <div class="progress hidden-md hidden-lg">
-                                    <div id="progress-bar-1" class="progress-bar progress-bar-striped"></div>
+                                    <div id="progress-bar-4" class="progress-bar progress-bar-striped"></div>
                                 </div>
-                                <div class="img-say-out volume-text hidden-md hidden-lg" data-target="2">點按開聲音</div>
-                                <i class="fa fa-spinner fa-pulse video-wait" data-target="2"></i>
-                                <i class="fa fa-play video-play hidden-md hidden-lg" data-target="2"></i>
-                                <i class="fa fa-volume-off volume hidden-md hidden-lg" data-target="2"></i>
-                                <i class="fa fa-repeat replay hidden-md hidden-lg" data-target="2"></i>
+                                <div class="img-say-out volume-text hidden-md hidden-lg" data-target="4">點按開聲音</div>
+                                <i class="fa fa-spinner fa-pulse video-wait" data-target="4"></i>
+                                <!--<i class="fa fa-play video-play hidden-md hidden-lg" data-target="4"></i>-->
+                                <i class="fa fa-volume-off volume hidden-md hidden-lg" data-target="4"></i>
+                                <i class="fa fa-repeat replay hidden-md hidden-lg" data-target="4"></i>
                             </div>
                     </div>
                 </div>
             </div>
         </section>
-        <section id="model2-2">
+        <section>
             <div class="content container">
                 <div class="narrow-in-pc">
-                    <p>上攀一次，墜落一次，到最後我已經習慣了。幾十次的失敗，那些位置要做什麼動作、怎麼有效地串聯動作，到最後近乎本能反射。成功的那一次，我是前沒有預設要成功，心中只想著下一個動作，一回神人就到頂端。</p>
+                    <p>上攀一次，墜落一次，到最後我已經習慣了。幾十次的失敗，那些位置要做什麼動作、怎麼有效地串聯動作，到最後近乎本能反射。成功的那一次，我事前沒有預設一定要成功，心中只想著下一個動作，一回神人就到頂端。</p>
                     <p><br/></p>
                     <p>後來我理解了：想要爬上去，最重要的是放鬆。</p>                        
-                </div>
-                <div class="img-contain" style="margin-top: 50vh">
-                    <picture>
-                        <source srcset="./assets/images/img_3_m.jpg" media="(max-width:1199px)">
-                        <img class="lazyload" data-src="./assets/images/img_3.jpg">
-                    </picture>
+                    <div class="img-contain">
+                        <picture>
+                            <source srcset="./assets/images/img_3_m.jpg" media="(max-width:1199px)">
+                            <!--<img class="lazyload" data-src="./assets/images/img_3.jpg">-->
+                            <img class="lazyload" data-src="./assets/images/img_3_m.jpg">
+                        </picture>
+                    </div>
                 </div>
             </div>
         </section>
-        <section id="model2-3">
+        <section id="model2-3" class="blankPage hidden-xs hidden-sm hidden-md"></section>
+        <section>
             <div class="content container">
                 <div class="narrow-in-pc">
-                    <h2>吳美齡<br/>黃金谷 黃金浴</h2>
+                    <div class="profile" id="model2-4">
+                        <img data-src="assets/images/wu.png" alt="" class="lazyload">
+                        <div class="subtitle">
+                            <h2>吳美齡<br/>攀岩，要百分之百對自己負責</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="video-contain hidden-lg">
+                <video preload="metadata" class="rwd-2dv mobVideo" id="movie-6" data-src="assets/videos/mobile/mobile_video4.mp4" playsinline data-target="6" autoplay></video>
+                <div style="margin-top: -8px;" class="video-control">
+                    <div class="progress hidden-md hidden-lg">
+                        <div id="progress-bar-6" class="progress-bar progress-bar-striped"></div>
+                    </div>
+                    <!--<div class="img-say-out volume-text hidden-md hidden-lg" data-target="6">點按開聲音</div>-->
+                    <i class="fa fa-spinner fa-pulse video-wait" data-target="6"></i>
+                    <!--<i class="fa fa-play video-play hidden-md hidden-lg" data-target="6"></i>-->
+                    <!--<i class="fa fa-volume-off volume hidden-md hidden-lg" data-target="6"></i>-->
+                    <i class="fa fa-repeat replay hidden-md hidden-lg" data-target="6"></i>
+                </div>
+            </div>
+            <div class="content container">
+                <div class="narrow-in-pc">
                     <p>攀岩就是要不斷的在上爬的過程中，找到平衡點。黃金浴是我第一條先鋒完攀的路線，剛起步就要克服一道全身暴露感極強的大天花板。</p>
                     <p><br/></p>
                     <p>想要橫越一點五米寬的天花板，必須靠全身肌肉的幫忙，動到的不只是手臂與雙腳，也要靠腹部的力量讓懸空的腳擺盪，勾到岩壁上，再單槓式上拉，才能成功上到另外一片岩面。</p>
@@ -222,131 +483,181 @@
                 </div>
             </div>
         </section>
-        <section id="model2-4">
+        <section>
             <div class="content container">
-                <p>跟現在流行的運動攀登很不同，傳統攀登最吸引我的地方是，從路線設計、上攀、放入岩契設置確保，每一步依賴的是自己的決斷，我的每一步都要負起全責，沒有任何外在因素可以責怪或卸責。</p>
-                <p><br/></p>
-                <p>攀岩教會我的是，要做對自己百分之百負責的決定。</p>
+                <div class="narrow-in-pc">
+                    <p>跟現在流行的運動攀登很不同，傳統攀登最吸引我的地方是，從路線設計、上攀、放入岩契設置確保，每一步依賴的是自己的決斷，我的每一步都要負起全責，沒有任何外在因素可以責怪或卸責。</p>
+                    <p><br/></p>
+                    <p>攀岩教會我的是，要做對自己百分之百負責的決定。</p>
+                </div>
             </div>
-            <div class="video-contain" style="margin-top: 50vh">
-                <video preload="metadata" class="rwd-2dv" id="movie-3" src="assets/videos/wu.mp4" playsinline data-target="3"></video>
+            <div class="video-contain">
+                <video preload="metadata" class="rwd-2dv" id="movie-5" src="assets/videos/wu.mp4" playsinline data-target="5"></video>
                 <div style="margin-top: -8px;" class="video-control">
                 <div class="progress hidden-md hidden-lg">
-                    <div id="progress-bar-1" class="progress-bar progress-bar-striped"></div>
+                    <div id="progress-bar-5" class="progress-bar progress-bar-striped"></div>
                 </div>
-                <div class="img-say-out volume-text hidden-md hidden-lg" data-target="3">點按開聲音</div>
-                    <i class="fa fa-spinner fa-pulse video-wait" data-target="3"></i>
-                    <i class="fa fa-play video-play hidden-md hidden-lg" data-target="3"></i>
-                    <i class="fa fa-volume-off volume hidden-md hidden-lg" data-target="3"></i>
-                    <i class="fa fa-repeat replay hidden-md hidden-lg" data-target="3"></i>
+                <div class="img-say-out volume-text hidden-md hidden-lg" data-target="5">點按開聲音</div>
+                    <i class="fa fa-spinner fa-pulse video-wait" data-target="5"></i>
+                    <!--<i class="fa fa-play video-play hidden-md hidden-lg" data-target="5"></i>-->
+                    <i class="fa fa-volume-off volume hidden-md hidden-lg" data-target="5"></i>
+                    <i class="fa fa-repeat replay hidden-md hidden-lg" data-target="5"></i>
                 </div>
             </div>
         </section>
-        <section id="backTolongdong" class="blankPage"></section>
+        <section id="backTolongdong" class="blankPage hidden-xs hidden-sm hidden-md"></section>
         <section id="model3">
             <div class="content container">
                 <div class="narrow-in-pc">
-                    <h2>林倍璁<br/>後門 大家的福利</h2>
+                    <div class="profile">
+                        <img data-src="assets/images/lin.png" alt="" class="lazyload">
+                        <div class="subtitle">
+                            <h2>林倍聰<br/>學會與恐懼相處</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="video-contain hidden-lg">
+                <video preload="metadata" class="rwd-2dv mobVideo" id="movie-7" data-src="assets/videos/mobile/mobile_video5.mp4" playsinline data-target="7" autoplay></video>
+                <div style="margin-top: -8px;" class="video-control">
+                    <div class="progress hidden-md hidden-lg">
+                        <div id="progress-bar-7" class="progress-bar progress-bar-striped"></div>
+                    </div>
+                    <!--<div class="img-say-out volume-text hidden-md hidden-lg" data-target="7">點按開聲音</div>-->
+                    <i class="fa fa-spinner fa-pulse video-wait" data-target="7"></i>
+                    <!--<i class="fa fa-play video-play hidden-md hidden-lg" data-target="7"></i>-->
+                    <!--<i class="fa fa-volume-off volume hidden-md hidden-lg" data-target="7"></i>-->
+                    <i class="fa fa-repeat replay hidden-md hidden-lg" data-target="7"></i>
+                </div>
+            </div>
+            <div class="content container">
+                <div class="narrow-in-pc">
                     <p>「力量、技巧、恐懼」這是攀岩的三大練習項目，善用身體、四肢的力量，攀岩不是一直使用手臂去拉出身體的重量，而是讓雙腳扮演承重的角色，手引導方向，並練習隨時找到重心的技巧。</p>
                     <p><br/></p>
                     <p>最難的還是「恐懼」，十個攀岩九個怕，但要練習的並不是克服恐懼，而是學會跟恐懼相處，了解自己的力量和極限。</p>
  
                     <div class="img-contain">
                         <picture>
-                            <source srcset="./assets/images/img_4_m.jpg" media="(max-width:1199px)">
-                            <img class="lazyload fullscreen" data-src="./assets/images/img_4.jpg">
+                            <source srcset="./assets/images/lin3.jpg" media="(max-width:1199px)">
+                            <img class="lazyload fullscreen" data-src="./assets/images/lin3.jpg">
                         </picture>
+                        <div class="img-say">攀岩是面對自己極限，在挑戰與不確定之間擺盪的過程。資料來源：林倍聰</div>
                     </div>
  
-                    <p>我在爬的時候，常覺得岩石有自己的生命力與個性。一條路線就算再熟悉，也會因為天候、時間、溫度的不同而有不同變化，上攀的過程，我們自然的會繞過一些鬆動、看起來不穩的區域，而非一味跟著教學書或前人的路線攀爬，沒有固定答案，唯一的答案就是確保安全。</p>
+                    <p>我在爬的時候，常覺得岩石有自己的生命力與個性。就像「大家的福利」這條路線就算再熟悉，也會因為天候、時間、溫度的不同而有不同變化。上攀的過程，我們自然的會繞過一些鬆動、看起來不穩的區域，而非一味跟著教學書或前人的路線攀爬，沒有固定答案，唯一的答案就是確保安全。</p>
                     <p><br/></p>
                     <p>你要是說自己很厲害，大家都會叫你先鋒！一爬上去就知道幾兩重拉！仔細觀察，攀岩者都有一種特性，沒有人會大聲嚷嚷自己很厲害，不是講求謙虛的美德，而是因為在岩石上，面對自己的極限，你沒有絕對的把握。</p>
                 </div>
             </div>
         </section>
-        <section>
+        <section id="backTolongdongBeforeEnd" class="masked">
             <div class="content container">
                 <h2>攀岩教會我的事 找最適路徑</h2>
-                <p>從底部攀到頂部，沒有標準答案，「同一條路線，每個人抓的手點腳點不太一樣，攀岩平衡感與手腳協調非常重要，但人人的風格都不同。」正職是美術老師的吳美齡，喜歡觀察攀岩者在岩壁上的動作，有人輕盈的彷彿是「岩壁上的舞者」，手與腳的搭配協調性絕佳，有些人像是在牆上打太極，有些人像在跟牆壁打架，有些人是問題解決者，安靜的思考眼前的難題。</p>
-                <p><br/></p>
-                <p>攀岩者眼前的那面牆，就是一道道待解的謎，每個人解謎需要的時間不同，答案也不盡相同。有些路線簡單一下就破關，有些路線複雜難解，往往耗上數月至數年的時間，才挑戰成功。</p>
             </div>
             <div class="img-contain container">
                 <picture>
-                    <source srcset="./assets/images/img_4_m.jpg" media="(max-width:1199px)">
-                    <img class="lazyload fullscreen" data-src="./assets/images/img_4.jpg">
+                    <source srcset="./assets/images/img_2_m.jpg" media="(max-width:1199px)">
+                    <img class="lazyload fullscreen" data-src="./assets/images/img_2.jpg">
+                </picture>
+                <div class="img-say">資料來源：Matt Robertson</div>
+
+            </div>
+            <div class="content container">
+                <p>「攀岩最常有的體驗就是卡在某一塊岩壁上，然後覺得自己永遠無法克服他。」Matt認為身處辦不到的情境，能誠實的分析自己的能力、對外在環境的感受、對危險的辨識，並學習掌控眼前的難題。面對岩壁，攀岩者要做的不是直直往上衝，而是找到適合自己往前的路徑，過程都是在解決問題，成功克服後，就會更強壯。</p>
+            </div>
+
+            <div class="img-contain container">
+                <picture>
+                    <source srcset="./assets/images/img_7_m.jpg" media="(max-width:1199px)">
+                    <img class="lazyload fullscreen" data-src="./assets/images/img_7.jpg">
                 </picture>
             </div>
+            <div class="img-contain container">
+                <picture>
+                    <source srcset="./assets/images/img_9_m.jpg" media="(max-width:1199px)">
+                    <img class="lazyload fullscreen" data-src="./assets/images/img_9.jpg">
+                </picture>
+                <div class="img-say">熱愛攀岩的張宇翔，從國小五年級開始就常往龍洞跑。資料來源：Matt Robertson</div>
+
+            </div>
+
             <div class="content container">
                 <p>攀岩不只改變一些人對事情的看法，甚至可能改變一個人的生活。從小學五年級就在龍洞攀岩的張宇翔，自在的穿梭岩石與岩石間，就像走在自家後院。跟所有青少年一樣，都經歷過叛逆期，但他亂跑的去處是龍洞，用攀岩填滿了青春，也爬出了想要追求的生活，「我就是想過著一直爬的簡單生活，接觸大自然、感受環境，物質慾望不是最重要需求，「開心」反而是我最在乎的生活條件因素。」</p>
                 <p><br/></p>
                 <p>在臨海的龍洞，向上找路，這裡一直會是這群攀岩者持續追求攀岩體悟與冒險精神的香格里拉。</p>
             </div>
         </section>
-        <div class="share-block container">
-            <div class="fb-like-block">
-				<div class="fb-like" data-href="./index.html" data-layout="button_count" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
-			</div>
-			<div class="line-block">
-				<img class="line-share" style="position:relative;" src="//media.line.me/img/button/zh-hant/84x20.png" width="86" height="22" alt="LINE分享給朋友">
-			</div>
-            <div class="logo-block">
-                <div class="udn-logo">
-                    <a href="https://udn.com/news/index" target="_blank">
-                        <img class="lazyload" data-src="https://udn.com/upf/newmedia/image/udn-logo.jpg">
-                    </a>
+        <section>
+            <div class="share-block container">
+                <div class="fb-like-block">
+                    <div class="fb-like" data-href="./index.html" data-layout="button_count" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
                 </div>
-                <div class="nmd-logo">
-                    <a href="https://udn.com/upf/newmedia/udn_newmedia/index.html" target="_blank">
-                        <img class="lazyload" data-src="https://udn.com/upf/newmedia/image/nmd-logo.png">
-                    </a>
+                <div class="line-block">
+                    <img class="line-share" style="position:relative;" src="//media.line.me/img/button/zh-hant/84x20.png" width="86" height="22" alt="LINE分享給朋友">
                 </div>
-            </div>
-        </div>
-        <div class="container" id="editor">
-			<div class="editor">文字：魏妤庭</div>
-            <div class="editor">2017.05.08</div>
-        </div>
-        <div id="report" class="container">
-            <h6>聯合報聯沙龍研究報告</h6>
-            <div class="row">
-                <div class="col-sm-6 col-md-3">
-                    <a href="http://p.udn.com.tw/upf/newmedia/2017_data/20170303_3dmedia/index.html" target="_blank">
-                        <img class="lazyload" data-src="https://udn.com/upf/newmedia/2017_data/20170508_marketing/image/3Dmodel.jpg">
-                        <p>3D模型新聞應用 簡易入門分享</p>
-                    </a>
-                </div>
-                <div class="col-sm-6 col-md-3">
-                    <a href="http://p.udn.com.tw/upf/newmedia/2017_data/20170222_maps/index.html" target="_blank">
-                        <img class="lazyload" data-src="https://udn.com/upf/newmedia/2017_data/20170508_marketing/image/maps.jpg">
-                        <p>新聞✖地圖✖資訊 新媒體菜鳥的QGIS心得</p>
-                    </a>
-                </div>
-                <div class="col-sm-6 col-md-3">
-                    <a href="http://p.udn.com.tw/upf/newmedia/2017_data/20170208_vrarmr2/index.html" target="_blank">
-                        <img class="lazyload" data-src="https://udn.com/upf/newmedia/2017_data/20170508_marketing/image/vr.jpg">
-                        <p>實境科技發展 給媒體的未來啟示</p>
-                    </a>
-                </div>
-                <div class="col-sm-6 col-md-3">
-                    <a href="https://www.facebook.com/groups/UDNNEWMEDIA/?fref=ts" target="_blank">
-                        <img class="lazyload" data-src="https://udn.com/upf/newmedia/2017_data/20170508_marketing/image/salon.jpg">
-                        <p>聯。沙龍</p>
-                    </a>
+                <div class="logo-block">
+                    <div class="udn-logo">
+                        <a href="https://udn.com/news/index" target="_blank">
+                            <img class="lazyload" data-src="https://udn.com/upf/newmedia/image/udn-logo.svg">
+                        </a>
+                    </div>
+                    <div class="nmd-logo">
+                        <a href="https://udn.com/upf/newmedia/udn_newmedia/index.html" target="_blank">
+                            <img class="lazyload" data-src="https://udn.com/upf/newmedia/image/nmd-logo.svg">
+                        </a>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="fb-comment-block container">
-            <div class="fb-comments" data-href="https://udn.com/upf/newmedia/index.html" data-order-by="social" data-numposts="5" data-width="100%"></div>
-        </div>
-        <footer>
-            <span class="footer-link footer-right-board"><a href="http://www.udngroup.com/" target="_blank">聯合報系</a></span>
-            <span class="footer-link footer-right-board"><a href="https://www.facebook.com/udnplus" target="_blank">粉絲團</a></span>
-            <span class="footer-link footer-right-board"><a href="http://udndata.com/udnauthority.html" target="_blank">新聞授權</a></span>
-            <span class="footer-link"><a href="http://www.udngroup.com/information/privacy" target="_blank">隱私權聲明</a></span>
-        </footer>
+            <div class="container" id="editor">
+                <div class="editor">採訪：魏妤庭</div>
+                <div class="editor">影音、攝影：王騰毅、許正宏</div>
+                <div class="editor">視覺設計：呂紹齊</div>                
+                <div class="editor">3D模型製作：吳瑞逸</div>
+                <div class="editor">網頁製作：方泰鈞</div>
+                <div class="editor">監製：蔡幸怡、林新輝</div>
+                <div class="editor">特別感謝：<a href="http://climbstone.com/chinese/index.html" target="_blank">ROCK CLIMBING TAIWAN</a></div>
+            </div>
+            <div id="report" class="container">
+                <h6>延伸閱讀</h6>
+                <div class="row">
+                    <div class="col-sm-6 col-md-3">
+                        <a href="https://udn.com/upf/newmedia/2017_data/universide_taipei_2017/gymnastics.html" target="_blank">
+                            <img class="lazyload" data-src="https://udn.com/upf/newmedia/2017_data/20170508_marketing/image/3Dmodel.jpg">
+                            <p>競技體操選手 如何對抗地心引力？</p>
+                        </a>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <a href="https://udn.com/upf/newmedia/2017_data/summerweather/index.html" target="_blank">
+                            <img class="lazyload" data-src="https://udn.com/upf/newmedia/2017_data/20170508_marketing/image/maps.jpg">
+                            <p>新聞遊戲 怪天氣大作戰</p>
+                        </a>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <a href="https://udn.com/upf/newmedia/2017_data/hk_handover_20/index.html" target="_blank">
+                            <img class="lazyload" data-src="https://udn.com/upf/newmedia/2017_data/20170508_marketing/image/vr.jpg">
+                            <p>香港 是我的家 看香港回歸20年的「變」</p>
+                        </a>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <a href="http://p.udn.com.tw/upf/newmedia/udn_newmedia/index.html" target="_blank">
+                            <img class="lazyload" data-src="https://udn.com/upf/newmedia/2017_data/20170508_marketing/image/salon.jpg">
+                            <p>更多新媒體中心作品</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="fb-comment-block container">
+                <div class="fb-comments" data-href="https://udn.com/upf/newmedia/2017_data/rockclimb_longdong3d/index.html" data-order-by="social" data-numposts="5" data-width="100%"></div>
+            </div>
+            <footer>
+                <span class="footer-link footer-right-board"><a href="http://www.udngroup.com/" target="_blank">聯合報系</a></span>
+                <span class="footer-link footer-right-board"><a href="https://www.facebook.com/udnplus" target="_blank">粉絲團</a></span>
+                <span class="footer-link footer-right-board"><a href="http://udndata.com/udnauthority.html" target="_blank">新聞授權</a></span>
+                <span class="footer-link"><a href="http://www.udngroup.com/information/privacy" target="_blank">隱私權聲明</a></span>
+            </footer>
+        </section>
     </div>
-    <script src="./src/index.demo.js?v=5"></script>
+    <script src="./src/index.demo.js"></script>
 </body>
 
 </html>

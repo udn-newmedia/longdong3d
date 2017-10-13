@@ -17,6 +17,8 @@ $(document).ready(function () {
 
         $("#movie-" + id).get(0).play();
 
+        console.log("play: movie-"+id);
+
         if (progress[id - 1] == null) {
             progress[id - 1] = setInterval(function () {
                 var curTime = $("#movie-" + id).get(0).currentTime;

@@ -158,9 +158,7 @@ $(document).ready(function() {
   //     //     read_progress +
   //     //     "%]"
   //     // });
-
   //   }
-
   // });
 
   $(".line-share").click(function(e) {

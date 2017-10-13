@@ -31,7 +31,7 @@
     <link rel="stylesheet" href="https://udn-newmedia.github.io/udn-newmedia-css/css/style.css">
     <link rel="stylesheet" href="lib/css/nivo-slider.css">
     <!--<link rel="stylesheet" href="lib/css/default.css">-->
-    <link rel="stylesheet" href="src/style.css?v=3" >
+    <link rel="stylesheet" href="src/style.css?v=8" >
 
     <!-- Babylon.js -->
     <script src="https://preview.babylonjs.com/cannon.js"></script>
@@ -209,7 +209,7 @@
 
     <div id="article">
         <div class="video-contain" id="cover-video">
-            <video preload="metadata" class="rwd-2dv" id="movie-1" src="assets/videos/cover-video.mp4" playsinline data-target="1"></video>
+            <video preload="metadata" class="rwd-2dv" id="movie-1" data-src="assets/videos/cover-video.mp4" playsinline data-target="1" muted autoplay></video>
             <div style="margin-top: -8px;" class="video-control">
                 <!--<div class="progress hidden-lg">
                     <div id="progress-bar-1" class="progress-bar progress-bar-striped"></div>
@@ -264,7 +264,7 @@
 
             <div class="img-contain container">
                 <picture>
-                    <source srcset="./assets/images/img_1_m.jpg" media="(max-width:1199px)">
+                    <source class="lazyload" data-srcset="./assets/images/img_1_m.jpg" media="(max-width:1199px)">
                     <img class="lazyload" data-src="./assets/images/img_1.jpg">
                 </picture>
                 <div class="img-say">視野遼闊又面海，是Matt喜歡龍洞的原因之一。資料來源：Matt Robertson</div>
@@ -278,7 +278,7 @@
 
             <div class="img-contain container">
                 <picture>
-                    <source srcset="./assets/images/img_0_m.jpg" media="(max-width:1199px)">
+                    <source  class="lazyload" data-srcset="./assets/images/img_0_m.jpg" media="(max-width:1199px)">
                     <img class="lazyload" data-src="./assets/images/img_0.jpg">
                 </picture>
                 <div class="img-say">Matt冬天也常到龍洞攀岩。資料來源：Matt Robertson</div>
@@ -298,21 +298,21 @@
                     <p>40年來的探索，連當地居民也不清楚的峭壁地形，攀岩者們瞭若指掌，龍洞是台灣攀岩大本營，舉目所及的每一片岩壁，都是攀岩者躍躍欲試的目標，短短2公里，已開發出600多條攀爬路線。</p>
                 </div>
                 <div class="video-contain lite">
-                    <video preload="metadata" class="rwd-2dv liteVideo" id="movie-8" data-src="assets/videos/mobile/mobile_video2.mp4" playsinline data-target="2" muted></video>
+                    <video preload="metadata" class="rwd-2dv liteVideo" id="movie-8" data-src="assets/videos/mobile/mobile_video2.mp4" playsinline data-target="8"></video>
                     <div style="margin-top: -8px;" class="video-control">
                         <div class="progress hidden-md hidden-lg">
                             <div id="progress-bar-8" class="progress-bar progress-bar-striped"></div>
                         </div>
-                        <div class="img-say-out volume-text hidden-md hidden-lg" data-target="2">點按開聲音</div>
-                        <i class="fa fa-spinner fa-pulse video-wait" data-target="2"></i>
-                        <!--<i class="fa fa-play video-play hidden-md hidden-lg" data-target="2"></i>-->
-                        <i class="fa fa-volume-off volume hidden-md hidden-lg" data-target="2"></i>
-                        <i class="fa fa-repeat replay hidden-md hidden-lg" data-target="2"></i>
+                        <div class="img-say-out volume-text hidden-md hidden-lg" data-target="8">點按開聲音</div>
+                        <i class="fa fa-spinner fa-pulse video-wait" data-target="8"></i>
+                        <!--<i class="fa fa-play video-play hidden-md hidden-lg" data-target="8"></i>-->
+                        <i class="fa fa-volume-off volume hidden-md hidden-lg" data-target="8"></i>
+                        <i class="fa fa-repeat replay hidden-md hidden-lg" data-target="8"></i>
                     </div>
                 </div>
             </div>
             <div class="video-contain hidden-lg">
-                <video preload="metadata" class="rwd-2dv mobVideo" id="movie-2" data-src="assets/videos/mobile/mobile_video2.mp4" playsinline data-target="2" autoplay muted></video>
+                <video preload="metadata" class="rwd-2dv mobVideo" id="movie-2" data-src="assets/videos/mobile/mobile_video2.mp4" playsinline data-target="2" muted autoplay></video>
                 <div style="margin-top: -8px;" class="video-control">
                     <div class="progress hidden-md hidden-lg">
                         <div id="progress-bar-2" class="progress-bar progress-bar-striped"></div>
@@ -335,31 +335,32 @@
         </section>
         <section class="blankHalfPage hidden-xs hidden-sm hidden-md hidden-lite"></section>
         <section id="nivoPics">
+
             <div class="img-contain hidden-xs hidden-sm">
                 <div class="slider-wrapper theme-default">
                     <div id="slider" class="nivoSlider">
-                        <img class="lazyload fullscreen" src="./assets/images/img_4.jpg" alt="">
-                        <img class="lazyload fullscreen" src="./assets/images/img_5.jpg" alt="">
-                        <img class="lazyload fullscreen" src="./assets/images/img_6.jpg" alt="">
+                        <img class="lazyload fullscreen slider-pic" data-src="./assets/images/img_4.jpg" alt="">
+                        <img class="lazyload fullscreen slider-pic" data-src="./assets/images/img_5.jpg" alt="">
+                        <img class="lazyload fullscreen slider-pic" data-src="./assets/images/img_6.jpg" alt="">
                     </div>
                 </div>
             </div>
             
             <div class="img-contain hidden-lg hidden-md">
                 <picture>
-                    <source srcset="./assets/images/img_4_m.jpg" media="(max-width:1199px)">
+                    <source class="lazyload" data-srcset="./assets/images/img_4_m.jpg" media="(max-width:1199px)">
                     <img class="lazyload fullscreen" data-src="./assets/images/img_4.jpg">
                 </picture>
             </div>
             <div class="img-contain hidden-lg hidden-md">
                 <picture>
-                    <source srcset="./assets/images/img_5_m.jpg" media="(max-width:1199px)">
+                    <source  class="lazyload" data-srcset="./assets/images/img_5_m.jpg" media="(max-width:1199px)">
                     <img class="lazyload fullscreen" data-src="./assets/images/img_5.jpg">
                 </picture>
             </div>
             <div class="img-contain hidden-lg hidden-md">
                 <picture>
-                    <source srcset="./assets/images/img_6_m.jpg" media="(max-width:1199px)">
+                    <source  class="lazyload" data-srcset="./assets/images/img_6_m.jpg" media="(max-width:1199px)">
                     <img class="lazyload fullscreen" data-src="./assets/images/img_6.jpg">
                 </picture>
             </div>
@@ -389,7 +390,7 @@
             </div>
             <div class="video-contain hidden-lg">
                 <video preload="metadata" class="rwd-2dv mobVideo" id="movie-3" data-src="assets/videos/mobile/mobile_video3.mp4" playsinline
-                    data-target="3" autoplay></video>
+                    data-target="3" muted autoplay></video>
                 <div style="margin-top: -8px;" class="video-control">
                     <div class="progress hidden-md hidden-lg">
                         <div id="progress-bar-3" class="progress-bar progress-bar-striped"></div>
@@ -440,7 +441,7 @@
                     <p>後來我理解了：想要爬上去，最重要的是放鬆。</p>                        
                     <div class="img-contain">
                         <picture>
-                            <source srcset="./assets/images/img_3_m.jpg" media="(max-width:1199px)">
+                            <source  class="lazyload" data-srcset="./assets/images/img_3_m.jpg" media="(max-width:1199px)">
                             <!--<img class="lazyload" data-src="./assets/images/img_3.jpg">-->
                             <img class="lazyload" data-src="./assets/images/img_3_m.jpg">
                         </picture>
@@ -461,7 +462,7 @@
                 </div>
             </div>
             <div class="video-contain hidden-lg">
-                <video preload="metadata" class="rwd-2dv mobVideo" id="movie-6" data-src="assets/videos/mobile/mobile_video4.mp4" playsinline data-target="6" autoplay></video>
+                <video preload="metadata" class="rwd-2dv mobVideo" id="movie-6" data-src="assets/videos/mobile/mobile_video4.mp4" playsinline data-target="6" muted autoplay></video>
                 <div style="margin-top: -8px;" class="video-control">
                     <div class="progress hidden-md hidden-lg">
                         <div id="progress-bar-6" class="progress-bar progress-bar-striped"></div>
@@ -518,7 +519,7 @@
                 </div>
             </div>
             <div class="video-contain hidden-lg">
-                <video preload="metadata" class="rwd-2dv mobVideo" id="movie-7" data-src="assets/videos/mobile/mobile_video5.mp4" playsinline data-target="7" autoplay></video>
+                <video preload="metadata" class="rwd-2dv mobVideo" id="movie-7" data-src="assets/videos/mobile/mobile_video5.mp4" playsinline data-target="7" muted autoplay></video>
                 <div style="margin-top: -8px;" class="video-control">
                     <div class="progress hidden-md hidden-lg">
                         <div id="progress-bar-7" class="progress-bar progress-bar-striped"></div>
@@ -538,7 +539,7 @@
  
                     <div class="img-contain">
                         <picture>
-                            <source srcset="./assets/images/lin3.jpg" media="(max-width:1199px)">
+                            <source  class="lazyload" data-srcset="./assets/images/lin3.jpg" media="(max-width:1199px)">
                             <img class="lazyload fullscreen" data-src="./assets/images/lin3.jpg">
                         </picture>
                         <div class="img-say">攀岩是面對自己極限，在挑戰與不確定之間擺盪的過程。資料來源：林倍聰</div>
@@ -556,7 +557,7 @@
             </div>
             <div class="img-contain container">
                 <picture>
-                    <source srcset="./assets/images/img_2_m.jpg" media="(max-width:1199px)">
+                    <source  class="lazyload" data-srcset="./assets/images/img_2_m.jpg" media="(max-width:1199px)">
                     <img class="lazyload fullscreen" data-src="./assets/images/img_2.jpg">
                 </picture>
                 <div class="img-say">資料來源：Matt Robertson</div>
@@ -568,13 +569,13 @@
 
             <div class="img-contain container">
                 <picture>
-                    <source srcset="./assets/images/img_7_m.jpg" media="(max-width:1199px)">
+                    <source  class="lazyload" data-srcset="./assets/images/img_7_m.jpg" media="(max-width:1199px)">
                     <img class="lazyload fullscreen" data-src="./assets/images/img_7.jpg">
                 </picture>
             </div>
             <div class="img-contain container">
                 <picture>
-                    <source srcset="./assets/images/img_9_m.jpg" media="(max-width:1199px)">
+                    <source  class="lazyload" data-srcset="./assets/images/img_9_m.jpg" media="(max-width:1199px)">
                     <img class="lazyload fullscreen" data-src="./assets/images/img_9.jpg">
                 </picture>
                 <div class="img-say">熱愛攀岩的張宇翔，從國小五年級開始就常往龍洞跑。資料來源：Matt Robertson</div>
@@ -657,7 +658,7 @@
             </footer>
         </section>
     </div>
-    <script src="./src/index.js?v=5"></script>
+    <script src="./src/index.js?v=7"></script>
 </body>
 
 </html>

@@ -248,13 +248,14 @@ img.fullscreen {
 @media screen and (max-width: 1199px){
 
     #cover-video{
+        height: 100vh;
         background:black; 
-        width:100%; 
-        margin: 0 auto;
+        margin-top: 0;
     }
 
     #cover-video video{
-        width:100%; 
+        width: 100%;
+        overflow: hidden;
     }
 
 }

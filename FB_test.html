@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>FB Video Test</title>
+    <link rel="stylesheet" href="https://udn-newmedia.github.io/udn-newmedia-css/css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <style>
+        body {
+            border: 0;
+            margin: 0;
+        }
+
+        #cover-video {
+            margin-top: 0;
+        }
+    
+    </style>
+
+</head>
+<body>
+    <div class="video-contain" id="cover-video">
+        <video preload="metadata" class="rwd-2dv" id="movie-1" src="./assets/videos/cover-video.mp4" data-src="./assets/videos/mobile/cover-video.mp4" playsinline data-target="1" autoplay></video>
+        <div style="margin-top: -8px;" class="video-control">
+            <!--<div class="progress hidden-lg">
+                <div id="progress-bar-1" class="progress-bar progress-bar-striped"></div>
+            </div>-->
+            <div class="img-say-out volume-text hidden-md hidden-lg" data-target="1">點按開聲音</div>
+            <i class="fa fa-spinner fa-pulse video-wait" data-target="1"></i>
+            <!--<i class="fa fa-play video-play hidden-md hidden-lg" data-target="1"></i>-->
+            <i class="fa fa-volume-off volume hidden-md hidden-lg" data-target="1"></i>
+            <!--<i class="fa fa-repeat replay hidden-md hidden-lg" data-target="1"></i>-->
+        </div>
+    </div>
+
+    <script>
+
+        var w = window.innerWidth;
+        var h = window.innerHeight;
+        var progress = [];
+        var movie_progress = [null];
+
+        if (window.matchMedia("(max-width: 1199px)").matches) {
+
+            //mobile 版影片 & poster
+            var cover_video = document.querySelector('video');
+            cover_video.setAttribute('src', "./assets/videos/mobile/cover-video.mp4");
+
+            $('video').prop('muted', 'true');
+        }
+
+
+        $(document).ready(function () {
+
+            function moviePlay(id) {
+
+                $('.fa-spinner[data-target="' + id + '"]').css("opacity", 0);
+
+                $("#movie-" + id).get(0).play();
+
+                if (progress[id - 1] == null) {
+                    progress[id - 1] = setInterval(function () {
+                        var curTime = $("#movie-" + id).get(0).currentTime;
+                        var temp = curTime / $("#movie-" + id).get(0).duration * 100;
+                        if (temp > 0.6) {
+                            $('.video-play[data-target="' + id + '"]').css("opacity", 0);
+                        }
+                        if (Math.floor(curTime / 5) > movie_progress) {
+                            movie_progress = Math.floor(curTime / 5);
+                        }
+
+                        $("#progress-bar-" + id).css("width", temp + "%");
+                    }, 600);
+                }
+            }
+
+            function moviePause(id) {
+                $("#movie-" + id).get(0).pause();
+                $('.video-play[data-target="' + id + '"]').css("opacity", 1);
+                if (progress[id - 1]) {
+                    clearInterval(progress[id - 1]);
+                    progress[id - 1] = null;
+                }
+            }
+            
+            //for video operation
+            $('video').on('waiting', function () {
+                var tar = $(this).data('target')
+                $('.video-play[data-target="' + tar + '"]').css('opacity', 0)
+                $('.fa-spinner[data-target="' + tar + '"]').css('opacity', 1)
+                // console.log('wait' + $(this).data('target'))
+            })
+
+            $('video').on('canplay', function () {
+                var tar = $(this).data('target')
+                $('.fa-spinner[data-target="' + tar + '"]').css('opacity', 0)
+                // console.log('canplay' + $(this).data('target'))
+            })
+
+            $('video').click(function () {
+
+                var tar = $(this).data('target')
+
+                if ($(this).get(0).paused == true) {
+                    moviePlay(tar);
+                    if ($(this).get(0).muted == true) {
+                        $(this).get(0).muted = false;
+                        $('.volume[data-target="' + tar + '"]')
+                            .removeClass("fa-volume-off")
+                            .addClass("fa-volume-up");
+                        $('.volume-text[data-target="' + tar + '"]').text("點按關聲音");
+                    }
+                } else {
+                    $(this).get(0).pause();
+                    moviePause(tar);
+                }
+
+            });
+
+            $(window).on('scroll', function () {
+
+                scroll_now = $(window).scrollTop();
+
+                var movie1 = scroll_now - $("#movie-1").offset().top + h;
+
+                if (movie1 > h / 3 && movie1 < h + 200) {
+                    if ($("#movie-1").get(0).paused == true) {
+                        moviePlay(1);
+                    }
+                } else {
+                    if ($("#movie-1").get(0).paused == false) {
+                        moviePause(1);
+                    }
+                }
+            });
+
+        });
+    
+    </script>
+</body>
+</html>

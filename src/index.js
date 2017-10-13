@@ -46,11 +46,12 @@ if(window.innerWidth/window.innerHeight<16/9 && !mob){
 
 
 //mobile版load 影片代替
-if(window.matchMedia("(max-width: 1200px)").matches){
+if(window.matchMedia("(max-width: 1199px)").matches){
 
     //mobile 版影片 & poster
     var cover_video = document.querySelector('video');
     cover_video.setAttribute('src',"./assets/videos/mobile/cover-video.mp4");
+    // cover_video.setAttribute("poster", "./assets/images/mobile.jpg");
 
     var cover_poster;
 
@@ -62,6 +63,16 @@ if(window.matchMedia("(max-width: 1200px)").matches){
     });
 
     var mob_posters;
+}else {
+    var cover_video = document.querySelector('video');
+    cover_video.setAttribute('src', cover_video.getAttribute("data-src"));
+
+    var mobvideos = document.getElementsByClassName("slider-pic");
+
+    [].forEach.call(mobvideos, function(el) {
+      el.setAttribute("src", el.getAttribute("data-src"));
+    });
+
 }
 
 
@@ -69,7 +80,7 @@ if(window.matchMedia("(max-width: 1200px)").matches){
     if(mob){
         d3.select("#article").style("display", "block");
 
-        document.getElementById("movie-1").play();
+        // document.getElementById("movie-1").play();
 
         videoHandler();
 
@@ -174,19 +185,20 @@ function onScroll(){
 
         if(read_progress <=100){
             // console.log(read_progress + "%");
-                  ga("send", {
-                    hitType: "event",
-                    eventCategory: "read",
-                    eventAction: "scroll",
-                    eventLabel:
-                      "[" +
-                      platform +
-                      "] [" +
-                      document.title +
-                      "] [page read " +
-                      read_progress +
-                      "%]"
-                  });
+
+            ga("send", {
+            hitType: "event",
+            eventCategory: "read",
+            eventAction: "scroll",
+            eventLabel:
+                "[" +
+                platform +
+                "] [" +
+                document.title +
+                "] [page read " +
+                read_progress +
+                "%]"
+            });
         }
     }
 

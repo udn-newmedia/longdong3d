@@ -261,3 +261,11 @@ img.fullscreen {
     }
 
 }
+
+@media screen and (min-width: 1200px){
+
+    #first_paragraph{
+        padding-top: 100px;
+    }
+
+}

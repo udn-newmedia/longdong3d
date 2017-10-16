@@ -189,6 +189,7 @@ $(document).ready(function () {
         if (movie1 > h / 3 && movie1 < h + 200) {
             if ($("#movie-1").get(0).paused == true) {
                 moviePlay(1);
+                console.log('1')
             }
         } else {
             if ($("#movie-1").get(0).paused == false) {

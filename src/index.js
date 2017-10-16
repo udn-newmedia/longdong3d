@@ -358,10 +358,10 @@ function viewChanger(){
                         enableScroll();
 
 
-                        zoom_in_effect(3, function(){
+                        zoom_in_effect(4, function(){
 
-                                scrollAnimation(changeModelPointsOffset[1], 1000);
-                                d3.selectAll(".g-label.model1").classed("hidden", true);
+                                // scrollAnimation(changeModelPointsOffset[1], 1000);
+                                // d3.selectAll(".g-label.model1").classed("hidden", true);
                             }
                         )
 
@@ -409,9 +409,9 @@ function viewChanger(){
                     animFrame = 1;
                     enableScroll();
 
-                        zoom_in_effect(5,function(){
-                                scrollAnimation(changeModelPointsOffset[2], 1000)
-                                d3.selectAll(".g-label.model1, .g-label.model2").classed("hidden", true);
+                        zoom_in_effect(1,function(){
+                                // scrollAnimation(changeModelPointsOffset[2], 1000);
+                                // d3.selectAll(".g-label.model1, .g-label.model2").classed("hidden", true);
                             }
                         )
                     });
@@ -1405,33 +1405,32 @@ function PCloadScene1(){
                 z:0.8039345225502077
             }
 
-
             // var waypoint3 = {
-            //     x: 6.878846228549867,
-            //     y: 5.624442667001714,
-            //     z: 2.785135595239103
+            //     x: 8.456247766015208,
+            //     y: 4.396386762879213,
+            //     z: -0.33063065358427535
             // }
 
             // var target3 = {
-            //     x: 0,
-            //     y: 2,
-            //     z: 0
+            //     x: 0.5750734529079948,
+            //     y: 2.696798018254207,
+            //     z: -2.0802502363811968
             // }
 
-
+            // backdoor
             var waypoint3 = {
-                x: 8.456247766015208,
-                y: 4.396386762879213,
-                z: -0.33063065358427535
+            x: 4.6514856135871945,
+            y: 2.855898773317164,
+            z: -2.0574045911431735
             }
 
             var target3 = {
-                x: 0.5750734529079948,
-                y: 2.696798018254207,
-                z: -2.0802502363811968
+            x: 1.169940323284372,
+            y: 2.1951216031633156,
+            z: -3.4430793071505112
             }
 
-
+            // 最後回到 model1
             var waypoint4 = {
                 x: 6.878846228549867,
                 y: 5.624442667001714,
@@ -1597,7 +1596,7 @@ function PCloadScene1(){
             // billboard3.animTexture.points = vertices;
             billboard3.animTexture.ctxStyle = {
                 lineCap: "round",
-                lineWidth: "25",
+                lineWidth: "20",
                 strokeStyle: "#ffde2a",
                 setLineDash: [10, 40]
             }
@@ -1626,7 +1625,7 @@ function PCloadScene1(){
         // billboard4.animTexture.points = calcIntermediatepoints(vertices, 20);
         billboard4.animTexture.ctxStyle = {
             lineCap: "round",
-            lineWidth: "25",
+            lineWidth: "20",
             strokeStyle: "#ffde2a",
             setLineDash: [10, 40]
         }
@@ -1663,7 +1662,7 @@ function PCloadScene1(){
                 stopRotating = (scroll_now <= stopRotatingPointOffset)?false:true;
             }
 
-            stopRotating = true;
+            // stopRotating = true;
 
 
             if (scenes[sceneIndex].reRender && !stopRotating){
@@ -1824,95 +1823,6 @@ function calcIntermediatepoints(vertices,num) {
         }
     }
     return (waypoints);
-}
-
-function PCimportScene2_multi(){
-
-    //multi-texture
-    // This creates a basic Babylon Scene object (non-mesh)
-    var scene = new BABYLON.Scene(engine);
-
-    var camera = new BABYLON.ArcRotateCamera("Camera2", 0.2, Math.PI / 2, 20, new BABYLON.Vector3.Zero(), scene);
-    camera.attachControl(canvas, false);
-    camera.checkCollisions = true;
-
-    var light = new BABYLON.HemisphericLight("hemi2", new BABYLON.Vector3(0, 1, 0), scene);
-
-    var sphere2 = BABYLON.Mesh.CreateSphere("Sphere2", 16.0, 10.0, scene);
-    sphere2.position = new BABYLON.Vector3(0, 0, 7);
-
-    // MATERIALS
-    var bumpMaterial = new BABYLON.StandardMaterial("texture1", scene);
-    bumpMaterial.diffuseColor = new BABYLON.Color3(0, 0, 1);//Blue
-
-    var simpleMaterial = new BABYLON.StandardMaterial("texture2", scene);
-    simpleMaterial.diffuseColor = new BABYLON.Color3(1, 0, 0);//Red
-
-    // Multimaterial
-    var multimat = new BABYLON.MultiMaterial("multi", scene);
-    multimat.subMaterials.push(simpleMaterial);
-    multimat.subMaterials.push(bumpMaterial);
-    // multimat.subMaterials.push(textMat);
-
-    sphere2.subMeshes = [];
-
-    var verticesCount = sphere2.getTotalVertices();
-
-    console.log(verticesCount);
-
-    sphere2.subMeshes.push(new BABYLON.SubMesh(0, 0, verticesCount, 0, 400, sphere2));
-    sphere2.subMeshes.push(new BABYLON.SubMesh(1, 0, verticesCount, 400, 400, sphere2));
-    
-    // sphere2.subMeshes.push(new BABYLON.SubMesh(1, 0, verticesCount, 900, 1800, sphere2));
-    // sphere2.subMeshes.push(new BABYLON.SubMesh(2, 0, verticesCount, 1800, 2088, sphere2));
-
-    sphere2.material = multimat;
-
-    // // The first parameter can be used to specify which mesh to import. Here we import all meshes
-    // BABYLON.SceneLoader.ImportMesh("", "assets/golden-stone/0922/", "golden-stone.babylon", scene, function (newMeshes) {
-
-    //     newMeshes[0].position = new BABYLON.Vector3(0, 0, 7);
-
-    //     var material1 = new BABYLON.StandardMaterial("texture1", scene);
-    //     material1.diffuseTexture = new BABYLON.Texture("assets/golden-stone/golden-stone1.png", scene);
-    //     // material1.diffuseTexture.hasAlpha = true;
-    //     // material1.diffuseColor = new BABYLON.Color3(1, 0, 0);
-    //     material1.diffuseTexture.wAng = Math.PI / 2;
-    //     // newMeshes[0].material = material1;
-
-    //     var material2 = new BABYLON.StandardMaterial("texture2", scene);
-    //     material2.diffuseTexture = new BABYLON.Texture("assets/golden-stone/golden-stone2.png", scene);
-    //     // material2.diffuseTexture.hasAlpha = true;        
-    //     // material2.diffuseColor = new BABYLON.Color3(0, 0, 1);
-    //     material2.diffuseTexture.wAng = Math.PI / 2;
-
-    //     var multimat = new BABYLON.MultiMaterial("multi", scene);
-    //     multimat.subMaterials.push(material1);
-    //     multimat.subMaterials.push(material2);
-
-
-    //     newMeshes[0].subMeshes = [];
-
-    //     var totalVertices = newMeshes[0].getTotalVertices();
-        
-    //     console.log(toalVertices); //56675
-
-    //     // var breakpoint = 50000;
-
-    //     // newMeshes[0].subMeshes.push(new BABYLON.SubMesh(0, 0, totalVertices, 0, breakpoint, newMeshes[0]));
-    //     // newMeshes[0].subMeshes.push(new BABYLON.SubMesh(1, 0, totalVertices, breakpoint, totalVertices, newMeshes[0]));
-    // });
-
-    modelLoaded[1] = !modelLoaded[1];
-
-    var sceneIndex = scenes.push(scene) - 1;
-    scenes[sceneIndex].reRender = true;
-    scenes[sceneIndex].renderLoop = function () {
-
-        this.render();
-    }
-
-    return scene;
 }
 
 function PCimportScene2(){
@@ -2183,9 +2093,7 @@ function PCimportScene3(){
         // var billboard1 = BABYLON.Mesh.CreatePlane('board9', 7.5, scene);
         var billboard1 = BABYLON.Mesh.CreatePlane("board9", 4.5, scene);
 
-        // billboard1.position = new BABYLON.Vector3(wall.position.x + 0.5, wall.position.y + 6.5, wall.position.z+11);
         billboard1.position = new BABYLON.Vector3(wall.position.x - 0.5, wall.position.y + 5.5, wall.position.z + 9);
-
 
         var route1 = new BABYLON.StandardMaterial("route5", scene);
         route1.diffuseTexture = new BABYLON.Texture("./assets/backdoor/backdoor-route1.png", scene);
@@ -2200,8 +2108,9 @@ function PCimportScene3(){
         // var billboard2 = BABYLON.Mesh.CreatePlane("board10", 4.5, scene);
         var billboard2 = BABYLON.Mesh.CreatePlane("board10", 4, scene);
         
-        // billboard2.position = new BABYLON.Vector3(wall.position.x - 4.5, wall.position.y + 0.8 , wall.position.z -5);
-        billboard2.position = new BABYLON.Vector3(wall.position.x +0.5 , wall.position.y + 8.5, wall.position.z+10);
+        // billboard2.position = new BABYLON.Vector3(wall.position.x +0.5 , wall.position.y + 8.5, wall.position.z+10);
+        // billboard2.position = new BABYLON.Vector3(wall.position.x - 0.5, wall.position.y + 8.5, wall.position.z + 10);
+        billboard2.position = new BABYLON.Vector3(wall.position.x, wall.position.y + 8.7, wall.position.z + 10);
 
 
         var route2 = new BABYLON.StandardMaterial("route11", scene);

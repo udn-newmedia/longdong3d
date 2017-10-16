@@ -328,6 +328,8 @@ function viewChanger(){
             //第一個模型，第二個視角
             changeView(waypoints[1], function() {
 
+                scenes[activeScene].cameraPara2.hasChanged = false;
+
                 displayBillboards([false, false, false, true]);
 
                 d3.selectAll('.g-label.model1')
@@ -381,6 +383,9 @@ function viewChanger(){
             }
 
             changeView(waypoints[2], function() {
+
+                waypoints[1].hasChanged = false;
+
                 setTimeout(function() {
                     //等待change view
 
@@ -424,7 +429,9 @@ function viewChanger(){
 
             displayBillboards(false);
 
-            changeView(waypoints[3], function() {});
+            changeView(waypoints[3], function() {
+                waypoints[2].hasChanged = false;
+            });
         }
 
     } else if(liteVersion && activeScene===0){
@@ -487,6 +494,8 @@ function viewChanger(){
 
                 scenes[activeScene].cameraPara3.hasChanged = true;
 
+                scenes[activeScene].cameraPara2.hasChanged = false;
+
                 scenes[activeScene].light0.intensity = 0.2;
 
                 displayBillboards(false);
@@ -534,6 +543,9 @@ function viewChanger(){
                 
                 scenes[activeScene].cameraPara4.hasChanged = true;
 
+                scenes[activeScene].cameraPara3.hasChanged = false;
+
+
                 displayBillboards(false);
 
                 // Hide all of labels
@@ -569,6 +581,8 @@ function viewChanger(){
             if (!scenes[activeScene].cameraPara5.hasChanged) {
                 
                 scenes[activeScene].cameraPara5.hasChanged = true;
+
+                scenes[activeScene].cameraPara4.hasChanged = false;
 
                 displayBillboards(false);
 
@@ -615,6 +629,9 @@ function viewChanger(){
                 if (!scenes[activeScene].cameraPara2.hasChanged) {
 
                     scenes[activeScene].cameraPara2.hasChanged = true;
+
+                    scenes[activeScene-1].cameraPara5.hasChanged = true;
+
 
                     d3.selectAll('.g-label').classed("hidden", true);
                     
@@ -711,6 +728,8 @@ function viewChanger(){
             if (!scenes[activeScene].cameraPara3.hasChanged){
 
                 scenes[activeScene].cameraPara3.hasChanged = true;
+
+                scenes[activeScene].cameraPara2.hasChanged = false;
 
                 d3.selectAll('.g-label')
                     .classed("hidden", true);

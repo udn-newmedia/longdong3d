@@ -239,6 +239,7 @@ img.fullscreen {
     }
 
     #cover-video video{
+        display: none;
         width:100%; 
         height: 100vh; 
         object-fit: cover;
@@ -254,6 +255,7 @@ img.fullscreen {
     }
 
     #cover-video video{
+        display: none;
         width: 100%;
         overflow: hidden;
     }

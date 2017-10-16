@@ -50,7 +50,8 @@ if(window.matchMedia("(max-width: 1199px)").matches){
 
     //mobile 版影片 & poster
     var cover_video = document.getElementById("movie-10");
-    cover_video.style.display = "block";
+    // cover_video.style.display = "block";
+    d3.select('#movie-10').style("display","block");
     cover_video.setAttribute("src", cover_video.getAttribute("data-src"));
     // cover_video.setAttribute("poster", "./assets/images/mobile.jpg");
 
@@ -68,7 +69,7 @@ if(window.matchMedia("(max-width: 1199px)").matches){
 }else {
 
     var cover_video = document.getElementById("movie-1");
-    cover_video.style.display = "block";
+    d3.select("#movie-1").style("display", "block");
 
     cover_video.setAttribute('src', cover_video.getAttribute("data-src"));
 
@@ -2128,10 +2129,10 @@ function PCimportScene3(){
     // camera.upperAlphaLimit = 1.5;
     // camera.lowerAlphaLimit = -1.5;
 
-    var light0 = new BABYLON.PointLight("Omni", new BABYLON.Vector3.Zero(), scene);
-    light0.parent = camera; //light follows camera
-    light0.intensity = 0.9;
-    scene.light0 = light0;
+    // var light0 = new BABYLON.PointLight("Omni", new BABYLON.Vector3.Zero(), scene);
+    // light0.parent = camera; //light follows camera
+    // light0.intensity = 0.4;
+    // scene.light0 = light0;
 
     // var cameraPara2 = {
     //     alpha: camAlpha,
@@ -2163,7 +2164,9 @@ function PCimportScene3(){
         hasChanged: false
     }
 
-    var light = new BABYLON.HemisphericLight("hemi3", new BABYLON.Vector3(0, 1, 0), scene);
+    // var light = new BABYLON.HemisphericLight("hemi3", new BABYLON.Vector3(0, 1, 0), scene);
+
+    var light = new BABYLON.HemisphericLight("hemi3", new BABYLON.Vector3(0, 0.5, -0.5), scene);
 
     // The first parameter can be used to specify which mesh to import. Here we import all meshes
     BABYLON.SceneLoader.ImportMesh("1", "./assets/backdoor/new/", "backdoor.babylon", scene, function (newMeshes) {

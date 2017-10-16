@@ -49,8 +49,9 @@ if(window.innerWidth/window.innerHeight<16/9 && !mob){
 if(window.matchMedia("(max-width: 1199px)").matches){
 
     //mobile 版影片 & poster
-    var cover_video = document.querySelector('video');
-    cover_video.setAttribute('src',"./assets/videos/mobile/cover-video.mp4");
+    var cover_video = document.getElementById("movie-10");
+    cover_video.style.display = "block";
+    cover_video.setAttribute("src", cover_video.getAttribute("data-src"));
     // cover_video.setAttribute("poster", "./assets/images/mobile.jpg");
 
     var cover_poster;
@@ -63,8 +64,12 @@ if(window.matchMedia("(max-width: 1199px)").matches){
     });
 
     var mob_posters;
+
 }else {
-    var cover_video = document.querySelector('video');
+
+    var cover_video = document.getElementById("movie-1");
+    cover_video.style.display = "block";
+
     cover_video.setAttribute('src', cover_video.getAttribute("data-src"));
 
     var mobvideos = document.getElementsByClassName("slider-pic");
@@ -2166,11 +2171,9 @@ function PCimportScene3(){
         newMeshes[0].position = BABYLON.Vector3.Zero();
         
         var wall = scene.getMeshByName("1");
-        // var ground = scene.getMeshByName("2");
 
         // wall.position = new BABYLON.Vector3(10, 2, 15);
         wall.position = new BABYLON.Vector3(3, -7.5, -3);
-        // ground.position = new BABYLON.Vector3(wall.position.x+0.3, wall.position.y, wall.position.z);
 
     //billboards
         // for route1

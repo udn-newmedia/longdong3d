@@ -17,7 +17,7 @@ $(document).ready(function () {
 
         $("#movie-" + id).get(0).play();
 
-        console.log("play: movie-"+id);
+        // console.log("play: movie-"+id);
 
         if (progress[id - 1] == null) {
             progress[id - 1] = setInterval(function () {
@@ -166,15 +166,16 @@ $(document).ready(function () {
     });
 
     //行動版預設靜音
-    if (w <= 768) {
+    if (mob) {
         $('video').prop('muted', 'true');
-    }
+    } 
 
     $(window).on('scroll', function () {
 
         scroll_now = $(window).scrollTop();
 
         var movie1 = scroll_now - $("#movie-1").offset().top + h;
+        var movie1_mob = scroll_now - $("#movie-10").offset().top + h;        
         var movie1_2 = scroll_now - $("#movie-9").offset().top + h;
         var movie1_1 = scroll_now - $("#movie-8").offset().top + h;
         var movie2 = scroll_now - $("#movie-2").offset().top + h;
@@ -193,6 +194,16 @@ $(document).ready(function () {
             if ($("#movie-1").get(0).paused == false) {
                 moviePause(1);
             }
+        }
+
+        if (movie1_mob > h / 3 && movie1_mob < h + 200) {
+          if ($("#movie-10").get(0).paused == true) {
+            moviePlay(10);
+          }
+        } else {
+          if ($("#movie-10").get(0).paused == false) {
+            moviePause(10);
+          }
         }
 
         if (movie1_2 > h / 3 && movie1_2 < h + 200) {

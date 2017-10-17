@@ -1468,20 +1468,27 @@ function PCloadScene1(){
             var boardTexture = new BABYLON.DynamicTexture("dynamic texture", 512, scene, true);
 
             var dynamicMaterial = new BABYLON.StandardMaterial('mat', scene);
-            dynamicMaterial.diffuseTexture = boardTexture;
+            
+            // dynamicMaterial.diffuseTexture = boardTexture;
+            dynamicMaterial.opacityTexture = boardTexture;
+
             dynamicMaterial.specularColor = new BABYLON.Color3(0,0,0);
             dynamicMaterial.backFaceCulling = true;
 
             var plane1 = scene.getMeshByName("plane1");
             plane1.isVisible = false;
-            var billboard1 = BABYLON.Mesh.CreatePlane('board1', 1, scene);
+            var billboard1 = BABYLON.Mesh.CreatePlane('board1', 1.2, scene);
             billboard1.position = plane1.position;
             billboard1.material = dynamicMaterial;
             billboard1.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
 
         // var clearColor = "#555555";
-            var font = "bold 40px Microsoft JhengHei";
-            var color = "yellow"
+            var font = "bold 50px Microsoft JhengHei";
+            var color = "white"
+            var shadowColor = "black";
+            var shadowOffsetX = 1;
+            var shadowOffsetY = 1;
+            var shadowBlur = 3;
 
             var text1 = "沉積灰岩後變質";
             var x = 10;
@@ -1497,7 +1504,6 @@ function PCloadScene1(){
             //     context.fillStyle = clearColor;
             //     context.fillRect(0,0,size.width,size.height);
             // }
-
             
             // if(x===null){
                 //     var textSize = boardTexture._context.measureText(text1);
@@ -1506,17 +1512,35 @@ function PCloadScene1(){
                 
             context.font = font;
             context.fillStyle = color;
+            context.shadowColor = shadowColor;
+            context.shadowOffsetX = shadowOffsetX;
+            context.shadowOffsetY = shadowOffsetY;
+            context.shadowBlur = shadowBlur;
             context.fillText(text1, x, y1);
-            context.fillText(text2, x, y2);
+            // context.fillText(text2, x, y2);
             
             //draw line
             context.beginPath();
-            context.moveTo(150, 200);
-            context.lineTo(150, 500);
-            context.lineWidth = 10;
-            context.strokeStyle = '#ff0000';
+            context.moveTo(150, 100);
+            context.lineTo(150, 440);
+            context.lineWidth = 5;
+            context.strokeStyle = '#ffffff';
             context.stroke();
+
+            //draw circles
+            context.fillStyle = "rgba(255, 255, 255, 0.2)";
+            context.beginPath();
+            context.arc(150, 440, 40, 0, Math.PI * 2,true);
+            context.closePath();
+            context.fill();
             
+            context.fillStyle = "#ffffff";
+            context.beginPath();
+            context.arc(150, 440, 20, 0, Math.PI * 2,true);
+            context.closePath();
+            context.fill();
+            
+
             boardTexture.hasAlpha = true;//必須要clearColor沒被定義
             boardTexture.update();
 
@@ -1526,13 +1550,15 @@ function PCloadScene1(){
             var boardTexture2 = new BABYLON.DynamicTexture("dynamic texture2", 512, scene, true);
 
             var dynamicMaterial2 = new BABYLON.StandardMaterial('mat2', scene);
-            dynamicMaterial2.diffuseTexture = boardTexture2;
+            // dynamicMaterial2.diffuseTexture = boardTexture2;
+            dynamicMaterial2.opacityTexture = boardTexture2;
+
             dynamicMaterial2.specularColor = new BABYLON.Color3(0, 0, 0);
             dynamicMaterial2.backFaceCulling = true;
 
             var plane2 = scene.getMeshByName("plane2");
             plane2.isVisible = false;
-            var billboard2 = BABYLON.Mesh.CreatePlane('board2', 1, scene);
+            var billboard2 = BABYLON.Mesh.CreatePlane('board2', 1.2, scene);
             billboard2.position = plane2.position;
             billboard2.material = dynamicMaterial2;
             billboard2.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
@@ -1541,11 +1567,11 @@ function PCloadScene1(){
             // var font = "bold 40px Microsoft JhengHei";
             // var color = "yellow"
 
-            var text3 = "造山運動";
+            var text3 = "造山運動形成";
             // var x = 10;
             // var y1 = 10 + 70;
 
-            var text4 = "形成傾斜地層與節理";
+            var text4 = "地層傾斜、節理與斷層";
             // var y2 = 10 + 70 + 70;
 
             var context2 = boardTexture2._context;
@@ -1558,6 +1584,10 @@ function PCloadScene1(){
 
             context2.font = font;
             context2.fillStyle = color;
+            context2.shadowColor = shadowColor;
+            context2.shadowOffsetX = shadowOffsetX;
+            context2.shadowOffsetY = shadowOffsetY;
+            context2.shadowBlur = shadowBlur;
             context2.fillText(text3, x, y1);
             context2.fillText(text4, x, y2);
 

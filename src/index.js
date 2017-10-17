@@ -846,8 +846,11 @@ function drawLineWithScroll(start,end,billboard,points,style) {
 function videoHandler() {
 
   var movie1 = document.getElementsByTagName("video")[0];
+  var movie5 = document.getElementById("movie-5");
 
   movies.push(movie1);
+  movies.push(movie5);
+
 
   if(mob){
 
@@ -872,6 +875,23 @@ function videoHandler() {
         RenderManager();
       });
     });
+
+    movies[1].addEventListener("play", function() {
+      engine.stopRenderLoop();
+    });
+
+    movies[1].addEventListener("pause", function() {
+      engine.runRenderLoop(function() {
+        RenderManager();
+      });
+    });
+
+    movies[1].addEventListener("ended", function() {
+        engine.runRenderLoop(function() {
+            RenderManager();
+        });
+    });
+
 
     //開頭影片結束下拉
     movies[0].addEventListener("ended", function() {

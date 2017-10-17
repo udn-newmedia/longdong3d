@@ -451,6 +451,10 @@ function viewChanger(){
             d3.select("#g-graphic").style("opacity", 1);
         }
 
+        d3.select(".g-label.route")
+            .classed("hidden", false)
+            .style('display', 'block');
+
 
         if (scroll_now >= changeViewWaypointsOffset[2] && scroll_now < changeViewWaypointsOffset[3]) {
             //第二個模型，第一個視角
@@ -618,6 +622,10 @@ function viewChanger(){
         if (d3.select("#g-graphic").style("opacity") === "0") {
           d3.select("#g-graphic").style("opacity", 1);
         }
+
+        d3.select(".g-label.route")
+            .classed("hidden", false)
+            .style('display', 'block');
 
         if (scroll_now >= changeModelPointsOffset[2] && scroll_now < changeModelPointsOffset[2] + 2/3 * window.innerHeight) {
             //第三個模型，第一個視角
@@ -1571,8 +1579,11 @@ function PCloadScene1(){
             // var x = 10;
             // var y1 = 10 + 70;
 
-            var text4 = "地層傾斜、節理與斷層";
+            var text4 = "地層傾斜、節理";
             // var y2 = 10 + 70 + 70;
+
+            var text5 = "與斷層";
+            var y3 = 10 + 70 + 70 + 70;
 
             var context2 = boardTexture2._context;
             var size2 = boardTexture2.getSize();
@@ -1590,6 +1601,7 @@ function PCloadScene1(){
             context2.shadowBlur = shadowBlur;
             context2.fillText(text3, x, y1);
             context2.fillText(text4, x, y2);
+            context2.fillText(text5, x, y3);
 
             boardTexture2.hasAlpha = true;//必須要clearColor沒被定義
             boardTexture2.update();
@@ -2220,7 +2232,7 @@ function PCimportScene3(){
 }
 
 function zoom_in_effect(variation, callback){
-    var zoominAnimation = new BABYLON.Animation("zoomIn", "radius", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
+    var zoominAnimation = new BABYLON.Animation("zoomIn", "radius", 60, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
 
     var camera = scenes[activeScene].activeCamera;
 

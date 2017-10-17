@@ -5,7 +5,7 @@ html,body {
 }
 
 ._title {
-    padding-bottom: 30%;    
+    padding-bottom: 25%;    
 }
 
 h1 {
@@ -35,7 +35,8 @@ p,h2,h6 {
  .g-labels .g-label {
      position: fixed;
      display: none;
-     font: 500 14px/1.4em "Microsoft JhengHei";
+     /*font: 500 14px/1.4em "Microsoft JhengHei";*/
+     font-family: "Microsoft JhengHei";
      color: #fff;
  }
 
@@ -196,9 +197,14 @@ img.fullscreen {
 
 .quote-contain {
     font-family: "Microsoft JhengHei";
-    border-top: none;
-    border-bottom: none;
+    /*border-top: none;
+    border-bottom: none;*/
     color : #fff1c6;
+}
+
+.quote-text {
+    padding-left: 5%;
+    padding-right: 5%;
 }
 
 .theme-default .nivo-directionNav a{

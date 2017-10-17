@@ -13,6 +13,8 @@ var waypoints = [];
 var liteVersion = false;
 var safari = (detectSafari())?true:false;
 
+var playingmode = false;
+
 var read_progress = 10;
 var total_height;
 
@@ -117,7 +119,6 @@ if(window.matchMedia("(max-width: 1199px)").matches){
            var engine = new BABYLON.Engine(canvas, true);
 
 
-
            document.getElementById("hd").addEventListener("click", function(){
 
                 liteVersion = false;
@@ -208,6 +209,8 @@ function onScroll(){
         }
     }
 
+    // console.log('scoll');
+
 
     setSectionOffset();
 
@@ -241,11 +244,9 @@ function RenderManager(){
         scenes[activeScene].reRender = true;                
     } else if (scroll_now >= changeModelPointsOffset[1] * 1.1 && scroll_now < changeModelPointsOffset[3] * 0.9){
         // scenes[activeScene].reRender = false;  
-
     } else if (scroll_now >= changeModelPointsOffset[3] * 0.9 && scroll_now < changeModelPointsOffset[3] * 1.1){
         scenes[activeScene].reRender = true;                
     } else if (scroll_now >= changeModelPointsOffset[3] * 1.1 && scroll_now < changeModelPointsOffset[2] * 0.9){
-
         // scenes[activeScene].reRender = false;                        
     } else if (scroll_now >= changeModelPointsOffset[2] * 0.9 && scroll_now < changeModelPointsOffset[2] * 1.1) {
         scenes[activeScene].reRender = true;                        
@@ -1368,6 +1369,13 @@ function PCloadScene1(){
         camera.upperAlphaLimit = 1.1;
         camera.lowerAlphaLimit = -1.1;
 
+        camera.upperBetaLimit = 1.6;
+        camera.lowerBetaLimit = 0
+
+        camera.upperRadiusLimit = 7.5;
+        camera.lowerRadiusLimit = 1;
+
+
         var light0 = new BABYLON.PointLight("Omni", new BABYLON.Vector3(0, 2, 0), scene);
         light0.parent = camera; //light follows camera
         light0.intensity = 0.4;
@@ -1745,28 +1753,48 @@ function PCloadScene1(){
 
             // stopRotating = true;
 
-
             if (scenes[sceneIndex].reRender && !stopRotating){
 
-                if(!reachedUpperLimit){
+                // 封面的旋轉
+                // if(!reachedUpperLimit){
     
-                    if (scene.activeCamera.alpha < camera.upperAlphaLimit){
-                        scene.activeCamera.alpha += .005;
-                        scene.gcamera.alpha = scene.activeCamera.alpha;
-                    } else{
-                        reachedUpperLimit = !reachedUpperLimit;
-                    }
+                //     if (scene.activeCamera.alpha < camera.upperAlphaLimit){
+                //         scene.activeCamera.alpha += .005;
+                //         scene.gcamera.alpha = scene.activeCamera.alpha;
+                //     } else{
+                //         reachedUpperLimit = !reachedUpperLimit;
+                //     }
     
-                }else{
+                // }else{
     
-                    if (scene.activeCamera.alpha > camera.lowerAlphaLimit) {
-                        scene.activeCamera.alpha -= .005;
-                        scene.gcamera.alpha = scene.activeCamera.alpha;
-                    } else {
-                        reachedUpperLimit = !reachedUpperLimit;
-                    }
+                //     if (scene.activeCamera.alpha > camera.lowerAlphaLimit) {
+                //         scene.activeCamera.alpha -= .005;
+                //         scene.gcamera.alpha = scene.activeCamera.alpha;
+                //     } else {
+                //         reachedUpperLimit = !reachedUpperLimit;
+                //     }
     
+                // }
+
+                if(!playingmode){
+                    d3.select("#g-graphic").style('z-index','2');
+
+                    playingmode = true;
                 }
+
+                scene.activeCamera.target = new BABYLON.Vector3(0, 2, 0);
+
+                if(scene.activeCamera.radius!=camRadius){
+                    scene.activeCamera.radius = camRadius;
+                    // console.log('scroll');
+
+                    if(playingmode){
+                        d3.select("#g-graphic").style('z-index','0');
+                        
+                        playingmode = false;
+                    }                    
+                }
+
             }
         })
 

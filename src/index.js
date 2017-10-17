@@ -13,10 +13,10 @@ var waypoints = [];
 var liteVersion = false;
 var safari = (detectSafari())?true:false;
 
-var playingmode = false;
-
 var read_progress = 10;
 var total_height;
+
+var playingModel1 = true;
 
 var canvas;
 
@@ -1740,62 +1740,75 @@ function PCloadScene1(){
         //  封面的旋轉
         var stopRotating = false;
         var reachedUpperLimit = false;
+        var CannotPlayingWithModel = false;
+
 
         scene.registerBeforeRender(function(){
 
             // 封面的旋轉
             if(safari){
-                stopRotating = true;
+                // stopRotating = true;
+                CannotPlayingWithModel = true;
             }
             else if(stopRotatingPointOffset){
-                stopRotating = (scroll_now <= stopRotatingPointOffset)?false:true;
+                // stopRotating = (scroll_now <= stopRotatingPointOffset)?false:true;
+                CannotPlayingWithModel = scroll_now > changeModelPointsOffset[0] && scroll_now <= stopRotatingPointOffset ? false : true;
             }
 
-            // stopRotating = true;
+            if (scenes[sceneIndex].reRender && !CannotPlayingWithModel) {
 
-            if (scenes[sceneIndex].reRender && !stopRotating){
+              // stopRotating = true;
+              // if (scenes[sceneIndex].reRender && !stopRotating){
 
-                // 封面的旋轉
-                // if(!reachedUpperLimit){
-    
-                //     if (scene.activeCamera.alpha < camera.upperAlphaLimit){
-                //         scene.activeCamera.alpha += .005;
-                //         scene.gcamera.alpha = scene.activeCamera.alpha;
-                //     } else{
-                //         reachedUpperLimit = !reachedUpperLimit;
-                //     }
-    
-                // }else{
-    
-                //     if (scene.activeCamera.alpha > camera.lowerAlphaLimit) {
-                //         scene.activeCamera.alpha -= .005;
-                //         scene.gcamera.alpha = scene.activeCamera.alpha;
-                //     } else {
-                //         reachedUpperLimit = !reachedUpperLimit;
-                //     }
-    
-                // }
+              // 封面的旋轉
+              // if(!reachedUpperLimit){
 
-                if(!playingmode){
-                    d3.select("#g-graphic").style('z-index','2');
+              //     if (scene.activeCamera.alpha < camera.upperAlphaLimit){
+              //         scene.activeCamera.alpha += .005;
+              //         scene.gcamera.alpha = scene.activeCamera.alpha;
+              //     } else{
+              //         reachedUpperLimit = !reachedUpperLimit;
+              //     }
 
-                    playingmode = true;
+              // }else{
+
+              //     if (scene.activeCamera.alpha > camera.lowerAlphaLimit) {
+              //         scene.activeCamera.alpha -= .005;
+              //         scene.gcamera.alpha = scene.activeCamera.alpha;
+              //     } else {
+              //         reachedUpperLimit = !reachedUpperLimit;
+              //     }
+
+              // }
+
+              scene.activeCamera.target = new BABYLON.Vector3(0, 2, 0); //鎖移動
+
+              // console.log(d3.select("#g-graphic").style('z-index'));
+
+              console.log(playingModel1)
+
+              if (playingModel1) {
+                if (d3.select("#g-graphic").style("z-index") !== "2") {
+                    console.log("playing Model");
+                    d3.select("#g-graphic").style("z-index", "2");
+                }
+              }
+
+              //detect scroll
+              if (scene.activeCamera.radius != camRadius) {
+                scene.activeCamera.radius = camRadius;
+
+                if (d3.select("#g-graphic").style("z-index") !== "0") {
+                    console.log('scroll out');
+                    d3.select("#g-graphic").style("z-index", "0");
+                    playingModel1 = false;
                 }
 
-                scene.activeCamera.target = new BABYLON.Vector3(0, 2, 0);
-
-                if(scene.activeCamera.radius!=camRadius){
-                    scene.activeCamera.radius = camRadius;
-                    // console.log('scroll');
-
-                    if(playingmode){
-                        d3.select("#g-graphic").style('z-index','0');
-                        
-                        playingmode = false;
-                    }                    
-                }
-
+              }
+            } else if (CannotPlayingWithModel) {
+                playingModel1 = true;
             }
+
         })
 
         // var sceneIndex = scenes.push(scene) - 1;

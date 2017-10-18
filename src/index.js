@@ -850,17 +850,20 @@ function drawLineWithScroll(start,end,billboard,points,style) {
 //只要有video在播，就停止render
 function videoHandler() {
 
-  var movie1 = document.getElementsByTagName("video")[0];
+//   var movie1 = document.getElementsByTagName("video")[0];
+  var movie1 = document.getElementById("movie-1");
+  var movie10 = document.getElementById("movie-10");
+
   var movie5 = document.getElementById("movie-5");
 
   movies.push(movie1);
   movies.push(movie5);
-
+  movies.push(movie10);
 
   if(mob){
 
         //開頭影片結束下拉
-    movies[0].addEventListener("ended", function() {
+    movies[2].addEventListener("ended", function() {
 
       var articleStart = document.getElementById("first_paragraph");
       var startOffset = articleStart.getBoundingClientRect().top + window.pageYOffset;

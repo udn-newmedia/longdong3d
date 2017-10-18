@@ -87,6 +87,8 @@ $(document).ready(function () {
 
     $('video').click(function () {
 
+        if(!mob)    return;
+
         var tar = $(this).data('target')
 
         // if (tar === 1 && mob) {

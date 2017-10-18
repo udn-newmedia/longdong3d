@@ -23,6 +23,10 @@ p,h2,h6 {
      /*z-index: 99; */
 }
 
+h1 {
+    text-align: left;
+}
+
  .g-labels {
      text-shadow: 0 0 2px rgba(0, 0, 0, 0.8);
  }
@@ -51,11 +55,16 @@ canvas {
 #startPage {
     width:100%; 
     height:100vh; 
-    background:black; 
-    opacity: 0.6;
     display: flex;
     align-items: center;
     text-align: center;
+    background: url("../assets/images/loading_bg.jpg") center center no-repeat;
+    background-size: cover;
+}
+
+.cover_mask{
+    background: black;
+    opacity: 0.6;
 }
 
 .options {
@@ -283,4 +292,11 @@ img.fullscreen {
     .img-say.video {
         margin-top: -120px;
     }
+}
+
+hr {
+    height: 6px;
+    margin: 20px 0 70px 0;
+    width: 100%;
+    background: gray;
 }

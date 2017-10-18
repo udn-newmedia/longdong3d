@@ -127,6 +127,7 @@ if(window.matchMedia("(max-width: 1199px)").matches){
 
                 d3.select("#startPage").style("display", "none");
                 d3.select("#article").style("display","block");
+                d3.select("#g-graphic").style("opacity","1");
 
                 total_height = document.querySelector("#article").getBoundingClientRect().bottom;
 
@@ -1780,6 +1781,8 @@ function PCloadScene1(){
 
               // }
 
+              d3.select("#fingermove").style("opacity","1");
+
               scene.activeCamera.target = new BABYLON.Vector3(0, 2, 0); //鎖移動
 
               // console.log(d3.select("#g-graphic").style('z-index'));
@@ -1800,11 +1803,14 @@ function PCloadScene1(){
                 if (d3.select("#g-graphic").style("z-index") !== "0") {
                     // console.log('scroll out');
                     d3.select("#g-graphic").style("z-index", "0");
+                    
                     playingModel1 = false;
                 }
 
               }
             } else if (CannotPlayingWithModel) {
+                d3.select("#fingermove").style("opacity","0");
+
                 playingModel1 = true;
             }
 

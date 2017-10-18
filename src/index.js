@@ -77,11 +77,10 @@ if(window.matchMedia("(max-width: 1199px)").matches){
     cover_video.setAttribute('src', cover_video.getAttribute("data-src"));
     cover_video.setAttribute("poster", cover_video.getAttribute("data-poster"));
 
-    var mobvideos = document.getElementsByClassName("slider-pic");
+    var sliders = document.getElementsByClassName("slider-pic");
 
-    [].forEach.call(mobvideos, function(el) {
+    [].forEach.call(sliders, function(el) {
         el.setAttribute("src", el.getAttribute("data-src"));
-        el.setAttribute("poster", el.getAttribute("data-poster"));
     });
 
 }

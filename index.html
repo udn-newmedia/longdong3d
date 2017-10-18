@@ -45,7 +45,7 @@
     <script defer src="https://udn.com/upf/newmedia/js/lazysizes.min.js"></script>
 
     <script src="src/common.js?v=1"></script>
-    <script src="src/videoctrl.js?v=4"></script>
+    <script src="src/videoctrl.js?v=5"></script>
     <script async src="lib/js/RAF.polyfill.js"></script>
 
     <!-- nivoSlider -->
@@ -175,15 +175,15 @@
         <img id="fingermove" class="lazyload" src="./assets/images/move.png" alt="左右滑看模型">
     </div>
 
-    <img class="lazyload bg_before_model" data-src="./assets/images/lite_gd.jpg" alt="" id="bg_before_model2">
-    <img class="lazyload bg_before_model" data-src="./assets/images/lite_bk.jpg" alt="" id="bg_before_model3">
+    <img class="lazyload bg_before_model" data-src="./assets/images/lite_gd0.jpg" alt="" id="bg_before_model2">
+    <img class="lazyload bg_before_model" data-src="./assets/images/lite_bk0.jpg" alt="" id="bg_before_model3">
 
     <div class="g-labels">
         <div class="g-label model1 board4" style="font-size: 55px; transform: translateX(-50%) translateY(-270%);">黃金谷</div>
         <div class="g-label model1 board3" style="font-size: 55px; transform: translateX(-50%) translateY(-270%);">後門</div>
 
         <div class="g-label route">
-            <div style="display: flex; justify-content: center; align-items:center; flex-direction: column; position: fixed; left: 50%; top: 30%; z-index: 99;">
+            <div style="display: flex; justify-content: center; align-items:center; flex-direction: column; position: fixed; left: 50%; top: 30%; z-index: 1;">
                 <div class="route1" style="display: flex; flex-direction: row; align-items: center;">
                     <img src="./assets/images/yellow.png" class="lazyload" alt="" style="width:60px;">
                     <p style="margin-left: 10px; font-size: 16px;">一般路線</p>
@@ -207,7 +207,7 @@
 
     <!--<button id="btn" style="z-index:10000000; position:fixed; left:0; right:0;">camera</button>-->
     <div id="startPage">
-        <div class="cover_mask" style="position: absolute; width: 100%; height: 100%; z-index: 1;"></div>
+        <div class="cover_mask" style="position: absolute; width: 100%; height: 100%; z-index: 1; top:0;"></div>
         <div class="container" style="z-index: 2;">
             <h1>3D帶你攀龍洞 <br>岩壁上的舞者 找路前進</h1>
             <div id="share-block-top" class="share-block container" style="margin: 0 auto;">
@@ -238,7 +238,7 @@
     <div id="article">
         <div class="video-contain" id="cover-video">
             <video preload="metadata" class="rwd-2dv hidden-xs hidden-sm" id="movie-1" data-src="assets/videos/cover-video0.mp4" data-poster="assets/images/cover-video.jpg" playsinline data-target="1"></video>
-            <video preload="metadata" class="rwd-2dv hidden-lg" id="movie-10" data-src="assets/videos/mobile/cover-video0.mp4" data-poster="assets/images/mobile_video1_cover.jpg" playsinline data-target="10" autoplay></video>
+            <video preload="metadata" class="rwd-2dv hidden-lg" id="movie-10" data-src="assets/videos/mobile/cover-video0.mp4" data-poster="assets/images/mobile_video1_cover.jpg" playsinline data-target="10" autoplay onplaying="mobileCoverVideoIsPlaying()"></video>
             <div style="margin-top: -8px;" class="video-control">
 
                 <!--<div class="img-say-out volume-text hidden-md hidden-lg" data-target="10">點按開聲音</div>-->
@@ -694,7 +694,7 @@
             </footer>
         </section>
     </div>
-    <script src="./src/index.js?v=20"></script>
+    <script src="./src/index.js?v=21"></script>
 </body>
 
 </html>

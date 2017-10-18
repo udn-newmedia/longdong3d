@@ -57,8 +57,6 @@ if(window.matchMedia("(max-width: 1199px)").matches){
     cover_video.setAttribute("src", cover_video.getAttribute("data-src"));
     cover_video.setAttribute("poster", cover_video.getAttribute("data-poster"));
 
-    var cover_poster;
-
     //填入 mobile video src
     var mobvideos = document.getElementsByClassName('mobVideo');
 
@@ -66,8 +64,6 @@ if(window.matchMedia("(max-width: 1199px)").matches){
         el.setAttribute("src", el.getAttribute("data-src"));
         el.setAttribute("poster", el.getAttribute("data-poster"));
     });
-
-    var mob_posters;
 
 }else {
 
@@ -1800,7 +1796,7 @@ function PCloadScene1(){
 
               //detect scroll
               if (scene.activeCamera.radius != camRadius) {
-                scene.activeCamera.radius = camRadius;
+                    scene.activeCamera.radius = camRadius;
 
                 d3.select("#fingermove").style("opacity","0");
 
@@ -1813,6 +1809,10 @@ function PCloadScene1(){
 
               }
             } else if (CannotPlayingWithModel) {
+
+                if (scene.activeCamera.radius != camRadius) {
+                    scene.activeCamera.radius = camRadius;
+                }
 
                 playingModel1 = true;
             }
@@ -2395,6 +2395,10 @@ function enableScroll() {
     window.ontouchmove = null;
     document.onkeydown = null;
 }
+
+function mobileCoverVideoIsPlaying(){
+    d3.select('.video-play[data-target="' + 10 + '"]').style("opacity", "0");
+};
 
 
 /***Tools***/

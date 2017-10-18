@@ -60,6 +60,28 @@ canvas {
     text-align: center;
     background: url("../assets/images/loading_bg.jpg") center center no-repeat;
     background-size: cover;
+    overflow: hidden;
+}
+
+ /*IE10+ */
+@media all and (-ms-high-contrast:none) , all and (-ms-high-contrast:active) {
+    #startPage {
+        height: 99vh;
+    }
+}
+
+/* Microsoft Edge Browser 12,13 only - @supports method */
+@supports (-ms-accelerator:true) {
+    #startPage {
+        height: 99vh;
+    }
+}
+
+/* Microsoft Edge Browser 12+ (All) - @supports method */
+@supports (-ms-ime-align:auto) {
+    #startPage {
+        height: 99vh;
+    }
 }
 
 .cover_mask{

@@ -55,7 +55,7 @@ if(window.matchMedia("(max-width: 1199px)").matches){
     // cover_video.style.display = "block";
     d3.select('#movie-10').style("display","block");
     cover_video.setAttribute("src", cover_video.getAttribute("data-src"));
-    // cover_video.setAttribute("poster", "./assets/images/mobile.jpg");
+    cover_video.setAttribute("poster", cover_video.getAttribute("data-poster"));
 
     var cover_poster;
 
@@ -64,6 +64,7 @@ if(window.matchMedia("(max-width: 1199px)").matches){
 
     [].forEach.call(mobvideos, function(el){
         el.setAttribute("src", el.getAttribute("data-src"));
+        el.setAttribute("poster", el.getAttribute("data-poster"));
     });
 
     var mob_posters;
@@ -74,11 +75,13 @@ if(window.matchMedia("(max-width: 1199px)").matches){
     d3.select("#movie-1").style("display", "block");
 
     cover_video.setAttribute('src', cover_video.getAttribute("data-src"));
+    cover_video.setAttribute("poster", cover_video.getAttribute("data-poster"));
 
     var mobvideos = document.getElementsByClassName("slider-pic");
 
     [].forEach.call(mobvideos, function(el) {
-      el.setAttribute("src", el.getAttribute("data-src"));
+        el.setAttribute("src", el.getAttribute("data-src"));
+        el.setAttribute("poster", el.getAttribute("data-poster"));
     });
 
 }
@@ -155,6 +158,7 @@ if(window.matchMedia("(max-width: 1199px)").matches){
 
                 [].forEach.call(litevideos, function(el){
                     el.setAttribute("src", el.getAttribute("data-src"));
+                    el.setAttribute("poster", el.getAttribute("data-poster"));
                 });
 
             });
@@ -361,7 +365,7 @@ function viewChanger(){
                         enableScroll();
 
 
-                        zoom_in_effect(4, function(){
+                        zoom_in_effect(3, function(){
 
                                 // scrollAnimation(changeModelPointsOffset[1], 1000);
                                 // d3.selectAll(".g-label.model1").classed("hidden", true);
@@ -1372,10 +1376,6 @@ function PCloadScene1(){
         camera.upperBetaLimit = 1.6;
         camera.lowerBetaLimit = 0
 
-        camera.upperRadiusLimit = 7.5;
-        camera.lowerRadiusLimit = 1;
-
-
         var light0 = new BABYLON.PointLight("Omni", new BABYLON.Vector3(0, 2, 0), scene);
         light0.parent = camera; //light follows camera
         light0.intensity = 0.4;
@@ -1785,11 +1785,11 @@ function PCloadScene1(){
 
               // console.log(d3.select("#g-graphic").style('z-index'));
 
-              console.log(playingModel1)
+            //   console.log(playingModel1)
 
               if (playingModel1) {
                 if (d3.select("#g-graphic").style("z-index") !== "2") {
-                    console.log("playing Model");
+                    // console.log("playing Model");
                     d3.select("#g-graphic").style("z-index", "2");
                 }
               }
@@ -1799,7 +1799,7 @@ function PCloadScene1(){
                 scene.activeCamera.radius = camRadius;
 
                 if (d3.select("#g-graphic").style("z-index") !== "0") {
-                    console.log('scroll out');
+                    // console.log('scroll out');
                     d3.select("#g-graphic").style("z-index", "0");
                     playingModel1 = false;
                 }

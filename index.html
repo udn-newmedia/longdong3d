@@ -31,7 +31,7 @@
     <link rel="stylesheet" href="https://udn-newmedia.github.io/udn-newmedia-css/css/style.css">
     <link rel="stylesheet" href="lib/css/nivo-slider.css">
     <!--<link rel="stylesheet" href="lib/css/default.css">-->
-    <link rel="stylesheet" href="src/style.css?v=7" >
+    <link rel="stylesheet" href="src/style.css?v=8" >
 
     <!-- Babylon.js -->
     <script src="https://preview.babylonjs.com/cannon.js"></script>
@@ -45,7 +45,7 @@
     <script defer src="https://udn.com/upf/newmedia/js/lazysizes.min.js"></script>
 
     <script src="src/common.js?v=1"></script>
-    <script src="src/videoctrl.js?v=2"></script>
+    <script src="src/videoctrl.js?v=3"></script>
     <script async src="lib/js/RAF.polyfill.js"></script>
 
     <!-- nivoSlider -->
@@ -242,8 +242,9 @@
             <div style="margin-top: -8px;" class="video-control">
 
                 <!--<div class="img-say-out volume-text hidden-md hidden-lg" data-target="10">點按開聲音</div>-->
-                <i class="fa fa-spinner fa-pulse video-wait" data-target="10"></i>
-                <!--<i class="fa fa-play video-play hidden-md hidden-lg" data-target="10"></i>-->
+                <i class="fa fa-spinner fa-pulse video-wait hidden-xs hidden-sm" data-target="1"></i>
+                <i class="fa fa-spinner fa-pulse video-wait hidden-lg" data-target="10"></i>
+                <i class="fa fa-play video-play hidden-md hidden-lg" data-target="10" style="opacity:0;"></i>
                 <i class="fa fa-volume-off volume hidden-md hidden-lg" style="bottom:10px; left:10px; font-size: 1.5rem;" data-target="10"></i>
             </div>
         </div>
@@ -349,7 +350,7 @@
                     </div>
                     <!--<div class="img-say-out volume-text hidden-md hidden-lg" data-target="2">點按開聲音</div>-->
                     <i class="fa fa-spinner fa-pulse video-wait" data-target="2"></i>
-                    <!--<i class="fa fa-play video-play hidden-md hidden-lg" data-target="2"></i>-->
+                    <i class="fa fa-play video-play hidden-md hidden-lg" data-target="2"></i>
                     <!--<i class="fa fa-volume-off volume hidden-md hidden-lg" data-target="2"></i>-->
                     <i class="fa fa-repeat replay hidden-md hidden-lg" data-target="2"></i>
                 </div>
@@ -427,7 +428,7 @@
                     </div>
                     <!--<div class="img-say-out volume-text hidden-md hidden-lg" data-target="3">點按開聲音</div>-->
                     <i class="fa fa-spinner fa-pulse video-wait" data-target="3"></i>
-                    <!--<i class="fa fa-play video-play hidden-md hidden-lg" data-target="3"></i>-->
+                    <i class="fa fa-play video-play hidden-md hidden-lg" data-target="3"></i>
                     <!--<i class="fa fa-volume-off volume hidden-md hidden-lg" data-target="3"></i>-->
                     <i class="fa fa-repeat replay hidden-md hidden-lg" data-target="3"></i>
                 </div>
@@ -456,7 +457,7 @@
                                 </div>
                                 <div class="img-say-out volume-text hidden-md hidden-lg" data-target="4">點按開聲音</div>
                                 <i class="fa fa-spinner fa-pulse video-wait" data-target="4"></i>
-                                <!--<i class="fa fa-play video-play hidden-md hidden-lg" data-target="4"></i>-->
+                                <i class="fa fa-play video-play hidden-md hidden-lg" data-target="4"></i>
                                 <i class="fa fa-volume-off volume hidden-md hidden-lg" data-target="4"></i>
                                 <i class="fa fa-repeat replay hidden-md hidden-lg" data-target="4"></i>
                             </div>
@@ -502,7 +503,7 @@
                     </div>
                     <!--<div class="img-say-out volume-text hidden-md hidden-lg" data-target="6">點按開聲音</div>-->
                     <i class="fa fa-spinner fa-pulse video-wait" data-target="6"></i>
-                    <!--<i class="fa fa-play video-play hidden-md hidden-lg" data-target="6"></i>-->
+                    <i class="fa fa-play video-play hidden-md hidden-lg" data-target="6"></i>
                     <!--<i class="fa fa-volume-off volume hidden-md hidden-lg" data-target="6"></i>-->
                     <i class="fa fa-repeat replay hidden-md hidden-lg" data-target="6"></i>
                 </div>
@@ -534,7 +535,7 @@
                 </div>
                 <div class="img-say-out volume-text hidden-md hidden-lg" data-target="5">點按開聲音</div>
                     <i class="fa fa-spinner fa-pulse video-wait" data-target="5"></i>
-                    <!--<i class="fa fa-play video-play hidden-md hidden-lg" data-target="5"></i>-->
+                    <i class="fa fa-play video-play hidden-md hidden-lg" data-target="5"></i>
                     <i class="fa fa-volume-off volume hidden-md hidden-lg" data-target="5"></i>
                     <i class="fa fa-repeat replay hidden-md hidden-lg" data-target="5"></i>
                 </div>
@@ -693,7 +694,7 @@
             </footer>
         </section>
     </div>
-    <script src="./src/index.js?v=15"></script>
+    <script src="./src/index.js?v=19"></script>
 </body>
 
 </html>

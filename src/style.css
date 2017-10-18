@@ -312,3 +312,16 @@ hr {
     transition-duration: 0.3s;
     transition-timing-function: ease-in-out;
 }
+
+.video-wait {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    font-size: 60px;
+    color: #FFB93E;
+    margin-left: -23.5px;
+    margin-top: -30px;
+    transition: opacity 0.2s ease;
+    opacity: 0;
+    pointer-events: none;
+}

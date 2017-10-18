@@ -1781,8 +1781,6 @@ function PCloadScene1(){
 
               // }
 
-              d3.select("#fingermove").style("opacity","1");
-
               scene.activeCamera.target = new BABYLON.Vector3(0, 2, 0); //鎖移動
 
               // console.log(d3.select("#g-graphic").style('z-index'));
@@ -1793,6 +1791,7 @@ function PCloadScene1(){
                 if (d3.select("#g-graphic").style("z-index") !== "2") {
                     // console.log("playing Model");
                     d3.select("#g-graphic").style("z-index", "2");
+                    d3.select("#fingermove").style("opacity", "1");
                 }
               }
 
@@ -1800,16 +1799,17 @@ function PCloadScene1(){
               if (scene.activeCamera.radius != camRadius) {
                 scene.activeCamera.radius = camRadius;
 
+                d3.select("#fingermove").style("opacity","0");
+
                 if (d3.select("#g-graphic").style("z-index") !== "0") {
                     // console.log('scroll out');
                     d3.select("#g-graphic").style("z-index", "0");
-                    
+
                     playingModel1 = false;
                 }
 
               }
             } else if (CannotPlayingWithModel) {
-                d3.select("#fingermove").style("opacity","0");
 
                 playingModel1 = true;
             }
@@ -2016,7 +2016,7 @@ function PCimportScene2(){
         billboard1.position = new BABYLON.Vector3(newMeshes[0].position.x - 2.5, newMeshes[0].position.y + 2.3, newMeshes[0].position.z + 1.5);
 
         var route1 = new BABYLON.StandardMaterial("route1", scene);
-        route1.diffuseTexture = new BABYLON.Texture("./assets/golden-stone/golden-stone-route1.png", scene);
+        route1.diffuseTexture = new BABYLON.Texture("./assets/golden-stone/golden-stone-route01.png", scene);
         route1.diffuseTexture.hasAlpha = true;
         route1.useAlphaFromDiffuseTexture = true;
 
@@ -2038,7 +2038,7 @@ function PCimportScene2(){
 
 
         var route2 = new BABYLON.StandardMaterial("route2", scene);
-        route2.diffuseTexture = new BABYLON.Texture("./assets/golden-stone/golden-stone-route2.png", scene);
+        route2.diffuseTexture = new BABYLON.Texture("./assets/golden-stone/golden-stone-route02.png", scene);
         route2.diffuseTexture.hasAlpha = true;
         route2.useAlphaFromDiffuseTexture = true;
 
@@ -2055,7 +2055,7 @@ function PCimportScene2(){
 
 
         var route3 = new BABYLON.StandardMaterial("route3", scene);
-        route3.diffuseTexture = new BABYLON.Texture("./assets/golden-stone/golden-stone-route3.png", scene);
+        route3.diffuseTexture = new BABYLON.Texture("./assets/golden-stone/golden-stone-route03.png", scene);
         route3.diffuseTexture.hasAlpha = true;
         route3.useAlphaFromDiffuseTexture = true;
 
@@ -2070,7 +2070,7 @@ function PCimportScene2(){
         billboard4.position = new BABYLON.Vector3(newMeshes[0].position.x - 1, newMeshes[0].position.y + 6.4, newMeshes[0].position.z + 1);
 
         var route4 = new BABYLON.StandardMaterial("route4", scene);
-        route4.diffuseTexture = new BABYLON.Texture("./assets/golden-stone/golden-stone-route4.png", scene);
+        route4.diffuseTexture = new BABYLON.Texture("./assets/golden-stone/golden-stone-route04.png", scene);
         route4.diffuseTexture.hasAlpha = true;
         route4.useAlphaFromDiffuseTexture = true;
 
@@ -2223,7 +2223,7 @@ function PCimportScene3(){
         billboard1.position = new BABYLON.Vector3(wall.position.x - 0.5, wall.position.y + 5.5, wall.position.z + 9);
 
         var route1 = new BABYLON.StandardMaterial("route5", scene);
-        route1.diffuseTexture = new BABYLON.Texture("./assets/backdoor/backdoor-route1.png", scene);
+        route1.diffuseTexture = new BABYLON.Texture("./assets/backdoor/backdoor-route01.png", scene);
         route1.diffuseTexture.hasAlpha = true;
         route1.useAlphaFromDiffuseTexture = true;
 
@@ -2241,7 +2241,7 @@ function PCimportScene3(){
 
 
         var route2 = new BABYLON.StandardMaterial("route11", scene);
-        route2.diffuseTexture = new BABYLON.Texture("./assets/backdoor/backdoor-route2.png", scene);
+        route2.diffuseTexture = new BABYLON.Texture("./assets/backdoor/backdoor-route02.png", scene);
         route2.diffuseTexture.hasAlpha = true;
         route2.useAlphaFromDiffuseTexture = true;
 

@@ -26,12 +26,13 @@
 
     <title>3D帶你攀龍洞 岩壁上的舞者 找路前進</title>
 
+    <link rel="icon" type="image/ico" href="https://udn.com/upf/newmedia/image/udn-icon.ico" />
     <link rel="stylesheet" href="https://udn.com/upf/newmedia/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://udn.com/upf/newmedia/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://udn-newmedia.github.io/udn-newmedia-css/css/style.css">
     <link rel="stylesheet" href="lib/css/nivo-slider.css">
     <!--<link rel="stylesheet" href="lib/css/default.css">-->
-    <link rel="stylesheet" href="src/style.css?v=10" >
+    <link rel="stylesheet" href="src/style.css?v=14" >
 
     <!-- Babylon.js -->
     <script src="https://preview.babylonjs.com/cannon.js"></script>
@@ -171,8 +172,8 @@
             <i class="fa fa-spinner fa-pulse model-wait" style="color: #FFB93E; font-size: 60px;"></i>
             <h2 style="margin: 0 auto; color: white;">載入中...</h3>
         </div>
-        <!--<p style="position: absolute; left:50%; top:50%;">左右滑看模型</p>-->
-        <img id="fingermove" class="lazyload" src="./assets/images/move.png" alt="左右滑看模型">
+        <img class="lazyload fingermove" src="./assets/images/move_1.png" alt="左右滑看模型" style="width:500px;">
+        <img id="mouse" class="lazyload fingermove" src="./assets/images/move_2.png" alt="" style="width: 58px;">
     </div>
 
     <img class="lazyload bg_before_model" data-src="./assets/images/lite_goldenstone.jpg" alt="" id="bg_before_model2">
@@ -238,7 +239,7 @@
     <div id="article">
         <div class="video-contain" id="cover-video">
             <video preload="metadata" class="rwd-2dv hidden-xs hidden-sm" id="movie-1" data-src="assets/videos/cover-video0.mp4" data-poster="assets/images/cover-video.jpg" playsinline data-target="1"></video>
-            <video preload="metadata" class="rwd-2dv hidden-lg" id="movie-10" data-src="assets/videos/mobile/cover-video0.mp4" data-poster="assets/images/mobile_video1_cover.jpg" playsinline data-target="10" autoplay onplaying="mobileCoverVideoIsPlaying()"></video>
+            <video preload="metadata" class="rwd-2dv hidden-lg" id="movie-10" data-src="assets/videos/mobile/cover-video00.mp4" data-poster="assets/images/mobile_video1_cover.jpg" playsinline data-target="10" autoplay onplaying="mobileCoverVideoIsPlaying()"></video>
             <div style="margin-top: -8px;" class="video-control">
 
                 <!--<div class="img-say-out volume-text hidden-md hidden-lg" data-target="10">點按開聲音</div>-->
@@ -329,7 +330,7 @@
                     <p>40年來的探索，連當地居民也不清楚的峭壁地形，攀岩者們瞭若指掌，龍洞是台灣攀岩大本營，舉目所及的每一片岩壁，都是攀岩者躍躍欲試的目標，短短2公里，已開發出600多條攀爬路線。</p>
                 </div>
                 <div class="video-contain lite">
-                    <video preload="metadata" class="rwd-2dv liteVideo" id="movie-8" data-src="assets/videos/mobile/mobile_video02.mp4" data-poster="assets/images/mobile_video2_cover.jpg" playsinline data-target="8"></video>
+                    <video preload="metadata" class="rwd-2dv liteVideo" id="movie-8" data-src="assets/videos/mobile/mobile_video002.mp4" data-poster="assets/images/mobile_video2_cover.jpg" playsinline data-target="8"></video>
                     <div style="margin-top: -8px;" class="video-control">
                         <div class="progress hidden-md hidden-lg">
                             <div id="progress-bar-8" class="progress-bar progress-bar-striped"></div>
@@ -343,7 +344,7 @@
                 </div>
             </div>
             <div class="video-contain hidden-lg">
-                <video preload="metadata" class="rwd-2dv mobVideo" id="movie-2" data-src="assets/videos/mobile/mobile_video02.mp4" data-poster="assets/images/mobile_video2_cover.jpg" playsinline data-target="2" muted autoplay></video>
+                <video preload="metadata" class="rwd-2dv mobVideo" id="movie-2" data-src="assets/videos/mobile/mobile_video002.mp4" data-poster="assets/images/mobile_video2_cover.jpg" playsinline data-target="2" muted autoplay></video>
                 <div style="margin-top: -8px;" class="video-control">
                     <div class="progress hidden-md hidden-lg">
                         <div id="progress-bar-2" class="progress-bar progress-bar-striped"></div>
@@ -420,7 +421,7 @@
                 </div>
             </div>
             <div class="video-contain hidden-lg">
-                <video preload="metadata" class="rwd-2dv mobVideo" id="movie-3" data-src="assets/videos/mobile/mobile_video03.mp4" data-poster="assets/images/mobile_video3_cover.jpg" playsinline
+                <video preload="metadata" class="rwd-2dv mobVideo" id="movie-3" data-src="assets/videos/mobile/mobile_video003.mp4" data-poster="assets/images/mobile_video3_cover.jpg" playsinline
                     data-target="3" muted autoplay></video>
                 <div style="margin-top: -8px;" class="video-control">
                     <div class="progress hidden-md hidden-lg">
@@ -497,7 +498,7 @@
                 </div>
             </div>
             <div class="video-contain hidden-lg">
-                <video preload="metadata" class="rwd-2dv mobVideo" id="movie-6" data-src="assets/videos/mobile/mobile_video04.mp4" data-poster="assets/images/mobile_video4_cover.jpg" playsinline data-target="6" muted autoplay></video>
+                <video preload="metadata" class="rwd-2dv mobVideo" id="movie-6" data-src="assets/videos/mobile/mobile_video004.mp4" data-poster="assets/images/mobile_video4_cover.jpg" playsinline data-target="6" muted autoplay></video>
                 <div style="margin-top: -8px;" class="video-control">
                     <div class="progress hidden-md hidden-lg">
                         <div id="progress-bar-6" class="progress-bar progress-bar-striped"></div>
@@ -555,7 +556,7 @@
                 </div>
             </div>
             <div class="video-contain hidden-lg">
-                <video preload="metadata" class="rwd-2dv mobVideo" id="movie-7" data-src="assets/videos/mobile/mobile_video05.mp4" data-poster="assets/images/mobile_video5_cover.jpg" playsinline data-target="7" muted autoplay></video>
+                <video preload="metadata" class="rwd-2dv mobVideo" id="movie-7" data-src="assets/videos/mobile/mobile_video005.mp4" data-poster="assets/images/mobile_video5_cover.jpg" playsinline data-target="7" muted autoplay></video>
                 <div style="margin-top: -8px;" class="video-control">
                     <div class="progress hidden-md hidden-lg">
                         <div id="progress-bar-7" class="progress-bar progress-bar-striped"></div>
@@ -695,7 +696,7 @@
             </footer>
         </section>
     </div>
-    <script src="./src/index.js?v=23"></script>
+    <script src="./src/index.js?v=27"></script>
 </body>
 
 </html>

@@ -342,17 +342,28 @@ hr {
     background: #fff;
 }
 
-#fingermove {
+.fingermove {
     position: absolute; 
-    left:50%; 
-    bottom:10%;
+    left: 50%;
+    bottom: 10%;
     transform: translateX(-50%) translateY(-50%); 
-    /*width: 10%;*/
-    width: 390px;
     opacity: 0;
     transition-property: opacity;
-    transition-duration: 0.3s;
+    transition-duration: 0.1s;
     transition-timing-function: ease-in-out;
+}
+
+#mouse {
+    left: 49%;
+    animation-name: fingermoving;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes fingermoving {
+    0% {left: 49%;}
+    50% {left: 51%;}
+    100% {left: 49%;}
 }
 
 .video-wait {

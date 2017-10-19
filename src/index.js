@@ -99,7 +99,7 @@ if(window.matchMedia("(max-width: 1199px)").matches){
            $(window).on("load", function() {
              $("#slider").nivoSlider({
                effect: "fade",
-               pauseTime: 2000,
+               pauseTime: 2500,
                startSlide: 0,
                pauseOnHover: false,
                manualAdvance: false
@@ -463,9 +463,12 @@ function viewChanger(){
             if (scenes[activeScene].billboards[0]) {
 
                 if (!scenes[activeScene].cameraPara2.hasChanged){
-
+                    
                     scenes[activeScene].cameraPara2.hasChanged = true;
                     
+                    waypoints[1].hasChanged = false;
+
+
                     // Hide all of labels
                         d3.selectAll('.g-label')
                             .classed("hidden", true);
@@ -1790,7 +1793,7 @@ function PCloadScene1(){
                 if (d3.select("#g-graphic").style("z-index") !== "2") {
                     // console.log("playing Model");
                     d3.select("#g-graphic").style("z-index", "2");
-                    d3.select("#fingermove").style("opacity", "1");
+                    d3.selectAll(".fingermove").style("opacity", "1");
                 }
               }
 
@@ -1798,7 +1801,7 @@ function PCloadScene1(){
               if (scene.activeCamera.radius != camRadius) {
                     scene.activeCamera.radius = camRadius;
 
-                d3.select("#fingermove").style("opacity","0");
+                d3.selectAll(".fingermove").style("opacity","0");
 
                 if (d3.select("#g-graphic").style("z-index") !== "0") {
                     // console.log('scroll out');

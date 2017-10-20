@@ -466,7 +466,9 @@ function viewChanger(){
                     
                     scenes[activeScene].cameraPara2.hasChanged = true;
                     
-                    waypoints[1].hasChanged = false;
+                    if(waypoints[1]){
+                        waypoints[1].hasChanged = false;   
+                    }
 
 
                     // Hide all of labels
